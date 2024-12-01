@@ -1,14 +1,30 @@
 Rails.application.routes.draw do
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+  get "home/index"
+  get "sessions/new"
+  get "sessions/create"
+  get "sessions/destroy"
 
-  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
-  # Can be used by load balancers and uptime monitors to verify that the app is live.
+  # Sağlık durumu kontrolü
   get "up" => "rails/health#show", as: :rails_health_check
 
-  # Render dynamic PWA files from app/views/pwa/*
+  # PWA rotaları
   get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
   get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
 
-  # Defines the root path route ("/")
-  # root "posts#index"
+  # Kök rota - kayıt ekranı
+  root "users#new"
+
+  # Kullanıcı rotaları (kayıt, düzenleme ve güncelleme dahil)
+  resources :users, only: [:new, :create, :edit, :update]
+
+  # Oturum (log in & log out) rotaları
+  resources :sessions, only: [:new, :create, :destroy]
+  get "login", to: "sessions#new"
+  delete "logout", to: "sessions#destroy", as: 'logout'
+  get 'profile', to: 'users#profile', as: 'profile'
+
+
+  # Giriş sonrası ana sayfa
+  get "dashboard", to: "home#index"
+
 end

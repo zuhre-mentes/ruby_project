@@ -1,0 +1,23 @@
+<h1>Giriş Yap</h1>
+
+<%= form_with url: sessions_path, local: true do |form| %>
+  <% if flash[:alert] %>
+    <div style="color: red;">
+      <%= flash[:alert] %>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :email, "E-posta" %>
+    <%= form.email_field :email %>
+  </div>
+
+  <div>
+    <%= form.label :password, "Şifre" %>
+    <%= form.password_field :password %>
+  </div>
+
+  <div>
+    <%= form.submit "Giriş Yap" %>
+  </div>
+<% end %>
