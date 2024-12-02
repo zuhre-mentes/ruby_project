@@ -15,16 +15,15 @@ Rails.application.routes.draw do
   root "users#new"
 
   # Kullanıcı rotaları (kayıt, düzenleme ve güncelleme dahil)
-  resources :users, only: [:new, :create, :edit, :update]
+  resources :users, only: [ :new, :create, :edit, :update ]
 
   # Oturum (log in & log out) rotaları
-  resources :sessions, only: [:new, :create, :destroy]
+  resources :sessions, only: [ :new, :create, :destroy ]
   get "login", to: "sessions#new"
-  delete "logout", to: "sessions#destroy", as: 'logout'
-  get 'profile', to: 'users#profile', as: 'profile'
+  delete "logout", to: "sessions#destroy", as: "logout"
+  get "profile", to: "users#profile", as: "profile"
 
 
   # Giriş sonrası ana sayfa
   get "dashboard", to: "home#index"
-
 end
