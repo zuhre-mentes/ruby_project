@@ -1,6 +1,6 @@
-<h1>Profilimi Düzenle</h1>
+<h1>Edit My Profile</h1>
 
-<%= link_to "Profilimi Düzenle", edit_user_path(current_user) %> 
+<%= link_to "Edit My Profile", edit_user_path(current_user) %> 
 
 <%= form_with model: @user, local: true do |form| %>
   <% if flash[:alert] %>
@@ -10,21 +10,21 @@
   <% end %>
 
   <div>
-    <%= form.label :email, "E-posta" %>
+    <%= form.label :email, "E-mail" %>
     <%= form.email_field :email %>
   </div>
 
   <div>
-    <%= form.label :password, "Yeni Şifre (opsiyonel)" %>
+    <%= form.label :password, "New Password (optional)" %>
     <%= form.password_field :password %>
   </div>
 
   <div>
-    <%= form.label :role, "Rol" %>
+    <%= form.label :role, "Role" %>
     <%= form.select :role, [['Student', 'student'], ['Academic', 'academic']] %>
   </div>
 
   <div>
-    <%= form.submit "Güncelle" %>
+    <%= form.submit "Update" %>
   </div>
 <% end %>

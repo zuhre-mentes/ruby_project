@@ -12,7 +12,7 @@ Rails.application.routes.draw do
   get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
 
   # Kök rota - kayıt ekranı
-  root "users#new"
+  root "sessions#new"
 
   # Kullanıcı rotaları (kayıt, düzenleme ve güncelleme dahil)
   resources :users, only: [ :new, :create, :edit, :update ]

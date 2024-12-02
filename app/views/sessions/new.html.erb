@@ -1,4 +1,4 @@
-<h1>Giriş Yap</h1>
+<h1>LOG IN</h1>
 
 <%= form_with url: sessions_path, local: true do |form| %>
   <% if flash[:alert] %>
@@ -8,16 +8,18 @@
   <% end %>
 
   <div>
-    <%= form.label :email, "E-posta" %>
+    <%= form.label :email, "E-mail" %>
     <%= form.email_field :email %>
   </div>
 
   <div>
-    <%= form.label :password, "Şifre" %>
+    <%= form.label :password, "Password" %>
     <%= form.password_field :password %>
   </div>
 
   <div>
-    <%= form.submit "Giriş Yap" %>
+    <%= form.submit "Login" %>
   </div>
 <% end %>
+
+<p>if you don't have an account, <%= link_to 'Register', new_user_path %></p>

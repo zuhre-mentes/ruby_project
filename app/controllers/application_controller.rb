@@ -14,7 +14,7 @@ class ApplicationController < ActionController::Base
   # Kullanıcı oturum açmadıysa yönlendir
   def require_login
     unless logged_in?
-      flash[:alert] = "Bu sayfaya erişmek için giriş yapmanız gerekiyor."
+      flash[:alert] = "You need to log in to access this page."
       redirect_to login_path
     end
   end

@@ -1,7 +1,9 @@
+<h1>REGISTER</h1>
+
 <%= form_with model: @user, local: true do |form| %>
   <% if @user.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@user.errors.count, "hata") %> bulundu:</h2>
+      <h2><%= pluralize(@user.errors.count, "error") %> found:</h2>
       <ul>
         <% @user.errors.full_messages.each do |message| %>
           <li><%= message %></li>
@@ -11,26 +13,26 @@
   <% end %>
 
   <div>
-    <%= form.label :email, "E-posta" %>
+    <%= form.label :email, "E-mail" %>
     <%= form.email_field :email %>
   </div>
 
   <div>
-    <%= form.label :password, "Şifre" %>
+    <%= form.label :password, "Password" %>
     <%= form.password_field :password %>
   </div>
 
   <div>
-    <%= form.label :password_confirmation, "Şifre Onayı" %>
+    <%= form.label :password_confirmation, "Confirm Password" %>
     <%= form.password_field :password_confirmation %>
   </div>
 
   <div>
-    <%= form.label :role, "Rol" %>
+    <%= form.label :role, "Role" %>
     <%= form.select :role, [['Student', 'student'], ['Academic', 'academic']] %>
   </div>
 
   <div>
-    <%= form.submit "Kayıt Ol" %>
+    <%= form.submit "Register" %>
   </div>
 <% end %>

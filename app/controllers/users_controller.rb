@@ -12,10 +12,10 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
 
     if @user.save
-      flash[:notice] = "Kayıt başarılı!"
+      flash[:notice] = "Registration successful!"
       redirect_to login_path
     else
-      flash[:alert] = "Kayıt başarısız. Lütfen bilgileri kontrol edin."
+      flash[:alert] = "Registration failed. Please check the information."
       render :new
     end
   end
@@ -28,10 +28,10 @@ class UsersController < ApplicationController
     @user = current_user
 
     if @user.update(user_params)
-      flash[:notice] = "Bilgileriniz güncellendi!"
+      flash[:notice] = "Your information has been updated!"
       redirect_to dashboard_path
     else
-      flash[:alert] = "Bilgiler güncellenemedi. Lütfen tekrar deneyin."
+      flash[:alert] = "Information could not be updated. Please try again."
       render :edit
     end
   end
@@ -39,6 +39,6 @@ class UsersController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:email, :password, :role)
+    params.require(:user).permit(:email, :password, :password_confirmation, :role)
   end
 end
