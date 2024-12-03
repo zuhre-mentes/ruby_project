@@ -1,0 +1,62 @@
+/* Profil Sayfası */
+body {
+    background: linear-gradient(to right, #99d5e2, #0083b0); /* Arka plan için renk geçişi */
+}
+
+.profile-container {
+    max-width: 1400px;
+    margin: 50px auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    font-family: 'Arial', sans-serif; /* Genel font ailesi */
+}
+
+h1 {
+    text-align: center;
+    color: #000000;
+    font-size: 35px; /* Başlık font boyutunu büyüttük */
+    margin-bottom: 20px; /* Başlık altı boşluk */
+    font-family: 'Arial', sans-serif;
+}
+
+.profile-container p {
+    font-size: 16px;
+    color: #555;
+    line-height: 1.6; /* Paragraflar arasındaki boşluğu artırdık */
+    margin-bottom: 20px; /* Paragraflar arasında boşluk */
+}
+
+/* Profil bölümleri */
+.profile-section {
+    margin-bottom: 30px; /* Her bölüm arasında daha fazla boşluk */
+}
+
+/* Profil bölümü başlıkları (h3) */
+.profile-section h3 {
+    color: #000000; /* Başlıklar mavi renkte olacak */
+    font-size: 22px; /* Başlık boyutunu biraz daha büyüttük */
+    margin-bottom: 10px; /* Başlık ile metin arasındaki boşluğu artırdık */
+}
+
+/* Profil bölümü metinleri (p) */
+.profile-section p {
+    font-size: 16px; /* Metin boyutunu yükselttik */
+    color: #777;
+    margin-bottom: 10px; /* Paragraflar arasına boşluk ekledik */
+    line-height: 1.5; /* Metin satır yüksekliği */
+}
+
+/* Edit linki */
+.profile-container a {
+    font-size: 16px;
+    color: #c40000;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 20px; /* Link ile önceki içeriği ayıran boşluk */
+}
+
+.profile-container a:hover {
+    text-decoration: underline;
+}

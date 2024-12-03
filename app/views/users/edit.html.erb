@@ -1,30 +1,41 @@
 <h1>Edit My Profile</h1>
+<%= stylesheet_link_tag 'edit' %>
 
-<%= link_to "Edit My Profile", edit_user_path(current_user) %> 
+<div class="edit-profile-container">
+  <%= form_with model: @user, local: true do |form| %>
+    <% if flash[:alert] %>
+      <div class="error-message">
+        <%= flash[:alert] %>
+      </div>
+    <% end %>
 
-<%= form_with model: @user, local: true do |form| %>
-  <% if flash[:alert] %>
-    <div style="color: red;">
-      <%= flash[:alert] %>
+    <div>
+      <%= form.label :personal_information, "Personal Information" %>
+      <%= form.text_area :personal_information, rows: 3 %>
+    </div>
+
+    <div>
+      <%= form.label :about_me, "About Me" %>
+      <%= form.text_area :about_me, rows: 3 %>
+    </div>
+
+    <div>
+      <%= form.label :education, "Education" %>
+      <%= form.text_area :education, rows: 3 %>
+    </div>
+
+    <div>
+      <%= form.label :experience, "Experience" %>
+      <%= form.text_area :experience, rows: 3 %>
+    </div>
+
+    <div>
+      <%= form.label :skills, "Skills" %>
+      <%= form.text_area :skills, rows: 3 %>
+    </div>
+
+    <div>
+      <%= form.submit "Update" %>
     </div>
   <% end %>
-
-  <div>
-    <%= form.label :email, "E-mail" %>
-    <%= form.email_field :email %>
-  </div>
-
-  <div>
-    <%= form.label :password, "New Password (optional)" %>
-    <%= form.password_field :password %>
-  </div>
-
-  <div>
-    <%= form.label :role, "Role" %>
-    <%= form.select :role, [['Student', 'student'], ['Academic', 'academic']] %>
-  </div>
-
-  <div>
-    <%= form.submit "Update" %>
-  </div>
-<% end %>
+</div>

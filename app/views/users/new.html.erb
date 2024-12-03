@@ -1,4 +1,6 @@
 <h1>REGISTER</h1>
+<%= stylesheet_link_tag 'register' %>
+
 
 <%= form_with model: @user, local: true do |form| %>
   <% if @user.errors.any? %>

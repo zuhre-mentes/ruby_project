@@ -1,0 +1,128 @@
+/* Genel Body Stili */
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(to right, #9cdceb, #1da6d4); /* Arka plan için renk geçişi */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    height: 100vh; /* Sayfa yüksekliğini ekran yüksekliğine ayarlayalım */
+    color: #fff;
+    padding-left: 500px;
+    
+}
+
+/* Register Container */
+.register-container {
+    background-color: rgba(255, 255, 255, 0.9); /* Yarı şeffaf beyaz arka plan */
+    border-radius: 15px;
+    padding: 40px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); /* Hafif gölge efekti */
+    width: 100%;
+    max-width: 400px; /* Maksimum genişlik */
+    text-align: center;
+}
+
+/* Başlık Stili (Register) */
+h1 {
+    color: #333;
+    font-size: 35px;
+    margin-bottom: 500px; /* Başlık altı boşluk */
+    font-weight: 600;
+    transform: translateX(175px);
+    text-align: center; /* Başlığı tam ortalamak */
+
+}
+
+/* Form Etiketi */
+form label {
+    font-size: 14px;
+    color: #333;
+    display: block;
+    margin-bottom: 8px;
+    text-align: left;
+}
+
+/* Giriş Alanları */
+form input[type="email"],
+form input[type="password"],
+form input[type="password_confirmation"],
+form select {
+    width: 100%;
+    padding: 12px 15px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    font-size: 16px;
+    background-color: #f4f4f4;
+    transition: 0.3s ease;
+}
+
+form input[type="email"]:focus,
+form input[type="password"]:focus,
+form input[type="password_confirmation"]:focus,
+form select:focus {
+    border-color: #00b4db; /* Odaklanıldığında renk değişimi */
+    outline: none;
+    background-color: #fff;
+}
+
+/* Register Butonu */
+form input[type="submit"] {
+    background-color: #000000; /* Buton için siyah renk */
+    color: #fff;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: background-color 0.3s ease;
+}
+
+form input[type="submit"]:hover {
+    background-color: #0083b0; /* Hover efekti */
+}
+
+/* Hata Mesajı */
+div#error_explanation {
+    font-size: 14px;
+    color: #721c24;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+div#error_explanation h2 {
+    font-size: 18px;
+    margin: 0;
+    margin-bottom: 10px;
+}
+
+div#error_explanation ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+div#error_explanation li {
+    font-size: 14px;
+}
+
+/* Alt Bağlantı Stili */
+p {
+    font-size: 14px;
+    color: #fff;
+    margin-top: 20px;
+    text-align: center;
+}
+
+p a {
+    color: #000000;
+    text-decoration: none;
+}
+
+p a:hover {
+    text-decoration: underline;
+}

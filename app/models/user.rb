@@ -10,4 +10,11 @@ class User < ApplicationRecord
 
   has_secure_password
 
+  # Add validation for profile fields if necessary
+  validates :personal_information, length: { maximum: 500 }, allow_blank: true
+  validates :about_me, length: { maximum: 500 }, allow_blank: true
+  validates :education, length: { maximum: 500 }, allow_blank: true
+  validates :experience, length: { maximum: 500 }, allow_blank: true
+  validates :skills, length: { maximum: 500 }, allow_blank: true
+
 end

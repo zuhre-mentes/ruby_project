@@ -9,7 +9,7 @@ class UsersController < ApplicationController
     @user = current_user
   end
   def create
-    @user = User.new(user_params)
+    @user = User.new(user_create_params)
 
     if @user.save
       flash[:notice] = "Registration successful!"
@@ -27,9 +27,9 @@ class UsersController < ApplicationController
   def update
     @user = current_user
 
-    if @user.update(user_params)
+    if @user.update(user_update_params)
       flash[:notice] = "Your information has been updated!"
-      redirect_to dashboard_path
+      redirect_to profile_path
     else
       flash[:alert] = "Information could not be updated. Please try again."
       render :edit
@@ -38,7 +38,16 @@ class UsersController < ApplicationController
 
   private
 
-  def user_params
+  def user_create_params
     params.require(:user).permit(:email, :password, :password_confirmation, :role)
   end
+
+  def user_update_params
+    params.require(:user).permit(:personal_information, :about_me, :education, :experience, :skills)
+  end
+
+  def set_user
+    @user = current_user 
+  end
+
 end
