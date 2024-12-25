@@ -1,7 +1,8 @@
 class HomeController < ApplicationController
-  before_action :require_login # Kullanıcının giriş yapıp yapmadığını kontrol eder
-
   def index
-    # Ana sayfa için içerik
+    Rails.logger.debug "***** home#index action is being called *****"
+
+    @posts = Post.all # Tüm içerikleri yükle
+    @post = Post.new  # Yeni post için form
   end
 end

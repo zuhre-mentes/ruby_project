@@ -1,14 +1,19 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <title>MyProject</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
 
-  
+  <!-- Stylesheet -->
+  <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
 </head>
-
 <body>
-
   <%= yield %>
+
+  <!-- JavaScript -->
+  <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
 </body>
 </html>

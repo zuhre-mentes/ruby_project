@@ -10,7 +10,25 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_12_02_214327) do
+ActiveRecord::Schema[7.2].define(version: 2024_12_25_174201) do
+  create_table "events", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.datetime "date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "posts", force: :cascade do |t|
+    t.text "content"
+    t.boolean "is_event"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "date"
+    t.integer "user_id", null: false
+    t.index ["user_id"], name: "index_posts_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", null: false
     t.string "password_digest", null: false
@@ -24,4 +42,6 @@ ActiveRecord::Schema[7.2].define(version: 2024_12_02_214327) do
     t.text "skills"
     t.index ["email"], name: "index_users_on_email", unique: true
   end
+
+  add_foreign_key "posts", "users"
 end

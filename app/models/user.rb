@@ -17,4 +17,7 @@ class User < ApplicationRecord
   validates :experience, length: { maximum: 500 }, allow_blank: true
   validates :skills, length: { maximum: 500 }, allow_blank: true
 
+
+  has_many :posts, dependent: :destroy 
+  
 end

@@ -1,0 +1,17 @@
+<h1>Upcoming Events</h1>
+
+<% if @events.any? %>
+  <ul>
+    <% @events.each do |event| %>
+      <li>
+        <strong><%= event.content %></strong><br>
+        <% if event.date.present? %>
+          <small>Date: <%= event.date.strftime("%d %b %Y, %H:%M") %></small><br>
+        <% end %>
+        <small>Posted at: <%= event.created_at.strftime("%d %b %Y, %H:%M") %></small>
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>No upcoming events at the moment. Stay tuned!</p>
+<% end %>

@@ -26,4 +26,11 @@ Rails.application.routes.draw do
 
   # Giriş sonrası ana sayfa
   get "dashboard", to: "home#index"
+
+  get "events/index", to: "events#index", as: "events_index"
+
+  resources :posts, only: [:create]
+  resources :posts, only: [:create, :destroy]
+
+  
 end

@@ -1,4 +1,43 @@
 <h1>Welcome!</h1>
 
 <%= link_to "My Profile", profile_path %> | 
-<%= link_to "Logout", login_path, method: :delete %>
+<%= link_to "Logout", login_path, method: :delete %> |
+<%= link_to "Upcoming Events", events_index_path %>
+
+<h2>Create a Post</h2>
+<%= form_with model: @post, url: posts_path, method: :post, local: true do |form| %>
+  <div>
+    <%= form.label :content, "Your Post" %><br>
+    <%= form.text_area :content, rows: 3 %>
+  </div>
+  <div>
+    <%= form.label :is_event, "Is this an Event?" %>
+    <%= form.check_box :is_event %>
+  </div>
+  <div>
+    <%= form.submit "Share" %>
+  </div>
+  <div>
+  <%= form.label :date, "Event Date (optional)" %>
+  <%= form.datetime_select :date %>
+</div>
+
+
+
+<% end %>
+
+<h2>All Posts</h2>
+<% @posts.each do |post| %>
+  <div>
+    <p><strong><%= post.content %></strong></p>
+    <p>
+      Posted by: <%= post.user.email %> <!-- Postu paylaşan kullanıcının e-posta adresi -->
+    </p>
+
+    <!-- Sadece paylaşımı yapan kullanıcıya silme butonu göster -->
+    <% if post.user == current_user %>
+      <%= link_to "Delete", post_path(post), method: :delete, data: { confirm: "Are you sure?" } %>
+    <% end %>
+  </div>
+  
+<% end %>
