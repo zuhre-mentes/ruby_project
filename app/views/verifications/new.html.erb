@@ -135,7 +135,7 @@
     </div>
 </div>
 
-<!-- Success Popup -->
+
 <% if flash[:success] %>
   <div class="success-popup show">
     <div class="popup-content">
@@ -146,7 +146,7 @@
   </div>
 <% end %>
 
-<!-- Failure Popup -->
+
 <% if flash[:error] %>
   <div class="error-popup show">
     <div class="popup-content">
@@ -410,7 +410,7 @@
     }
 }
 
-/* Popup Styles */
+
 .popup {
     display: none;
     position: fixed;
@@ -462,7 +462,7 @@
     }
 }
 
-/* Active step styles */
+
 .step-card.active {
     border-color: rgba(156, 39, 176, 0.5);
     box-shadow: 0 0 20px rgba(156, 39, 176, 0.3);
@@ -962,7 +962,7 @@
   }
 }
 
-// Flash mesajlarını otomatik kapat
+
 document.addEventListener('DOMContentLoaded', function() {
   const popups = document.querySelectorAll('.success-popup, .error-popup');
   popups.forEach(popup => {
@@ -988,17 +988,17 @@ document.addEventListener('DOMContentLoaded', function() {
         uploadButton.disabled = !hasBadge || !hasFiles;
     }
 
-    // Badge seçildiğinde upload butonunu güncelle
+    
     if (badgeIdField) {
         badgeIdField.addEventListener('change', updateUploadButton);
     }
 
-    // Dosya seçme alanına tıklama
+    
     dropZone.addEventListener('click', () => {
         fileInput.click();
     });
 
-    // Dosya seçildiğinde
+    
     fileInput.addEventListener('change', (e) => {
         const files = Array.from(e.target.files);
         if (files.length > 0) {
@@ -1006,7 +1006,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Sürükle-bırak olayları
+    
     dropZone.addEventListener('dragover', (e) => {
         e.preventDefault();
         dropZone.classList.add('drag-over');
@@ -1026,27 +1026,27 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     function handleFiles(files) {
-        // Sadece PDF dosyalarını filtrele
+        
         const pdfFiles = files.filter(file => 
             file.type === 'application/pdf' || 
             file.name.toLowerCase().endsWith('.pdf')
         );
         
-        // Maksimum 3 dosya kontrolü
+        
         if (selectedFiles.length + pdfFiles.length > 3) {
             showError('En fazla 3 dosya yükleyebilirsiniz!');
             return;
         }
 
-        // Geçersiz dosya tipi kontrolü
+        
         if (pdfFiles.length < files.length) {
             showError('Sadece PDF dosyaları yükleyebilirsiniz!');
         }
 
-        // Dosyaları listeye ekle
+        
         selectedFiles = [...selectedFiles, ...pdfFiles].slice(0, 3);
         
-        // FileList nesnesini güncelle
+        
         const dataTransfer = new DataTransfer();
         selectedFiles.forEach(file => {
             dataTransfer.items.add(file);
@@ -1081,7 +1081,7 @@ document.addEventListener('DOMContentLoaded', function() {
     window.removeFile = function(index) {
         selectedFiles.splice(index, 1);
         
-        // FileList nesnesini güncelle
+        
         const dataTransfer = new DataTransfer();
         selectedFiles.forEach(file => {
             dataTransfer.items.add(file);
@@ -1106,7 +1106,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 3000);
     }
 
-    // Form submit kontrolü
+    
     document.querySelector('.upload-form').addEventListener('submit', function(e) {
         const badgeId = document.getElementById('badge_id_field').value;
         if (!badgeId || badgeId === '') {
@@ -1134,7 +1134,7 @@ function selectBadge(id, name) {
     const badgeIdField = document.getElementById('badge_id_field');
     badgeIdField.value = id;
     
-    // Upload butonunu güncelle
+    
     const uploadButton = document.getElementById('uploadButton');
     const fileInput = document.getElementById('fileInput');
     uploadButton.disabled = !(id && fileInput.files.length > 0);
@@ -1150,7 +1150,7 @@ function filterBadges(query) {
     });
 }
 
-// Sayfa dışı tıklamalarda dropdown'ı kapat
+
 document.addEventListener('click', (e) => {
     const dropdown = document.getElementById('badgeDropdown');
     const button = document.querySelector('.badge-select-button');

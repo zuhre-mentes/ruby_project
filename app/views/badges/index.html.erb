@@ -8,12 +8,12 @@
 
 
 <div class="page-wrapper">
-    <!-- Header -->
+    
     <div class="header">
         <h1>Badge Explorer</h1>
     </div>
 
-    <!-- Search Bar -->
+    
     <div class="search-bar">
         <div class="search-container">
             <%= form_tag badges_path, method: :get, class: "search-form", data: { turbo: false } do %>
@@ -37,7 +37,7 @@
         </div>
     </div>
 
-    <!-- Badge Cards -->
+    
     <div class="content">
         <div class="badge-grid">
         <% @badges.each do |badge| %>
@@ -74,22 +74,22 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Sosyal medya paylaşım fonksiyonu
+    
     function shareOnSocial(e, url) {
         e.preventDefault();
         
-        // Mobil cihaz kontrolü (WhatsApp için)
+        
         if (url.startsWith('whatsapp://') && !isMobileDevice()) {
             url = url.replace('whatsapp://', 'https://web.whatsapp.com/');
         }
         
-        // Popup penceresi boyutları
+        
         const width = 550;
         const height = 450;
         const left = (window.screen.width - width) / 2;
         const top = (window.screen.height - height) / 2;
         
-        // WhatsApp hariç diğer platformlar için popup aç
+        
         if (!url.includes('whatsapp')) {
             window.open(
                 url,
@@ -103,12 +103,12 @@ document.addEventListener('DOMContentLoaded', function() {
         return false;
     }
 
-    // Mobil cihaz kontrolü
+    
     function isMobileDevice() {
         return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
     }
 
-    // Tüm sosyal medya butonlarına click event listener ekle
+    
     document.querySelectorAll('.social-btn').forEach(btn => {
         btn.addEventListener('click', function(e) {
             shareOnSocial(e, this.href);
@@ -183,7 +183,7 @@ body {
     z-index: 1;
 }
 
-/* Header */
+
 .header {
     text-align: center;
     margin-bottom: 3rem;
@@ -201,7 +201,7 @@ body {
     -webkit-text-fill-color: #ffffff;
 }
 
-/* Search Bar */
+
 .search-bar {
     margin-bottom: 3rem;
 }
@@ -308,7 +308,7 @@ body {
     color: white;
 }
 
-/* Badge Grid */
+
 .content {
     padding: 0 2rem;
 }

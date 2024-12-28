@@ -5,18 +5,18 @@ class BadgesController < ApplicationController
   def index
     @badges = Badge.includes(:badge_category).all
 
-    # Arama filtresi
+    
     if params[:search].present?
       search_term = "%#{params[:search].downcase}%"
       @badges = @badges.where("LOWER(badges.name) LIKE ? OR LOWER(badges.description) LIKE ?", search_term, search_term)
     end
 
-    # Kategori filtresi
+    
     if params[:category].present?
       @badges = @badges.where(badge_categories: { name: params[:category] })
     end
 
-    # Sonuçları tekil hale getir
+    
     @badges = @badges.distinct
   end
 

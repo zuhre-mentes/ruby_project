@@ -1,38 +1,37 @@
-/* Genel Body Stili */
+
 body {
     font-family: 'Arial', sans-serif;
-    background: linear-gradient(to right, #9cdceb, #1da6d4); /* Arka plan için renk geçişi */
+    background: linear-gradient(to right, #9cdceb, #1da6d4); 
     margin: 0;
     padding: 0;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh; /* Sayfa yüksekliğini ekran yüksekliğine ayarlayalım */
+    height: 100vh; 
     color: #fff;
 }
 
-/* Login Container */
 .login-container {
-    background-color: rgba(255, 255, 255, 0.9); /* Yarı şeffaf beyaz arka plan */
+    background-color: rgba(255, 255, 255, 0.9); 
     border-radius: 15px;
     padding: 40px;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); /* Hafif gölge efekti */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); 
     width: 100%;
-    max-width: 400px; /* Maksimum genişlik */
+    max-width: 400px; 
     text-align: center;
 }
 
-/* Başlık Stili (Login) */
+
 h1 {
     color: #333;
     font-size: 35px;
-    margin-bottom: 400px; /* margin-bottom'ı 400px'den 40px'ye çektim */
+    margin-bottom: 400px; 
     font-weight: 600;
-    transform: translateX(120px); /* translateX değerini sıfırladım */
-    text-align: center; /* Başlığı tam ortalamak */
+    transform: translateX(120px); 
+    text-align: center; 
 }
 
-/* Form Etiketi */
+
 form label {
     font-size: 14px;
     color: #333;
@@ -41,7 +40,7 @@ form label {
     text-align: left;
 }
 
-/* Giriş Alanları */
+
 form input[type="email"],
 form input[type="password"] {
     width: 100%;
@@ -56,14 +55,14 @@ form input[type="password"] {
 
 form input[type="email"]:focus,
 form input[type="password"]:focus {
-    border-color: #00b4db; /* Odaklanıldığında renk değişimi */
+    border-color: #00b4db; 
     outline: none;
     background-color: #fff;
 }
 
-/* Login Butonu */
+
 form input[type="submit"] {
-    background-color: #000000; /* Buton için siyah renk */
+    background-color: #000000; 
     color: #fff;
     padding: 12px 20px;
     border: none;
@@ -74,16 +73,16 @@ form input[type="submit"] {
 }
 
 form input[type="submit"]:hover {
-    background-color: #0083b0; /* Hover efekti */
+    background-color: #0083b0; 
 }
 
-/* Hata Mesajı */
+
 div[style="color: red;"] {
     font-size: 14px;
     margin-bottom: 20px;
 }
 
-/* Alt Bağlantı Stili */
+
 p {
     font-size: 14px;
     color: #fff;

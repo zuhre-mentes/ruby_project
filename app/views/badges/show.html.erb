@@ -4,7 +4,7 @@
 
 <div class="animated-background"></div>
 
-<!-- Geri Dön Butonu -->
+
 <div class="back-button-container">
     <a href="<%= badges_path %>" class="back-button">
         <i class="bi bi-arrow-left"></i>
@@ -13,7 +13,7 @@
 </div>
 
 <div class="page-wrapper">
-    <!-- Üst Kısım: Badge Bilgileri -->
+    
     <div class="badge-header">
         <div class="badge-card">
             <div class="badge-main-info">
@@ -72,7 +72,7 @@
         </div>
     </div>
 
-    <!-- Orta Kısım: Detaylı Bilgiler -->
+    
     <div class="badge-content">
         <div class="description-section">
             <h2>Açıklama</h2>
@@ -80,7 +80,7 @@
         </div>
     </div>
 
-    <!-- Alt Kısım: İlgili Rozetler -->
+    
     <div class="related-badges">
         <div class="related-header">
             <h2 class="section-title">Benzer Rozetler</h2>
@@ -273,7 +273,7 @@
     </div>
 </div>
 
-<!-- Popup Modal -->
+
 <div id="descriptionModal" class="modal">
     <div class="modal-content">
         <span class="close-btn">&times;</span>
@@ -284,7 +284,7 @@
     </div>
 </div>
 
-<!-- Sağ kart yapısı -->
+
 <div class="badge-side-card">
     <div class="side-card-header">
         <div class="profile-info">
@@ -341,7 +341,7 @@
 
 <% content_for :styles do %>
 <style>
-/* Renk değişkenleri */
+
 :root {
     --primary: #9C27B0;
     --primary-light: rgba(156, 39, 176, 0.1);
@@ -1222,7 +1222,7 @@ body {
     }
 }
 
-/* Modal Styles */
+
 .modal {
     display: none;
     position: fixed;
@@ -1746,7 +1746,7 @@ body {
     font-size: 0.9rem;
 }
 
-/* Benzer Rozetler Bölümü Stilleri */
+
 .related-badges {
     margin-top: 4rem;
     padding: 2rem;
@@ -2065,7 +2065,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let currentPage = 0;
     let totalPages = 0;
     
-    // İlk yüklemede toplam sayfa sayısını al
+    
     fetchTotalBadges();
     
     prevBtn.addEventListener('click', () => {

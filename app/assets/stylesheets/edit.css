@@ -1,6 +1,6 @@
-/* Profil Düzenleme Sayfası */
+
 body {
-    background: linear-gradient(to right, #99d5e2, #0083b0); /* Arka plan için renk geçişi */
+    background: linear-gradient(to right, #99d5e2, #0083b0); 
 }
 
 .edit-profile-container {
@@ -10,41 +10,41 @@ body {
     border: 1px solid #ddd;
     border-radius: 8px;
     background-color: #f9f9f9;
-    font-family: 'Arial', sans-serif; /* Genel font ailesi */
+    font-family: 'Arial', sans-serif; 
 }
 
 h1 {
     text-align: center;
     color: #000000;
-    font-size: 35px; /* Başlık font boyutunu büyüttük */
-    margin-bottom: 20px; /* Başlık altı boşluk */
+    font-size: 35px; 
+    margin-bottom: 20px; 
     font-family: 'Arial', sans-serif;
 }
 
-/* Form alanları */
+
 .edit-profile-container div {
     margin-bottom: 20px;
 }
 
 .edit-profile-container label {
-    font-size: 16px; /* Etiketler için font boyutunu arttırdık */
+    font-size: 16px; 
     color: #555;
     display: block;
     margin-bottom: 5px;
 }
 
-/* Textarea alanları */
+
 .edit-profile-container textarea {
     width: 100%;
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 4px;
-    font-size: 12px; /* Metin alanı font boyutu */
+    font-size: 12px; 
     color: #555;
     line-height: 1.6;
 }
 
-/* Form Submit butonu */
+
 .edit-profile-container input[type="submit"] {
     width: 100%;
     padding: 10px;
@@ -60,14 +60,14 @@ h1 {
     background-color: #0056b3;
 }
 
-/* Hata mesajları */
+
 .error-message {
     color: red;
     font-size: 14px;
     margin-bottom: 10px;
 }
 
-/* Error class for styling */
+
 .edit-profile-container .field_with_errors {
     border: 2px solid red;
     background-color: #fff0f0;

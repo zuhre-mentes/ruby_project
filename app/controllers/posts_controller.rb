@@ -1,8 +1,8 @@
 class PostsController < ApplicationController
-  before_action :require_login, only: [:create, :destroy] # Kullanıcının giriş yaptığından emin olun
+  before_action :require_login, only: [:create, :destroy] 
 
   def create
-    @post = current_user.posts.new(post_params) # Post'u oturum açmış kullanıcıya bağla
+    @post = current_user.posts.new(post_params) 
 
     if @post.save
       flash[:notice] = "Post successfully created!"
@@ -16,7 +16,7 @@ class PostsController < ApplicationController
   def destroy
     @post = Post.find(params[:id])
     
-    # Sadece postu paylaşan kullanıcı silebilir
+    
     if @post.user == current_user
       @post.destroy
       flash[:notice] = "Post successfully deleted."

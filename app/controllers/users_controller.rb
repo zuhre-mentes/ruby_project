@@ -1,11 +1,10 @@
 class UsersController < ApplicationController
-  before_action :require_login, only: [ :edit, :update ] # Kullanıcının giriş yaptığını kontrol et
+  before_action :require_login, only: [ :edit, :update ] 
 
   def new
     @user = User.new
   end
   def profile
-    # Bu metodda kullanıcı profili sadece görüntülenir
     @user = current_user
   end
   def create
