@@ -55,3 +55,33 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
 end
+
+# The modern asset pipeline for Rails [https://github.com/rails/propshaft]
+gem "propshaft"
+
+# Use the database-backed adapters for Rails.cache, Active Job, and Action Cable
+gem "solid_cache"
+gem "solid_queue"
+gem "solid_cable"
+
+# Deploy this application anywhere as a Docker container [https://kamal-deploy.org]
+gem "kamal", require: false
+
+# Add HTTP asset caching/compression and X-Sendfile acceleration to Puma [https://github.com/basecamp/thruster/]
+gem "thruster", require: false
+
+
+gem "devise"
+
+gem "webpacker", "~> 5.4.4"
+
+gem "pundit"
+
+# For will_paginate
+gem "will_paginate", "~> 3.1.2"
+
+# or for kaminari
+gem "kaminari"
+
+gem "dotenv-rails"
+gem "ruby-openai", "~> 4.0.0"
