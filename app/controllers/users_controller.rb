@@ -1,20 +1,22 @@
 class UsersController < ApplicationController
-  before_action :require_login, only: [ :edit, :update ] 
+  before_action :authenticate_user!, only: [:edit, :update]
 
   def new
     @user = User.new
   end
+
   def profile
     @user = current_user
   end
+
   def create
     @user = User.new(user_create_params)
 
     if @user.save
-      flash[:notice] = "Registration successful!"
+      flash[:notice] = "Kayıt başarılı!"
       redirect_to login_path
     else
-      flash[:alert] = "Registration failed. Please check the information."
+      flash[:alert] = "Kayıt başarısız. Lütfen bilgileri kontrol edin."
       render :new
     end
   end
@@ -27,10 +29,10 @@ class UsersController < ApplicationController
     @user = current_user
 
     if @user.update(user_update_params)
-      flash[:notice] = "Your information has been updated!"
+      flash[:notice] = "Bilgileriniz güncellendi!"
       redirect_to profile_path
     else
-      flash[:alert] = "Information could not be updated. Please try again."
+      flash[:alert] = "Bilgiler güncellenemedi. Lütfen tekrar deneyin."
       render :edit
     end
   end
@@ -44,9 +46,4 @@ class UsersController < ApplicationController
   def user_update_params
     params.require(:user).permit(:personal_information, :about_me, :education, :experience, :skills)
   end
-
-  def set_user
-    @user = current_user 
-  end
-
 end

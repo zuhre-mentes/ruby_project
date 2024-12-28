@@ -12,7 +12,7 @@ Rails.application.routes.draw do
     root 'home#index', as: :authenticated_root
   end
 
-  get 'profile', to: 'home#profile', as: :profile
+  get 'profile', to: 'users#profile', as: :profile
   get 'dashboard', to: 'home#index', as: :dashboard
 
   resources :badges, only: [:index, :show] do

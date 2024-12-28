@@ -1,62 +1,105 @@
-/* Profil Sayfası */
+/* Genel Ayarlar */
 body {
-    background: linear-gradient(to right, #99d5e2, #0083b0); /* Arka plan için renk geçişi */
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(45deg, #0a0a1f, #13111C, #0d1a2d);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  color: #fff;
+  font-family: 'Arial', sans-serif;
 }
 
+/* Başlık Tasarımı */
+.profile-title {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 2.5rem;
+  font-family: 'Orbitron', sans-serif;
+  color: #ffffff;
+  text-shadow: 0 4px 12px rgba(139, 92, 246, 0.8);
+  text-transform: uppercase;
+  margin: 0;
+}
+
+/* Profil Kutusu */
 .profile-container {
-    max-width: 1400px;
-    margin: 50px auto;
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    background-color: #f9f9f9;
-    font-family: 'Arial', sans-serif; /* Genel font ailesi */
+  width: 90%;
+  max-width: 800px;
+  padding: 2rem 3rem;
+  background: rgba(13, 12, 24, 0.9);
+  backdrop-filter: blur(20px);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  animation: fadeIn 0.6s ease-in-out;
+  text-align: center;
 }
 
-h1 {
-    text-align: center;
-    color: #000000;
-    font-size: 35px; /* Başlık font boyutunu büyüttük */
-    margin-bottom: 20px; /* Başlık altı boşluk */
-    font-family: 'Arial', sans-serif;
-}
-
+/* Bilgi Bölümleri */
 .profile-container p {
-    font-size: 16px;
-    color: #555;
-    line-height: 1.6; /* Paragraflar arasındaki boşluğu artırdık */
-    margin-bottom: 20px; /* Paragraflar arasında boşluk */
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  line-height: 1.8;
+  text-align: left;
 }
 
-/* Profil bölümleri */
-.profile-section {
-    margin-bottom: 30px; /* Her bölüm arasında daha fazla boşluk */
+.profile-container .profile-section h3 {
+  color: #8B5CF6;
+  font-size: 1.3rem;
+  font-weight: bold;
+  text-shadow: 0 2px 6px rgba(139, 92, 246, 0.5);
+  margin-bottom: 0.8rem;
+  text-align: left;
 }
 
-/* Profil bölümü başlıkları (h3) */
-.profile-section h3 {
-    color: #000000; /* Başlıklar mavi renkte olacak */
-    font-size: 22px; /* Başlık boyutunu biraz daha büyüttük */
-    margin-bottom: 10px; /* Başlık ile metin arasındaki boşluğu artırdık */
+.profile-container .profile-section p {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 1rem;
+  line-height: 1.6;
+  text-align: left;
 }
 
-/* Profil bölümü metinleri (p) */
-.profile-section p {
-    font-size: 16px; /* Metin boyutunu yükselttik */
-    color: #777;
-    margin-bottom: 10px; /* Paragraflar arasına boşluk ekledik */
-    line-height: 1.5; /* Metin satır yüksekliği */
+/* Profil Düzenleme Butonu */
+.profile-edit-button {
+  display: inline-block;
+  margin-top: 2rem;
+  padding: 1rem 2.5rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: #ffffff;
+  background: linear-gradient(135deg, #8B5CF6, #6D28D9);
+  border: none;
+  border-radius: 12px;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3), inset 0 2px 4px rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease-in-out;
 }
 
-/* Edit linki */
-.profile-container a {
-    font-size: 16px;
-    color: #c40000;
-    text-decoration: none;
-    display: inline-block;
-    margin-top: 20px; /* Link ile önceki içeriği ayıran boşluk */
+.profile-edit-button:hover {
+  background: linear-gradient(135deg, #9061F9, #7E3AF2);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 24px rgba(139, 92, 246, 0.5);
 }
 
-.profile-container a:hover {
-    text-decoration: underline;
+.profile-edit-button:active {
+  background: linear-gradient(135deg, #6D28D9, #4C1D95);
+  transform: translateY(2px);
+}
+
+/* Fade-in Efekti */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

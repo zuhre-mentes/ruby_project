@@ -549,37 +549,37 @@
 }
 </style>
 
-<h1>YOUR PROFILE</h1>
+<h1>PROFİLİM</h1>
 <%= stylesheet_link_tag 'profile' %>
 
 <div class="profile-container">
   <p><strong>Email:</strong> <%= @user.email %></p>
-  <p><strong>Role:</strong> <%= @user.role.capitalize %></p>
+  <p><strong>Rol:</strong> <%= @user.role.capitalize %></p>
 
   <div class="profile-section">
-    <h3>Personal Information</h3>
-    <p><%= @user.personal_information || "No personal information added." %></p>
+    <h3>Kişisel Bilgiler</h3>
+    <p><%= @user.personal_information || "Henüz kişisel bilgi eklenmedi." %></p>
   </div>
 
   <div class="profile-section">
-    <h3>About Me</h3>
-    <p><%= @user.about_me || "No information provided." %></p>
+    <h3>Hakkımda</h3>
+    <p><%= @user.about_me || "Henüz bilgi eklenmedi." %></p>
   </div>
 
   <div class="profile-section">
-    <h3>Education</h3>
-    <p><%= @user.education || "No education details provided." %></p>
+    <h3>Eğitim</h3>
+    <p><%= @user.education || "Henüz eğitim bilgisi eklenmedi." %></p>
   </div>
 
   <div class="profile-section">
-    <h3>Experience</h3>
-    <p><%= @user.experience || "No experience details provided." %></p>
+    <h3>Deneyim</h3>
+    <p><%= @user.experience || "Henüz deneyim bilgisi eklenmedi." %></p>
   </div>
 
   <div class="profile-section">
-    <h3>Skills</h3>
-    <p><%= @user.skills || "No skills provided." %></p>
+    <h3>Beceriler</h3>
+    <p><%= @user.skills || "Henüz beceri bilgisi eklenmedi." %></p>
   </div>
 
-  <%= link_to "Edit My Profile", edit_user_path(current_user) %> <!-- Profil düzenleme linki -->
+  <%= link_to "Profilimi Düzenle", edit_user_path(current_user) %> <!-- Profil düzenleme linki -->
 </div>
