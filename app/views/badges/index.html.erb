@@ -1,0 +1,669 @@
+<%
+    default_icon = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z'/%3E%3Cpath d='M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1Z'/%3E%3C/svg%3E"
+%>
+
+<div class="animated-background"></div>
+
+
+
+
+<div class="page-wrapper">
+    <!-- Header -->
+    <div class="header">
+        <h1>Badge Explorer</h1>
+    </div>
+
+    <!-- Search Bar -->
+    <div class="search-bar">
+        <div class="search-container">
+            <%= form_tag badges_path, method: :get, class: "search-form", data: { turbo: false } do %>
+                <div class="search-input-wrapper">
+                    <i class="bi bi-search"></i>
+                    <%= text_field_tag :search, params[:search], 
+                        placeholder: "Sertifika ara...", 
+                        class: "search-input" %>
+        </div>
+
+                <div class="search-controls">
+                    <%= select_tag :category, 
+                        options_for_select([["Tüm Kategoriler", ""]] + 
+                            BadgeCategory.pluck(:name).map { |name| [name, name] },
+                            params[:category]), 
+                        class: "category-select" %>
+
+                    <%= submit_tag "Ara", class: "search-btn", name: nil %>
+        </div>
+                    <% end %>
+        </div>
+    </div>
+
+    <!-- Badge Cards -->
+    <div class="content">
+        <div class="badge-grid">
+        <% @badges.each do |badge| %>
+                <div class="badge-card" data-category="<%= badge.badge_category&.name %>">
+                    <div class="badge-card-content">
+                        <div class="badge-icon">
+                            <img src="<%= default_icon %>" alt="<%= badge.name %>">
+                        </div>
+                        
+                        <h3><%= badge.name %></h3>
+                        <p><%= truncate(badge.description, length: 100) %></p>
+                        
+                        <div class="badge-meta">
+                            <span class="category">
+                                <i class="bi bi-tag"></i>
+                                <%= badge.badge_category&.name %>
+                            </span>
+                            <a href="/ai_chat/<%= badge.id %>" class="ask-ai-btn">
+                                <i class="bi bi-robot"></i>
+                                Ask to AI
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="badge-actions">
+                        <a href="<%= badge_path(badge) %>" class="btn-outline">Detaylar</a>
+                        <a href="<%= new_verification_path %>" class="btn-solid">Başvur</a>
+                    </div>
+                </div>
+            <% end %>
+            </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Sosyal medya paylaşım fonksiyonu
+    function shareOnSocial(e, url) {
+        e.preventDefault();
+        
+        // Mobil cihaz kontrolü (WhatsApp için)
+        if (url.startsWith('whatsapp://') && !isMobileDevice()) {
+            url = url.replace('whatsapp://', 'https://web.whatsapp.com/');
+        }
+        
+        // Popup penceresi boyutları
+        const width = 550;
+        const height = 450;
+        const left = (window.screen.width - width) / 2;
+        const top = (window.screen.height - height) / 2;
+        
+        // WhatsApp hariç diğer platformlar için popup aç
+        if (!url.includes('whatsapp')) {
+            window.open(
+                url,
+                'share',
+                `toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=${width}, height=${height}, top=${top}, left=${left}`
+            );
+        } else {
+            window.location.href = url;
+        }
+        
+        return false;
+    }
+
+    // Mobil cihaz kontrolü
+    function isMobileDevice() {
+        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    }
+
+    // Tüm sosyal medya butonlarına click event listener ekle
+    document.querySelectorAll('.social-btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            shareOnSocial(e, this.href);
+        });
+    });
+});
+</script>
+
+<% content_for :styles do %>
+<style>
+:root {
+    --primary: #9C27B0;
+    --text: #ffffff;
+    --text-light: rgba(255, 255, 255, 0.7);
+    --bg: rgba(255, 255, 255, 0.08);
+    --bg-alt: rgba(156, 39, 176, 0.15);
+    --border: rgba(255, 255, 255, 0.1);
+}
+
+body {
+    margin: 0;
+    font-family: system-ui, -apple-system, sans-serif;
+    color: var(--text);
+    line-height: 1.5;
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+    background: transparent;
+}
+
+.animated-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 50% 50%, 
+        #040B14 0%,
+        #061024 25%,
+        #081537 50%,
+        #040B14 75%,
+        #020508 100%
+    );
+    background-size: 300% 300%;
+    animation: moveGradient 20s alternate infinite;
+    z-index: -1;
+}
+
+@keyframes moveGradient {
+    0% {
+        background-position: 0% 0%;
+    }
+    25% {
+        background-position: 100% 50%;
+    }
+    50% {
+        background-position: 50% 100%;
+    }
+    75% {
+        background-position: 0% 50%;
+    }
+    100% {
+        background-position: 50% 0%;
+    }
+}
+
+.page-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    position: relative;
+    z-index: 1;
+}
+
+/* Header */
+.header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.header h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    background: none;
+    -webkit-background-clip: unset;
+    background-clip: unset;
+    -webkit-text-fill-color: #ffffff;
+}
+
+/* Search Bar */
+.search-bar {
+    margin-bottom: 3rem;
+}
+
+.search-container {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.search-form {
+    display: flex;
+    gap: 1rem;
+    width: 100%;
+}
+
+.search-input-wrapper {
+    flex: 2;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(30, 9, 51, 0.4);
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 15px rgba(156, 39, 176, 0.2);
+}
+
+.search-input-wrapper input {
+    border: none;
+    background: none;
+    width: 100%;
+    font-size: 1rem;
+    color: var(--text);
+}
+
+.search-input-wrapper input::placeholder {
+    color: var(--text-light);
+}
+
+.search-input-wrapper input:focus {
+    outline: none;
+}
+
+.search-btn {
+    padding: 0.5rem 1rem;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    font-size: 0.875rem;
+    transition: all 0.2s ease;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 2px 10px rgba(156, 39, 176, 0.3);
+}
+
+.search-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 15px rgba(156, 39, 176, 0.4);
+}
+
+.search-controls {
+    flex: 1;
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.search-controls select {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    border: none;
+    background: rgba(30, 9, 51, 0.4);
+    border-radius: 0.5rem;
+    color: var(--text);
+    font-size: 0.875rem;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 15px rgba(156, 39, 176, 0.2);
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%239C27B0' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    padding-right: 2.5rem;
+}
+
+.search-controls select:focus {
+    outline: none;
+    box-shadow: 0 0 20px rgba(156, 39, 176, 0.3);
+}
+
+.search-controls select option {
+    background: #2D1B4E;
+    color: var(--text);
+    padding: 0.75rem;
+}
+
+.search-controls select option:hover,
+.search-controls select option:focus,
+.search-controls select option:checked {
+    background: #9C27B0;
+    color: white;
+}
+
+/* Badge Grid */
+.content {
+    padding: 0 2rem;
+}
+
+.badge-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4rem;
+    max-width: 1200px;
+    margin: 2rem auto;
+}
+
+.badge-card {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 320px;
+}
+
+.badge-card:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.05);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.badge-card-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.badge-icon {
+    width: 60px;
+    height: 60px;
+    background: rgba(26, 16, 59, 0.7);
+    border-radius: 0.75rem;
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.badge-icon img {
+    width: 100%;
+    height: 100%;
+    filter: brightness(0) invert(1);
+}
+
+.badge-card h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+
+.badge-card p {
+    font-size: 0.85rem;
+    margin-bottom: 1rem;
+    line-height: 1.4;
+}
+
+.badge-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.ask-ai-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1rem;
+    background: linear-gradient(135deg, rgba(156, 39, 176, 0.2), rgba(89, 19, 124, 0.2));
+    border: 1px solid rgba(156, 39, 176, 0.3);
+    border-radius: 0.75rem;
+    color: #ffffff;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 4px 15px rgba(156, 39, 176, 0.2);
+}
+
+.ask-ai-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.2),
+        transparent
+    );
+    transition: 0.5s;
+}
+
+.ask-ai-btn::after {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg, #9C27B0, #673AB7, #3F51B5, #9C27B0);
+    background-size: 400% 400%;
+    z-index: -1;
+    border-radius: 0.85rem;
+    animation: borderGlow 3s ease infinite;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.ask-ai-btn:hover {
+    transform: translateY(-2px) scale(1.02);
+    background: linear-gradient(135deg, rgba(156, 39, 176, 0.3), rgba(89, 19, 124, 0.3));
+    border-color: rgba(156, 39, 176, 0.5);
+    box-shadow: 0 8px 25px rgba(156, 39, 176, 0.3);
+}
+
+.ask-ai-btn:hover::before {
+    left: 100%;
+}
+
+.ask-ai-btn:hover::after {
+    opacity: 1;
+}
+
+.ask-ai-btn i {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.9);
+    transition: all 0.3s ease;
+    animation: pulseIcon 2s infinite;
+}
+
+@keyframes borderGlow {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+@keyframes pulseIcon {
+    0% {
+        transform: scale(1);
+        opacity: 0.8;
+    }
+    50% {
+        transform: scale(1.2);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 0.8;
+    }
+}
+
+.category {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.4rem 0.75rem;
+    font-size: 0.75rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 0.5rem;
+}
+
+.category i {
+    margin-right: 0.5rem;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.badge-actions {
+    margin-top: auto;
+    display: flex;
+    gap: 0.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.btn-outline, .btn-solid {
+    padding: 0.6rem 1rem;
+    font-size: 0.85rem;
+    flex: 1;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.btn-outline {
+    background: rgba(156, 39, 176, 0.1);
+    color: #ffffff;
+    border: 1px solid rgba(156, 39, 176, 0.3);
+}
+
+.btn-outline:hover {
+    background: rgba(156, 39, 176, 0.2);
+    border-color: rgba(156, 39, 176, 0.5);
+    transform: translateY(-2px);
+}
+
+.btn-solid {
+    background: linear-gradient(135deg, #9C27B0, #7B1FA2);
+    color: #ffffff;
+    border: none;
+    box-shadow: 0 4px 15px rgba(156, 39, 176, 0.3);
+}
+
+.btn-solid:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(156, 39, 176, 0.4);
+}
+
+.search-input {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    padding: 1rem 1.5rem;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    width: 100%;
+    transition: all 0.3s ease;
+}
+
+.search-input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: rgba(156, 39, 176, 0.5);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.category-select {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    padding: 1rem 1.5rem;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.category-select:focus {
+    outline: none;
+    border-color: rgba(156, 39, 176, 0.5);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.category-select option {
+    background: #1a103b;
+    color: #ffffff;
+}
+
+@media (max-width: 1200px) {
+    .content {
+        padding: 0 1.5rem;
+    }
+    
+    .badge-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 3.5rem;
+        margin: 1.5rem auto;
+    }
+}
+
+@media (max-width: 768px) {
+    .content {
+        padding: 0 1rem;
+    }
+    
+    .badge-grid {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+        margin: 1rem auto;
+    }
+    
+    .badge-card {
+        margin: 0.75rem 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .badge-card {
+        min-height: 340px;
+    }
+
+    .badge-actions {
+        flex-direction: column;
+    }
+}
+
+.social-links {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 1rem;
+}
+
+.social-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(4px);
+}
+
+.social-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+.facebook {
+    background: #1877F2;
+}
+
+.twitter {
+    background: #1DA1F2;
+}
+
+.linkedin {
+    background: #0A66C2;
+}
+
+.telegram {
+    background: #0088cc;
+}
+
+.whatsapp {
+    background: #25D366;
+}
+</style>
+<% end %>
+
+
+
+

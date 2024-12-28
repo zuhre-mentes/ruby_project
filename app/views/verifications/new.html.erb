@@ -1,0 +1,1161 @@
+<div class="animated-background"></div>
+<style>
+.back-button-container {
+    padding: 1.5rem 2.5rem;
+    position: relative;
+    z-index: 10;
+    margin-bottom: 1rem;
+}
+
+.back-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.85rem 1.75rem;
+    background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+    border-radius: 2.5rem;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.1rem;
+    letter-spacing: 0.5px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid rgba(255,255,255,0.15);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.back-button:hover {
+    background: linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0.1));
+    transform: translateX(-8px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+}
+
+.back-button i {
+    font-size: 1.3rem;
+    transition: transform 0.4s ease;
+}
+
+.back-button:hover i {
+    transform: translateX(-3px);
+}
+</style>
+
+<div class="back-button-container">
+    <a href="/badges/" class="back-button">
+        <i class="bi bi-arrow-left"></i>
+        Geri Dön
+    </a>
+</div>
+<div class="verification-container">
+    <div class="verification-header">
+        <h1>Rozet Doğrulama Sistemi</h1>
+        <p class="subtitle">Belgelerinizi yükleyin ve doğrulama sürecini başlatın</p>
+    </div>
+
+    <div class="badge-selection-container">
+        <div class="badge-select-button" onclick="toggleBadgeSelection()">
+            <div class="badge-preview">
+                <i class="bi bi-award"></i>
+                <span id="selectedBadgeName">Rozet Seçin</span>
+            </div>
+            <i class="bi bi-chevron-down"></i>
+        </div>
+
+        <div class="badge-dropdown" id="badgeDropdown">
+            <div class="search-box">
+                <i class="bi bi-search"></i>
+                <input type="text" placeholder="Rozet ara..." oninput="filterBadges(this.value)">
+            </div>
+            <div class="badge-list">
+                <% Badge.all.each do |badge| %>
+                    <div class="badge-option" onclick="selectBadge('<%= badge.id %>', '<%= badge.name %>')">
+                        <div class="badge-icon">
+                            <i class="bi bi-award"></i>
+                        </div>
+                        <div class="badge-info">
+                            <span class="badge-name"><%= badge.name %></span>
+                            <span class="badge-issuer"><%= badge.issued_by %></span>
+                        </div>
+                    </div>
+                <% end %>
+            </div>
+        </div>
+    </div>
+
+    <div class="verification-steps">
+        <%= form_for @verification, html: { multipart: true, class: "upload-form" } do |f| %>
+            <div class="step-card">
+                <div class="step-icon">
+                    <i class="bi bi-cloud-upload"></i>
+                </div>
+                <h3>Dosya Yükleme</h3>
+                <p>En fazla 3 PDF dosyası yükleyebilirsiniz</p>
+                
+                <%= f.hidden_field :badge_id, id: 'badge_id_field' %>
+                
+                <div class="upload-area" id="dropZone">
+                    <%= f.file_field :files, multiple: true, accept: '.pdf', class: 'file-input', id: 'fileInput', style: 'display: none;' %>
+                    <i class="bi bi-file-earmark-arrow-up"></i>
+                    <span>Dosya Seç</span>
+                    <small>veya sürükleyip bırakın</small>
+                    <small class="file-limit">(Maksimum 3 PDF dosyası)</small>
+                </div>
+                
+                <div class="selected-files" id="fileList">
+                    <p>Seçilen dosya yok</p>
+                </div>
+                
+                <%= f.submit 'Yükle ve Doğrula', class: 'upload-button', id: 'uploadButton', disabled: true %>
+            </div>
+        <% end %>
+
+        <div class="step-card">
+            <div class="step-icon">
+                <i class="bi bi-hourglass-split"></i>
+            </div>
+            <h3>İşleniyor</h3>
+            <p>Dosyalarınız inceleniyor. Bu işlem 10-15 dakika sürebilir.</p>
+            <div class="progress-indicator">
+                <div class="progress-circle"></div>
+            </div>
+        </div>
+
+        <div class="step-card">
+            <div class="step-icon">
+                <i class="bi bi-check-circle"></i>
+            </div>
+            <h3>Doğrulandı</h3>
+            <p>Tebrikler! Belgeleriniz başarıyla doğrulandı.</p>
+            <button class="download-button" disabled>
+                <i class="bi bi-download"></i>
+                Sertifika İndir
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Success Popup -->
+<% if flash[:success] %>
+  <div class="success-popup show">
+    <div class="popup-content">
+      <i class="bi bi-check-circle-fill"></i>
+      <h3>Başarılı!</h3>
+      <p><%= flash[:success] %></p>
+    </div>
+  </div>
+<% end %>
+
+<!-- Failure Popup -->
+<% if flash[:error] %>
+  <div class="error-popup show">
+    <div class="popup-content">
+      <i class="bi bi-x-circle-fill"></i>
+      <h3>Hata!</h3>
+      <p><%= flash[:error] %></p>
+    </div>
+  </div>
+<% end %>
+
+<style>
+.animated-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at center, #040B14, #061024, #081537);
+    animation: gradientAnimation 15s ease infinite;
+    z-index: -1;
+}
+
+@keyframes gradientAnimation {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.verification-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 2rem;
+}
+
+.verification-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    color: #fff;
+}
+
+.verification-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    color: #fff;
+}
+
+.subtitle {
+    font-size: 1.1rem;
+    color: rgba(255,255,255,0.8);
+}
+
+.verification-steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.step-card {
+    background: rgba(255,255,255,0.03);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 1rem;
+    padding: 2rem;
+    text-align: center;
+    color: #fff;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.step-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, transparent, rgba(156, 39, 176, 0.1), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.6s ease;
+}
+
+.step-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 15px 35px rgba(156, 39, 176, 0.2);
+    border-color: rgba(156, 39, 176, 0.3);
+    background: rgba(255,255,255,0.05);
+}
+
+.step-card:hover::before {
+    transform: translateX(100%);
+}
+
+.step-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 1.5rem;
+    background: rgba(156, 39, 176, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid rgba(156, 39, 176, 0.3);
+    transition: all 0.4s ease;
+    position: relative;
+}
+
+.step-icon::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    animation: pulse 2s infinite;
+}
+
+.step-card:hover .step-icon {
+    transform: scale(1.1) rotate(5deg);
+    background: rgba(156, 39, 176, 0.2);
+    box-shadow: 0 0 20px rgba(156, 39, 176, 0.3);
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        border-color: rgba(156, 39, 176, 0.3);
+    }
+    50% {
+        transform: scale(1.2);
+        border-color: rgba(156, 39, 176, 0);
+    }
+    100% {
+        transform: scale(1);
+        border-color: rgba(156, 39, 176, 0.3);
+    }
+}
+
+.step-icon i {
+    font-size: 2rem;
+    color: #9C27B0;
+}
+
+.step-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.step-card p {
+    color: #fff;
+    margin-bottom: 1.5rem;
+}
+
+.upload-area {
+    background: rgba(0,0,0,0.2);
+    border: 2px dashed rgba(156, 39, 176, 0.3);
+    border-radius: 1rem;
+    padding: 2rem;
+    transition: all 0.3s ease;
+}
+
+.upload-area.drag-over {
+    background: rgba(156, 39, 176, 0.1);
+    border-color: #9C27B0;
+}
+
+.file-input-wrapper {
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+
+.file-input {
+    position: absolute;
+    width: 0;
+    height: 0;
+    opacity: 0;
+}
+
+.upload-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: rgba(156, 39, 176, 0.2);
+    border: 1px solid rgba(156, 39, 176, 0.3);
+    border-radius: 2rem;
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.upload-button:hover {
+    background: rgba(156, 39, 176, 0.3);
+    transform: translateY(-2px);
+}
+
+.file-info {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    color: #fff;
+}
+
+.submit-button, .download-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: linear-gradient(45deg, #9C27B0, #7B1FA2);
+    border: none;
+    border-radius: 2rem;
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    opacity: 0.7;
+}
+
+.submit-button:not([disabled]), .download-button:not([disabled]) {
+    opacity: 1;
+    cursor: pointer;
+}
+
+.submit-button:not([disabled]):hover, .download-button:not([disabled]):hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(156, 39, 176, 0.3);
+}
+
+.progress-indicator {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 60px;
+}
+
+.progress-circle {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(156, 39, 176, 0.3);
+    border-top-color: #9C27B0;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+@media (max-width: 1024px) {
+    .verification-steps {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .verification-container {
+        padding: 1rem;
+    }
+
+    .step-card {
+        padding: 1.5rem;
+    }
+}
+
+/* Popup Styles */
+.popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    padding: 2rem;
+    border-radius: 1rem;
+    text-align: center;
+    z-index: 1000;
+    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.2);
+    animation: popupFadeIn 0.3s ease;
+}
+
+.success-popup {
+    border: 1px solid rgba(76, 175, 80, 0.3);
+}
+
+.failure-popup {
+    border: 1px solid rgba(244, 67, 54, 0.3);
+}
+
+.popup-content {
+    color: white;
+}
+
+.success-icon {
+    font-size: 4rem;
+    color: #4CAF50;
+    margin-bottom: 1rem;
+}
+
+.failure-icon {
+    font-size: 4rem;
+    color: #F44336;
+    margin-bottom: 1rem;
+}
+
+@keyframes popupFadeIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -60%);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+}
+
+/* Active step styles */
+.step-card.active {
+    border-color: rgba(156, 39, 176, 0.5);
+    box-shadow: 0 0 20px rgba(156, 39, 176, 0.3);
+}
+
+.step-card.completed {
+    border-color: #4CAF50;
+}
+
+.step-card.completed .step-icon {
+    background: rgba(76, 175, 80, 0.1);
+    border-color: #4CAF50;
+}
+
+.step-card.completed .step-icon i {
+    color: #4CAF50;
+}
+
+.badge-selection-container {
+    max-width: 600px;
+    margin: 0 auto 3rem;
+    position: relative;
+    padding: 0 1rem;
+}
+
+.badge-select-button {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.2rem 1.5rem;
+    background: rgba(17, 25, 40, 0.75);
+    border: 1px solid rgba(156, 39, 176, 0.2);
+    border-radius: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+}
+
+.badge-select-button:hover {
+    background: rgba(17, 25, 40, 0.85);
+    border-color: rgba(156, 39, 176, 0.4);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(156, 39, 176, 0.2);
+}
+
+.badge-preview {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.badge-preview i {
+    font-size: 1.5rem;
+    color: #9C27B0;
+    transition: all 0.3s ease;
+}
+
+.badge-select-button:hover .badge-preview i {
+    transform: scale(1.1) rotate(10deg);
+}
+
+.badge-select-button .bi-chevron-down {
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.6);
+    transition: all 0.3s ease;
+}
+
+.badge-select-button:hover .bi-chevron-down {
+    color: rgba(255, 255, 255, 0.9);
+    transform: translateY(2px);
+}
+
+.badge-dropdown {
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 0;
+    right: 0;
+    background: rgba(17, 25, 40, 0.95);
+    border: 1px solid rgba(156, 39, 176, 0.2);
+    border-radius: 1rem;
+    padding: 1.2rem;
+    display: none;
+    z-index: 100;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    animation: dropdownFadeIn 0.3s ease;
+    max-width: 100%;
+    width: 100%;
+}
+
+@keyframes dropdownFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.search-box {
+    position: relative;
+    margin-bottom: 1.2rem;
+    width: 100%;
+}
+
+.search-box input {
+    width: 100%;
+    padding: 1rem 1rem 1rem 3rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(156, 39, 176, 0.2);
+    border-radius: 0.8rem;
+    color: #fff;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+.search-box input:focus {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(156, 39, 176, 0.4);
+    box-shadow: 0 0 0 3px rgba(156, 39, 176, 0.1);
+    outline: none;
+}
+
+.search-box i {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: rgba(156, 39, 176, 0.6);
+    font-size: 1.2rem;
+    pointer-events: none;
+    transition: all 0.3s ease;
+}
+
+.search-box input:focus + i {
+    color: rgba(156, 39, 176, 0.8);
+}
+
+.badge-list {
+    max-height: 300px;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+}
+
+.badge-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.badge-list::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 3px;
+}
+
+.badge-list::-webkit-scrollbar-thumb {
+    background: rgba(156, 39, 176, 0.3);
+    border-radius: 3px;
+}
+
+.badge-list::-webkit-scrollbar-thumb:hover {
+    background: rgba(156, 39, 176, 0.5);
+}
+
+.badge-option {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    cursor: pointer;
+    border-radius: 0.8rem;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+}
+
+.badge-option:hover {
+    background: rgba(156, 39, 176, 0.1);
+    border-color: rgba(156, 39, 176, 0.2);
+    transform: translateX(5px);
+}
+
+.badge-icon {
+    width: 45px;
+    height: 45px;
+    background: rgba(156, 39, 176, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.badge-option:hover .badge-icon {
+    transform: scale(1.1);
+    background: rgba(156, 39, 176, 0.2);
+}
+
+.badge-icon i {
+    font-size: 1.3rem;
+    color: #9C27B0;
+    transition: all 0.3s ease;
+}
+
+.badge-option:hover .badge-icon i {
+    transform: rotate(10deg);
+}
+
+.badge-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.badge-name {
+    color: #fff;
+    font-weight: 500;
+    font-size: 1.1rem;
+}
+
+.badge-issuer {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.9rem;
+}
+
+.verification-steps {
+    display: grid;
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+.step-card {
+    background: rgba(17, 25, 40, 0.75);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 1.5rem;
+    padding: 2rem;
+    text-align: center;
+    backdrop-filter: blur(10px);
+}
+
+.step-icon {
+    width: 60px;
+    height: 60px;
+    background: rgba(156, 39, 176, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+}
+
+.step-icon i {
+    font-size: 1.8rem;
+    color: #9C27B0;
+}
+
+.step-card h3 {
+    color: #fff;
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+}
+
+.step-card p {
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 1.5rem;
+}
+
+.upload-area {
+    border: 2px dashed rgba(156, 39, 176, 0.3);
+    border-radius: 1rem;
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.upload-area:hover {
+    border-color: #9C27B0;
+    background: rgba(156, 39, 176, 0.05);
+}
+
+.upload-area i {
+    font-size: 2rem;
+    color: #9C27B0;
+    margin-bottom: 1rem;
+}
+
+.upload-area span {
+    display: block;
+    color: #fff;
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+
+.upload-area small {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.selected-files {
+    text-align: left;
+    margin: 1.5rem 0;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.upload-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 2rem;
+    background: linear-gradient(45deg, #9C27B0, #673AB7);
+    border: none;
+    border-radius: 1rem;
+    color: white;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.upload-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(156, 39, 176, 0.3);
+}
+
+@media (max-width: 768px) {
+    .verification-container {
+        padding: 1rem;
+    }
+
+    .verification-header h1 {
+        font-size: 2rem;
+    }
+
+    .step-card {
+        padding: 1.5rem;
+    }
+
+    .badge-selection-container {
+        padding: 0 0.5rem;
+    }
+    
+    .badge-dropdown {
+        left: 0;
+        right: 0;
+        width: 100%;
+    }
+    
+    .search-box input {
+        font-size: 0.9rem;
+        padding: 0.8rem 0.8rem 0.8rem 2.5rem;
+    }
+}
+
+.file-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.8rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.file-item i {
+    color: #9C27B0;
+    font-size: 1.2rem;
+}
+
+.file-item span {
+    flex: 1;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.remove-file {
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    padding: 0.3rem;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.remove-file:hover {
+    color: #ff4444;
+    background: rgba(255, 68, 68, 0.1);
+}
+
+.error-message {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.8rem;
+    background: rgba(255, 68, 68, 0.1);
+    border: 1px solid rgba(255, 68, 68, 0.2);
+    border-radius: 0.5rem;
+    color: #ff4444;
+    margin-bottom: 1rem;
+    animation: fadeIn 0.3s ease;
+}
+
+.error-message i {
+    font-size: 1.2rem;
+}
+
+.file-limit {
+    display: block;
+    margin-top: 0.5rem;
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 0.85rem;
+}
+
+.drag-over {
+    border-color: #9C27B0;
+    background: rgba(156, 39, 176, 0.1);
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.spin {
+    animation: spin 1s linear infinite;
+}
+
+#uploadButton:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.upload-button .spin {
+    display: inline-block;
+    margin-right: 0.5rem;
+}
+
+.success-popup,
+.error-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(17, 25, 40, 0.95);
+  border-radius: 1rem;
+  padding: 2rem;
+  text-align: center;
+  z-index: 1000;
+  display: none;
+  animation: popupFadeIn 0.3s ease;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.success-popup {
+  border: 1px solid rgba(76, 175, 80, 0.3);
+}
+
+.error-popup {
+  border: 1px solid rgba(244, 67, 54, 0.3);
+}
+
+.success-popup.show,
+.error-popup.show {
+  display: block;
+}
+
+.popup-content {
+  color: white;
+}
+
+.popup-content i {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.success-popup i {
+  color: #4CAF50;
+}
+
+.error-popup i {
+  color: #F44336;
+}
+
+.popup-content h3 {
+  margin-bottom: 0.5rem;
+  font-size: 1.5rem;
+}
+
+@keyframes popupFadeIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -60%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+
+// Flash mesajlarını otomatik kapat
+document.addEventListener('DOMContentLoaded', function() {
+  const popups = document.querySelectorAll('.success-popup, .error-popup');
+  popups.forEach(popup => {
+    setTimeout(() => {
+      popup.style.display = 'none';
+    }, 3000);
+  });
+});
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const dropZone = document.getElementById('dropZone');
+    const fileInput = document.getElementById('fileInput');
+    const fileList = document.getElementById('fileList');
+    const uploadButton = document.getElementById('uploadButton');
+    const badgeIdField = document.getElementById('badge_id_field');
+    let selectedFiles = [];
+
+    function updateUploadButton() {
+        const hasBadge = badgeIdField.value !== '';
+        const hasFiles = selectedFiles.length > 0;
+        uploadButton.disabled = !hasBadge || !hasFiles;
+    }
+
+    // Badge seçildiğinde upload butonunu güncelle
+    if (badgeIdField) {
+        badgeIdField.addEventListener('change', updateUploadButton);
+    }
+
+    // Dosya seçme alanına tıklama
+    dropZone.addEventListener('click', () => {
+        fileInput.click();
+    });
+
+    // Dosya seçildiğinde
+    fileInput.addEventListener('change', (e) => {
+        const files = Array.from(e.target.files);
+        if (files.length > 0) {
+            handleFiles(files);
+        }
+    });
+
+    // Sürükle-bırak olayları
+    dropZone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        dropZone.classList.add('drag-over');
+    });
+
+    dropZone.addEventListener('dragleave', () => {
+        dropZone.classList.remove('drag-over');
+    });
+
+    dropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropZone.classList.remove('drag-over');
+        const files = Array.from(e.dataTransfer.files);
+        if (files.length > 0) {
+            handleFiles(files);
+        }
+    });
+
+    function handleFiles(files) {
+        // Sadece PDF dosyalarını filtrele
+        const pdfFiles = files.filter(file => 
+            file.type === 'application/pdf' || 
+            file.name.toLowerCase().endsWith('.pdf')
+        );
+        
+        // Maksimum 3 dosya kontrolü
+        if (selectedFiles.length + pdfFiles.length > 3) {
+            showError('En fazla 3 dosya yükleyebilirsiniz!');
+            return;
+        }
+
+        // Geçersiz dosya tipi kontrolü
+        if (pdfFiles.length < files.length) {
+            showError('Sadece PDF dosyaları yükleyebilirsiniz!');
+        }
+
+        // Dosyaları listeye ekle
+        selectedFiles = [...selectedFiles, ...pdfFiles].slice(0, 3);
+        
+        // FileList nesnesini güncelle
+        const dataTransfer = new DataTransfer();
+        selectedFiles.forEach(file => {
+            dataTransfer.items.add(file);
+        });
+        fileInput.files = dataTransfer.files;
+        
+        updateFileList();
+        updateUploadButton();
+    }
+
+    function updateFileList() {
+        if (selectedFiles.length === 0) {
+            fileList.innerHTML = '<p>Seçilen dosya yok</p>';
+            return;
+        }
+
+        fileList.innerHTML = selectedFiles.map((file, index) => `
+            <div class="file-item">
+                <i class="bi bi-file-pdf"></i>
+                <span>${file.name}</span>
+                <button type="button" onclick="removeFile(${index})" class="remove-file">
+                    <i class="bi bi-x"></i>
+                </button>
+            </div>
+        `).join('');
+    }
+
+    function updateUploadButton() {
+        uploadButton.disabled = selectedFiles.length === 0;
+    }
+
+    window.removeFile = function(index) {
+        selectedFiles.splice(index, 1);
+        
+        // FileList nesnesini güncelle
+        const dataTransfer = new DataTransfer();
+        selectedFiles.forEach(file => {
+            dataTransfer.items.add(file);
+        });
+        fileInput.files = dataTransfer.files;
+        
+        updateFileList();
+        updateUploadButton();
+    }
+
+    function showError(message) {
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'error-message';
+        errorDiv.innerHTML = `
+            <i class="bi bi-exclamation-circle"></i>
+            <span>${message}</span>
+        `;
+        fileList.insertBefore(errorDiv, fileList.firstChild);
+        
+        setTimeout(() => {
+            errorDiv.remove();
+        }, 3000);
+    }
+
+    // Form submit kontrolü
+    document.querySelector('.upload-form').addEventListener('submit', function(e) {
+        const badgeId = document.getElementById('badge_id_field').value;
+        if (!badgeId || badgeId === '') {
+            e.preventDefault();
+            showError('Lütfen bir rozet seçin');
+            return false;
+        }
+        if (selectedFiles.length === 0) {
+            e.preventDefault();
+            showError('Lütfen en az bir dosya seçin');
+            return false;
+        }
+        return true;
+    });
+});
+
+function toggleBadgeSelection() {
+    const dropdown = document.getElementById('badgeDropdown');
+    dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+}
+
+function selectBadge(id, name) {
+    document.getElementById('selectedBadgeName').textContent = name;
+    document.getElementById('badgeDropdown').style.display = 'none';
+    const badgeIdField = document.getElementById('badge_id_field');
+    badgeIdField.value = id;
+    
+    // Upload butonunu güncelle
+    const uploadButton = document.getElementById('uploadButton');
+    const fileInput = document.getElementById('fileInput');
+    uploadButton.disabled = !(id && fileInput.files.length > 0);
+}
+
+function filterBadges(query) {
+    const badges = document.querySelectorAll('.badge-option');
+    badges.forEach(badge => {
+        const name = badge.querySelector('.badge-name').textContent.toLowerCase();
+        const issuer = badge.querySelector('.badge-issuer').textContent.toLowerCase();
+        const matches = name.includes(query.toLowerCase()) || issuer.includes(query.toLowerCase());
+        badge.style.display = matches ? 'flex' : 'none';
+    });
+}
+
+// Sayfa dışı tıklamalarda dropdown'ı kapat
+document.addEventListener('click', (e) => {
+    const dropdown = document.getElementById('badgeDropdown');
+    const button = document.querySelector('.badge-select-button');
+    if (!button.contains(e.target) && !dropdown.contains(e.target)) {
+        dropdown.style.display = 'none';
+    }
+});
+</script>

@@ -1,0 +1,21 @@
+<div class="container mt-5">
+  <h2 class="text-center">Verification Process</h2>
+
+  <!-- Durum Çubuğu -->
+  <div class="progress-bar mt-4">
+    <div class="step <%= 'active' if @verification.uploaded? %>">Uploaded</div>
+    <div class="step <%= 'active' if @verification.in_progress? %>">In Progress</div>
+    <div class="step <%= 'active' if @verification.verified? %>">Verified</div>
+  </div>
+
+  <!-- Kullanıcıya Mesaj -->
+  <p class="text-center mt-4">
+    <% if @verification.uploaded? %>
+      Your document has been uploaded and is under review.
+    <% elsif @verification.in_progress? %>
+      Your document is currently being reviewed.
+    <% elsif @verification.verified? %>
+      Your document has been verified. Congratulations!
+    <% end %>
+  </p>
+</div>

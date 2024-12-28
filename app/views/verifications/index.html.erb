@@ -1,0 +1,39 @@
+<% if @verifications.present? && @verifications.any? %>
+  <table class="table mt-4">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Badge Name</th>
+        <th>Status</th>
+        <th>Uploaded At</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @verifications.each_with_index do |verification, index| %>
+        <tr>
+          <td><%= index + 1 %></td>
+          <td><%= verification.file.filename if verification.file.attached? %></td>
+          <td>
+            <% case verification.status %>
+              <% when "uploaded" %>
+                <span class="badge bg-warning text-dark">Uploaded</span>
+              <% when "in_progress" %>
+                <span class="badge bg-primary">In Progress</span>
+              <% when "verified" %>
+                <span class="badge bg-success">Verified</span>
+            <% end %>
+          </td>
+          <td><%= verification.created_at.strftime("%Y-%m-%d %H:%M:%S") %></td>
+          <td>
+            <%= link_to "View", verification_path(verification), class: "btn btn-sm btn-outline-primary" %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p class="text-center">You don't have any submissions yet. Start by uploading a new badge submission.</p>
+<% end %>
+
+

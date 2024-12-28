@@ -1,19 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>MyProject</title>
+  <title>Rubytes</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
   <%= csrf_meta_tags %>
   <%= csp_meta_tag %>
 
+  <%= yield :head %>
+  <%= yield :styles %>
+
   <!-- Stylesheet -->
   <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+  <%# Includes all stylesheet files in app/assets/stylesheets %>
+
+
+
+  <link rel="icon" href="/icon.png" type="image/png">
+  <link rel="icon" href="/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/icon.png">
+
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css">
 </head>
+
 <body>
   <%= yield %>
+  <%= yield :scripts %>
 
   <!-- JavaScript -->
   <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
+  <%= javascript_importmap_tags %>
 </body>
 </html>

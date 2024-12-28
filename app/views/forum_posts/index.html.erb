@@ -1,0 +1,1002 @@
+<!-- Back Button -->
+<div class="back-button-container">
+  <%= link_to root_path, class: "back-button" do %>
+    <i class="bi bi-arrow-left"></i>
+    <span>Geri Dön</span>
+  <% end %>
+</div>
+
+<div class="animated-background"></div>
+
+<div class="forum-container">
+  <div class="forum-header">
+    <div class="header-content">
+      <h1>Öğrenci Forumu</h1>
+      <p>Sorularınızı sorun, deneyimlerinizi paylaşın, topluluğa katılın</p>
+    </div>
+  </div>
+
+  <div class="forum-stats">
+    <div class="stat-card">
+      <i class="bi bi-file-text"></i>
+      <div class="stat-info">
+        <span class="stat-value"><%= @posts.count %></span>
+        <span class="stat-label">Toplam Gönderi</span>
+      </div>
+    </div>
+    <div class="stat-card">
+      <i class="bi bi-people"></i>
+      <div class="stat-info">
+        <span class="stat-value"><%= @posts.pluck(:author_name).uniq.count %></span>
+        <span class="stat-label">Aktif Yazar</span>
+      </div>
+    </div>
+    <div class="stat-card">
+      <i class="bi bi-chat-dots"></i>
+      <div class="stat-info">
+        <span class="stat-value"><%= @posts.sum(:comments_count) %></span>
+        <span class="stat-label">Toplam Yorum</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="search-container">
+    <%= form_tag forum_posts_path, method: :get, class: "search-form", id: "searchForm" do %>
+      <div class="search-wrapper">
+        <div class="search-input-group">
+          <div class="input-with-icon">
+            <i class="bi bi-search"></i>
+            <%= text_field_tag :search, params[:search], placeholder: "Forum'da ara...", class: "search-input" %>
+          </div>
+          
+          <div class="select-with-icon">
+            <i class="bi bi-funnel"></i>
+            <%= select_tag :category, 
+              options_for_select([["Tüm Kategoriler", ""]] + ForumPost::CATEGORIES, params[:category]),
+              class: "category-select",
+              onchange: "this.form.submit();" %>
+            <i class="bi bi-chevron-down dropdown-icon"></i>
+          </div>
+        </div>
+
+        <div class="button-group">
+          <%= button_tag type: "submit", class: "search-btn" do %>
+            <i class="bi bi-search"></i>
+            <span>Ara</span>
+          <% end %>
+
+          <%= link_to new_forum_post_path, class: "new-post-btn" do %>
+            <i class="bi bi-plus-lg"></i>
+            <span>Yeni Gönderi</span>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="forum-content">
+    <% if @posts.any? %>
+      <% @posts.each do |post| %>
+        <div class="post-card" data-category="<%= post.category %>">
+          <div class="post-header">
+            <div class="post-meta">
+              <span class="category-tag">
+                <i class="bi bi-tag"></i>
+                <%= post.category %>
+              </span>
+              <span class="post-date">
+                <i class="bi bi-clock"></i>
+                <%= time_ago_in_words(post.created_at) %> önce
+              </span>
+            </div>
+            <h2 class="post-title"><%= post.title %></h2>
+            <div class="author-info">
+              <div class="author-avatar">
+                <i class="bi bi-person-circle"></i>
+              </div>
+              <span class="author-name"><%= post.author_name %></span>
+            </div>
+          </div>
+
+          <div class="post-content">
+            <%= truncate(post.content, length: 200) %>
+          </div>
+
+          <div class="post-footer">
+            <div class="post-stats">
+              <span class="stat-item">
+                <i class="bi bi-heart"></i>
+                <%= post.likes_count %>
+              </span>
+              <span class="stat-item">
+                <i class="bi bi-chat"></i>
+                <%= post.comments_count %>
+              </span>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    <% else %>
+      <div class="no-posts">
+        <i class="bi bi-journal-text"></i>
+        <h3>Henüz gönderi yok</h3>
+        <p>İlk gönderiyi siz oluşturun!</p>
+        <%= link_to new_forum_post_path, class: "create-first-post-button" do %>
+          <i class="bi bi-plus-lg"></i>
+          Gönderi Oluştur
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<style>
+.animated-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 50% 50%, 
+        #040B14 0%,
+        #061024 25%,
+        #081537 50%,
+        #040B14 75%,
+        #020508 100%
+    );
+    background-size: 300% 300%;
+    animation: moveGradient 20s alternate infinite;
+    z-index: -1;
+}
+
+@keyframes moveGradient {
+    0% { background-position: 0% 0%; }
+    50% { background-position: 100% 100%; }
+    100% { background-position: 0% 0%; }
+}
+
+.forum-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    position: relative;
+    z-index: 1;
+}
+
+.forum-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    padding: 3rem 2rem;
+    background: rgba(17, 25, 40, 0.75);
+    border-radius: 1.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.forum-header:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 32px rgba(156, 39, 176, 0.2);
+}
+
+.forum-header h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    background: linear-gradient(135deg, #9C27B0, #673AB7);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: titleGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes titleGlow {
+    from { text-shadow: 0 0 10px rgba(156, 39, 176, 0.5); }
+    to { text-shadow: 0 0 20px rgba(156, 39, 176, 0.8); }
+}
+
+.forum-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+    width: 100%;
+}
+
+.stat-card {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 1.5rem;
+    background: rgba(17, 25, 40, 0.75);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 1rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(10px);
+}
+
+.stat-card:hover {
+    transform: translateY(-5px) scale(1.02);
+    border-color: rgba(156, 39, 176, 0.3);
+    box-shadow: 0 8px 32px rgba(156, 39, 176, 0.2);
+}
+
+.stat-card i {
+    font-size: 2rem;
+    color: #9C27B0;
+}
+
+.stat-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.stat-value {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+.stat-label {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.9rem;
+}
+
+.forum-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    gap: 2rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 1rem;
+    padding: 1.5rem;
+}
+
+.search-filter-section {
+    flex: 1;
+}
+
+.search-form {
+    display: flex;
+    gap: 1rem;
+}
+
+.search-input-wrapper {
+    flex: 2;
+    position: relative;
+}
+
+.search-input-wrapper i {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: rgba(255,255,255,0.5);
+}
+
+.search-input {
+    width: 100%;
+    padding: 0.8rem 1rem 0.8rem 2.5rem;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 0.5rem;
+    color: #ffffff;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.search-input:focus {
+    background: rgba(255,255,255,0.1);
+    border-color: rgba(156,39,176,0.5);
+    outline: none;
+}
+
+.category-filter {
+    flex: 1;
+}
+
+.category-select {
+    appearance: none;
+    cursor: pointer;
+    background: rgba(156, 39, 176, 0.15);
+    border: 1px solid rgba(156, 39, 176, 0.25);
+}
+
+.category-select option {
+    background: rgba(17, 25, 40, 0.95);
+    color: #fff;
+    padding: 12px;
+    cursor: pointer;
+}
+
+.category-select option:hover,
+.category-select option:focus,
+.category-select option:checked {
+    background: rgba(156, 39, 176, 0.3);
+    color: #fff;
+}
+
+.category-select::-ms-expand {
+    display: none;
+}
+
+/* Webkit tarayıcılar için özel stiller */
+.category-select::-webkit-scrollbar {
+    width: 8px;
+}
+
+.category-select::-webkit-scrollbar-track {
+    background: rgba(17, 25, 40, 0.95);
+}
+
+.category-select::-webkit-scrollbar-thumb {
+    background: rgba(156, 39, 176, 0.5);
+    border-radius: 4px;
+}
+
+.category-select::-webkit-scrollbar-thumb:hover {
+    background: rgba(156, 39, 176, 0.7);
+}
+
+/* Firefox için özel stiller */
+.category-select {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(156, 39, 176, 0.5) rgba(17, 25, 40, 0.95);
+}
+
+/* Select açıldığında arka plan rengi */
+.category-select:focus {
+    background: rgba(156, 39, 176, 0.25);
+    border-color: rgba(156, 39, 176, 0.5);
+    box-shadow: 0 0 0 3px rgba(156, 39, 176, 0.25);
+}
+
+/* Select hover durumu */
+.category-select:hover {
+    background: rgba(156, 39, 176, 0.2);
+    border-color: rgba(156, 39, 176, 0.4);
+}
+
+.search-button {
+    padding: 0.8rem 2rem;
+    background: linear-gradient(135deg, #9C27B0, #673AB7);
+    border: none;
+    border-radius: 0.5rem;
+    color: #ffffff;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.search-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(156,39,176,0.3);
+}
+
+.new-post-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.8rem 1.5rem;
+    background: linear-gradient(135deg, #9C27B0, #673AB7);
+    border-radius: 0.5rem;
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.new-post-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(156,39,176,0.3);
+}
+
+.forum-content {
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    width: 100%;
+}
+
+.post-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background: rgba(17, 25, 40, 0.75);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 1rem;
+    padding: 2rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(10px);
+    position: relative;
+    overflow: hidden;
+}
+
+.post-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(156, 39, 176, 0.3);
+    box-shadow: 0 8px 32px rgba(156, 39, 176, 0.2);
+}
+
+.post-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.1),
+        transparent
+    );
+    transition: 0.5s;
+}
+
+.post-card:hover::after {
+    left: 100%;
+}
+
+.post-header {
+    margin-bottom: 1.5rem;
+    width: 100%;
+}
+
+.post-meta {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+}
+
+.category-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 1rem;
+    background: rgba(156,39,176,0.1);
+    border: 1px solid rgba(156,39,176,0.3);
+    border-radius: 2rem;
+    color: #ffffff;
+    font-size: 0.9rem;
+    white-space: nowrap;
+}
+
+.post-date {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: rgba(255,255,255,0.6);
+    font-size: 0.9rem;
+    white-space: nowrap;
+}
+
+.post-title {
+    font-size: 1.5rem;
+    color: #ffffff;
+    margin-bottom: 1rem;
+}
+
+.author-info {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 1rem;
+}
+
+.author-avatar {
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(156,39,176,0.1);
+    border: 1px solid rgba(156,39,176,0.3);
+    border-radius: 50%;
+}
+
+.author-avatar i {
+    font-size: 1.5rem;
+    color: rgba(255,255,255,0.8);
+}
+
+.author-name {
+    color: rgba(255,255,255,0.8);
+    font-size: 1rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.post-content {
+    flex: 1;
+    color: rgba(255,255,255,0.7);
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    hyphens: auto;
+}
+
+.post-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    margin-top: auto;
+    width: 100%;
+}
+
+.post-stats {
+    display: flex;
+    gap: 1rem;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: rgba(255,255,255,0.6);
+    font-size: 0.9rem;
+}
+
+.read-more-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1.2rem;
+    background: rgba(156,39,176,0.1);
+    border: 1px solid rgba(156,39,176,0.3);
+    border-radius: 0.5rem;
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.read-more-button:hover {
+    background: rgba(156,39,176,0.2);
+    transform: translateX(5px);
+}
+
+.no-posts {
+    text-align: center;
+    padding: 4rem 2rem;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 1rem;
+}
+
+.no-posts i {
+    font-size: 4rem;
+    color: rgba(255,255,255,0.3);
+    margin-bottom: 1rem;
+}
+
+.no-posts h3 {
+    color: #ffffff;
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.no-posts p {
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 2rem;
+}
+
+.create-first-post-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.8rem 2rem;
+    background: linear-gradient(135deg, #9C27B0, #673AB7);
+    border-radius: 0.5rem;
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.create-first-post-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(156,39,176,0.3);
+}
+
+@media (max-width: 1024px) {
+    .forum-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .forum-container {
+        padding: 1rem;
+    }
+
+    .forum-header {
+        padding: 2rem 1rem;
+    }
+
+    .forum-header h1 {
+        font-size: 2rem;
+    }
+
+    .forum-stats {
+        grid-template-columns: 1fr;
+    }
+
+    .forum-content {
+        grid-template-columns: 1fr;
+    }
+
+    .search-wrapper,
+    .search-input-group,
+    .button-group {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .new-post-button {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .post-card {
+        padding: 1.5rem;
+    }
+
+    .post-meta {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+.search-container {
+    background: rgba(17, 25, 40, 0.75);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    margin-bottom: 3rem;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.search-container:hover {
+    border-color: rgba(156, 39, 176, 0.3);
+    box-shadow: 0 8px 32px rgba(156, 39, 176, 0.2);
+}
+
+.search-wrapper {
+    display: flex;
+    gap: 1.5rem;
+    align-items: stretch;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.search-input-group {
+    flex: 1;
+    display: flex;
+    gap: 1.5rem;
+    min-width: 300px;
+    width: 100%;
+}
+
+.input-with-icon,
+.select-with-icon {
+    position: relative;
+    flex: 1;
+    min-width: 200px;
+}
+
+.input-with-icon i,
+.select-with-icon i:first-child {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: rgba(255, 255, 255, 0.5);
+    transition: color 0.3s ease;
+    pointer-events: none;
+}
+
+.dropdown-icon {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: rgba(255, 255, 255, 0.5);
+    transition: all 0.3s ease;
+    pointer-events: none;
+}
+
+.search-input,
+.category-select {
+    width: 100%;
+    padding: 0.875rem 1rem 0.875rem 2.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    color: #fff;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+.search-input:focus,
+.category-select:focus {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: #9C27B0;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(156, 39, 176, 0.25);
+}
+
+.search-input:focus + i,
+.category-select:focus + i {
+    color: #9C27B0;
+}
+
+.category-select {
+    appearance: none;
+    cursor: pointer;
+}
+
+.button-group {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    flex-wrap: nowrap;
+}
+
+.search-btn,
+.new-post-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.875rem 1.5rem;
+    border: none;
+    border-radius: 12px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    white-space: nowrap;
+    min-width: 120px;
+}
+
+.search-btn {
+    background: linear-gradient(135deg, #9C27B0, #673AB7);
+    color: white;
+}
+
+.new-post-btn {
+    background: rgba(156, 39, 176, 0.15);
+    border: 1px solid rgba(156, 39, 176, 0.25);
+    color: white;
+}
+
+.search-btn:hover,
+.new-post-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(156, 39, 176, 0.3);
+}
+
+.search-btn:active,
+.new-post-btn:active {
+    transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+    .search-wrapper {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .search-input-group {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .button-group {
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    .search-btn,
+    .new-post-btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .post-meta {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    .post-footer {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: flex-start;
+    }
+
+    .post-stats {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .read-more-button {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* Animasyonlar */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+    100% { transform: scale(1); }
+}
+
+.search-btn:hover,
+.new-post-btn:hover {
+    animation: pulse 1s infinite;
+}
+
+.category-select:focus + .dropdown-icon {
+    transform: translateY(-50%) rotate(180deg);
+    color: #9C27B0;
+}
+
+/* Geçiş Animasyonları */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.forum-header,
+.stat-card,
+.search-container,
+.post-card {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeIn 0.5s ease-out forwards;
+}
+
+.stat-card:nth-child(1) { animation-delay: 0.1s; }
+.stat-card:nth-child(2) { animation-delay: 0.2s; }
+.stat-card:nth-child(3) { animation-delay: 0.3s; }
+
+.post-card {
+    animation-delay: calc(var(--card-index, 0) * 0.1s);
+}
+
+/* Hover Efektleri */
+.category-tag,
+.author-avatar,
+.stat-item {
+    transition: all 0.3s ease;
+}
+
+.category-tag:hover,
+.author-avatar:hover,
+.stat-item:hover {
+    transform: scale(1.05);
+    filter: brightness(1.2);
+}
+
+/* Loading ve Geçiş Efektleri */
+@keyframes shimmer {
+    0% { background-position: -1000px 0; }
+    100% { background-position: 1000px 0; }
+}
+
+.loading {
+    background: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0.05) 25%,
+        rgba(255, 255, 255, 0.1) 50%,
+        rgba(255, 255, 255, 0.05) 75%
+    );
+    background-size: 1000px 100%;
+    animation: shimmer 2s infinite linear;
+}
+
+.back-button-container {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 100;
+}
+
+.back-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.8rem 1.5rem;
+  background: rgba(156, 39, 176, 0.15);
+  border: 1px solid rgba(156, 39, 176, 0.25);
+  border-radius: 12px;
+  color: white;
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.back-button:hover {
+  background: rgba(156, 39, 176, 0.25);
+  transform: translateX(-5px);
+  box-shadow: 0 4px 15px rgba(156, 39, 176, 0.3);
+}
+
+.back-button i {
+  font-size: 1.1rem;
+}
+
+@media (max-width: 768px) {
+  .back-button-container {
+    top: 10px;
+    left: 10px;
+  }
+  
+  .back-button {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
+  }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Post kartlarına index ekle
+    document.querySelectorAll('.post-card').forEach((card, index) => {
+        card.style.setProperty('--card-index', index);
+    });
+
+    // Scroll animasyonları
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, {
+        threshold: 0.1
+    });
+
+    document.querySelectorAll('.post-card, .stat-card').forEach(el => {
+        observer.observe(el);
+    });
+
+    // Input ve Select efektleri
+    const inputs = document.querySelectorAll('.search-input, .category-select');
+    inputs.forEach(input => {
+        const container = input.parentElement;
+        
+        input.addEventListener('focus', () => {
+            container.style.transform = 'scale(1.02)';
+            container.style.zIndex = '1';
+        });
+
+        input.addEventListener('blur', () => {
+            container.style.transform = 'scale(1)';
+            container.style.zIndex = '0';
+        });
+    });
+});
+</script> 

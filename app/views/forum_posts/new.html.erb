@@ -1,0 +1,530 @@
+<div class="animated-background"></div>
+
+<%= link_to forum_posts_path, class: "back-link" do %>
+  <i class="bi bi-arrow-left"></i>
+  <span>Geri Dön</span>
+<% end %>
+
+<div class="new-post-container">
+  <% if flash[:error] %>
+    <div class="alert alert-error">
+      <i class="bi bi-exclamation-circle"></i>
+      <%= flash[:error] %>
+    </div>
+  <% end %>
+
+  <div class="form-header">
+    <div class="header-content">
+      <h1>Yeni Gönderi Oluştur</h1>
+      <p>Düşüncelerinizi ve deneyimlerinizi topluluğumuzla paylaşın</p>
+    </div>
+  </div>
+
+  <div class="form-wrapper">
+    <%= form_with(model: @forum_post, local: true, class: "post-form") do |f| %>
+      <div class="form-section">
+        <div class="form-group">
+          <div class="input-wrapper title-input">
+            <i class="bi bi-type"></i>
+            <%= f.text_field :title, class: "form-input", placeholder: "Başlık", required: true %>
+            <div class="input-focus-effect"></div>
+          </div>
+          <small class="input-help">Gönderiniz için açıklayıcı bir başlık girin</small>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <div class="input-wrapper author-input">
+              <i class="bi bi-person"></i>
+              <%= f.text_field :author_name, class: "form-input", placeholder: "Yazar Adı", required: true %>
+              <div class="input-focus-effect"></div>
+            </div>
+            <small class="input-help">Gönderinin yazarı olarak görünecek isim</small>
+          </div>
+
+          <div class="form-group">
+            <div class="select-wrapper category-select">
+              <i class="bi bi-tag"></i>
+              <%= f.select :category, ForumPost::CATEGORIES, { prompt: "Kategori Seçin" }, { class: "form-select", required: true } %>
+              <i class="bi bi-chevron-down dropdown-icon"></i>
+              <div class="input-focus-effect"></div>
+            </div>
+            <small class="input-help">Gönderinizin kategorisini seçin</small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="textarea-wrapper content-input">
+            <%= f.text_area :content, class: "form-textarea", placeholder: "Gönderinizin içeriğini buraya yazın...", rows: 10, required: true %>
+            <div class="input-focus-effect"></div>
+          </div>
+          <small class="input-help">Gönderinizin detaylı içeriğini yazın</small>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <div class="action-buttons">
+          <%= link_to forum_posts_path, class: "cancel-button" do %>
+            <i class="bi bi-x-lg"></i>
+            <span>İptal Et</span>
+          <% end %>
+
+          <%= button_tag type: "submit", class: "submit-button" do %>
+            <i class="bi bi-send"></i>
+            <span>Gönderiyi Yayınla</span>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<style>
+.animated-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at 50% 50%, 
+    #040B14 0%,
+    #061024 25%,
+    #081537 50%,
+    #040B14 75%,
+    #020508 100%
+  );
+  background-size: 300% 300%;
+  animation: moveGradient 20s alternate infinite;
+  z-index: -1;
+}
+
+.new-post-container {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 2rem;
+}
+
+.form-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  padding: 2rem;
+  background: rgba(17, 25, 40, 0.75);
+  border-radius: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.header-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.header-content h1 {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(135deg, #9C27B0, #673AB7);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 30px rgba(156, 39, 176, 0.5);
+}
+
+.header-content p {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 1.1rem;
+}
+
+.back-link {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.8rem 1.5rem;
+  background: rgba(156, 39, 176, 0.15);
+  border: 1px solid rgba(156, 39, 176, 0.25);
+  border-radius: 1rem;
+  color: white;
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  z-index: 100;
+  backdrop-filter: blur(10px);
+}
+
+.back-link:hover {
+  background: rgba(156, 39, 176, 0.25);
+  transform: translateX(-5px);
+  box-shadow: 0 4px 15px rgba(156, 39, 176, 0.3);
+}
+
+.form-wrapper {
+  background: rgba(17, 25, 40, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1.5rem;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.form-wrapper:hover {
+  border-color: rgba(156, 39, 176, 0.3);
+  box-shadow: 0 12px 40px rgba(156, 39, 176, 0.2);
+}
+
+.form-section {
+  padding: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.form-group {
+  position: relative;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin: 1rem 0;
+}
+
+.input-wrapper,
+.select-wrapper,
+.textarea-wrapper {
+  position: relative;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1rem;
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.input-wrapper:hover,
+.select-wrapper:hover,
+.textarea-wrapper:hover {
+  background: rgba(255, 255, 255, 0.08);
+  transform: translateY(-2px);
+}
+
+.input-focus-effect {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #9C27B0, #673AB7);
+  transition: width 0.3s ease;
+}
+
+.form-input:focus ~ .input-focus-effect,
+.form-select:focus ~ .input-focus-effect,
+.form-textarea:focus ~ .input-focus-effect {
+  width: 100%;
+}
+
+.input-wrapper i,
+.select-wrapper i,
+.textarea-wrapper i {
+  position: absolute;
+  left: 1.2rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+  pointer-events: none;
+}
+
+.textarea-wrapper i {
+  top: 1.5rem;
+}
+
+.form-input,
+.form-select,
+.form-textarea {
+  width: 100%;
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 1rem;
+  padding: 1.2rem 1.2rem 1.2rem 3.2rem;
+  outline: none;
+}
+
+.form-textarea {
+  min-height: 200px;
+  padding: 1.2rem;
+  resize: vertical;
+  line-height: 1.6;
+}
+
+.input-help {
+  display: block;
+  margin-top: 0.5rem;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.85rem;
+  transition: all 0.3s ease;
+}
+
+.form-input:focus + i,
+.form-select:focus + i,
+.form-textarea:focus + i {
+  color: #9C27B0;
+  transform: translateY(-50%) scale(1.1);
+}
+
+.form-actions {
+  padding: 2rem;
+  background: rgba(17, 25, 40, 0.95);
+  border-top: 1px solid rgba(156, 39, 176, 0.2);
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1.5rem;
+}
+
+.submit-button,
+.cancel-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 2rem;
+  border-radius: 1rem;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  text-decoration: none;
+}
+
+.submit-button {
+  background: linear-gradient(135deg, #9C27B0, #673AB7);
+  border: none;
+  color: white;
+}
+
+.cancel-button {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(156, 39, 176, 0.2);
+  color: white;
+}
+
+.submit-button:hover,
+.cancel-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(156, 39, 176, 0.4);
+}
+
+.submit-button:active,
+.cancel-button:active {
+  transform: translateY(1px);
+}
+
+@media (max-width: 768px) {
+  .new-post-container {
+    padding: 1rem;
+  }
+
+  .form-header {
+    flex-direction: column;
+    gap: 1.5rem;
+    text-align: center;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+  }
+
+  .submit-button,
+  .cancel-button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .back-link {
+    top: 10px;
+    left: 10px;
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* Animasyonlar */
+@keyframes moveGradient {
+  0% { background-position: 0% 0%; }
+  50% { background-position: 100% 100%; }
+  100% { background-position: 0% 0%; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.form-wrapper {
+  animation: fadeIn 0.5s ease-out;
+}
+
+.form-group {
+  opacity: 0;
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+.form-group:nth-child(1) { animation-delay: 0.1s; }
+.form-group:nth-child(2) { animation-delay: 0.2s; }
+.form-group:nth-child(3) { animation-delay: 0.3s; }
+
+/* Loading durumu için stil */
+.submit-button.loading {
+  position: relative;
+  pointer-events: none;
+  opacity: 0.8;
+}
+
+.submit-button.loading .button-content {
+  visibility: hidden;
+}
+
+.submit-button.loading::after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  top: 50%;
+  left: 50%;
+  margin: -10px 0 0 -10px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.form-select {
+  width: 100%;
+  background: rgba(17, 25, 40, 0.95);
+  border: none;
+  color: #fff;
+  font-size: 1rem;
+  padding: 1.2rem 1.2rem 1.2rem 3.2rem;
+  outline: none;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+.form-select option {
+  background: rgba(17, 25, 40, 0.95);
+  color: #fff;
+  padding: 12px;
+  cursor: pointer;
+}
+
+.form-select option:hover,
+.form-select option:focus,
+.form-select option:checked {
+  background: rgba(156, 39, 176, 0.3);
+  color: #fff;
+}
+
+.form-select:focus {
+  background: rgba(156, 39, 176, 0.15);
+}
+
+/* Webkit tarayıcılar için özel stiller */
+.form-select::-webkit-scrollbar {
+  width: 8px;
+}
+
+.form-select::-webkit-scrollbar-track {
+  background: rgba(17, 25, 40, 0.95);
+}
+
+.form-select::-webkit-scrollbar-thumb {
+  background: rgba(156, 39, 176, 0.5);
+  border-radius: 4px;
+}
+
+.form-select::-webkit-scrollbar-thumb:hover {
+  background: rgba(156, 39, 176, 0.7);
+}
+
+/* Firefox için özel stiller */
+.form-select {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(156, 39, 176, 0.5) rgba(17, 25, 40, 0.95);
+}
+
+/* Select açıldığında arka plan rengi */
+.form-select:focus {
+  background: rgba(156, 39, 176, 0.25);
+  border-color: rgba(156, 39, 176, 0.5);
+  box-shadow: 0 0 0 3px rgba(156, 39, 176, 0.25);
+}
+
+/* Select hover durumu */
+.form-select:hover {
+  background: rgba(156, 39, 176, 0.2);
+  border-color: rgba(156, 39, 176, 0.4);
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Form elemanları için hover ve focus efektleri
+  const formElements = document.querySelectorAll('.input-wrapper, .select-wrapper, .textarea-wrapper');
+  
+  formElements.forEach(element => {
+    const input = element.querySelector('input, select, textarea');
+    const icon = element.querySelector('i');
+    
+    element.addEventListener('mouseenter', () => {
+      if (!input.matches(':focus')) {
+        element.style.transform = 'translateY(-2px)';
+      }
+    });
+
+    element.addEventListener('mouseleave', () => {
+      if (!input.matches(':focus')) {
+        element.style.transform = 'translateY(0)';
+      }
+    });
+
+    input.addEventListener('focus', () => {
+      element.style.transform = 'translateY(-2px)';
+      icon.style.color = '#9C27B0';
+    });
+
+    input.addEventListener('blur', () => {
+      element.style.transform = 'translateY(0)';
+      icon.style.color = 'rgba(255, 255, 255, 0.5)';
+    });
+  });
+
+  // Form gönderildiğinde loading durumu
+  const form = document.querySelector('.post-form');
+  form.addEventListener('submit', function(e) {
+    const submitButton = this.querySelector('.submit-button');
+    submitButton.classList.add('loading');
+  });
+});
+</script> 
