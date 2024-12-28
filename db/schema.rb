@@ -10,16 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_12_24_212749) do
-  create_table "events", force: :cascade do |t|
-    t.string "name"
-    t.text "description"
-    t.datetime "date"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-
+ActiveRecord::Schema[7.2].define(version: 2024_12_28_123456) do
   create_table "active_admin_comments", force: :cascade do |t|
     t.string "namespace"
     t.text "body"
@@ -34,17 +25,6 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_24_212749) do
     t.index ["resource_type", "resource_id"], name: "index_active_admin_comments_on_resource"
   end
 
-  create_table "posts", force: :cascade do |t|
-    t.text "content"
-    t.boolean "is_event"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.datetime "date"
-    t.integer "user_id", null: false
-    t.index ["user_id"], name: "index_posts_on_user_id"
-  end
-
-
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -54,10 +34,6 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_24_212749) do
     t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
     t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
   end
-
-
-
-
 
   create_table "active_storage_blobs", force: :cascade do |t|
     t.string "key", null: false
@@ -77,7 +53,17 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_24_212749) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
-
+  create_table "admin_users", force: :cascade do |t|
+    t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["email"], name: "index_admin_users_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true
+  end
 
   create_table "badge_categories", force: :cascade do |t|
     t.string "name"
@@ -85,12 +71,12 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_24_212749) do
     t.datetime "updated_at", null: false
   end
 
-
   create_table "badges", force: :cascade do |t|
     t.string "name"
     t.text "description"
     t.integer "badge_category_id", null: false
     t.string "issued_by"
+    t.string "icon_url"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "image_url"
@@ -98,15 +84,12 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_24_212749) do
     t.index ["badge_category_id"], name: "index_badges_on_badge_category_id"
   end
 
-
-
   create_table "badges_skills", id: false, force: :cascade do |t|
     t.integer "badge_id", null: false
     t.integer "skill_id", null: false
     t.index ["badge_id", "skill_id"], name: "index_badges_skills_on_badge_id_and_skill_id"
     t.index ["skill_id", "badge_id"], name: "index_badges_skills_on_skill_id_and_badge_id"
   end
-
 
   create_table "cv_skills", force: :cascade do |t|
     t.integer "cv_id", null: false
@@ -116,51 +99,6 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_24_212749) do
     t.index ["cv_id"], name: "index_cv_skills_on_cv_id"
     t.index ["skill_id"], name: "index_cv_skills_on_skill_id"
   end
-
-
-
-  create_table "users", force: :cascade do |t|
-    t.string "name", null: false
-    t.string "email", null: false
-    t.string "password_digest", null: false
-    t.string "role", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.text "personal_information"
-    t.text "about_me"
-    t.text "education"
-    t.text "experience"
-    t.text "skills"
-    t.datetime "remember_created_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["email"], name: "index_users_on_email", unique: true
-  end
-
-
-  create_table "verifications", force: :cascade do |t|
-    t.integer "user_id", null: false
-    t.integer "badge_id", null: false
-    t.integer "status", default: 0, null: false
-    t.text "notes"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["badge_id"], name: "index_verifications_on_badge_id"
-    t.index ["user_id", "badge_id"], name: "index_verifications_on_user_id_and_badge_id", unique: true
-    t.index ["user_id"], name: "index_verifications_on_user_id"
-  end
-
-
-  create_table "user_roles", force: :cascade do |t|
-    t.integer "user_id", null: false
-    t.integer "role_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["role_id"], name: "index_user_roles_on_role_id"
-    t.index ["user_id"], name: "index_user_roles_on_user_id"
-  end
-
-
 
   create_table "cvs", force: :cascade do |t|
     t.integer "user_id", null: false
@@ -172,13 +110,19 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_24_212749) do
     t.index ["user_id"], name: "index_cvs_on_user_id"
   end
 
-
+  create_table "events", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.datetime "date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "forum_posts", force: :cascade do |t|
-    t.string "title"
-    t.text "content"
-    t.string "author_name"
-    t.string "category"
+    t.string "title", null: false
+    t.text "content", null: false
+    t.string "author_name", null: false
+    t.string "category", null: false
     t.integer "likes_count", default: 0
     t.integer "comments_count", default: 0
     t.datetime "created_at", null: false
@@ -186,6 +130,26 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_24_212749) do
     t.index ["category"], name: "index_forum_posts_on_category"
   end
 
+  create_table "messages", force: :cascade do |t|
+    t.text "content", null: false
+    t.text "response"
+    t.integer "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "badge_id"
+    t.index ["badge_id"], name: "index_messages_on_badge_id"
+    t.index ["user_id"], name: "index_messages_on_user_id"
+  end
+
+  create_table "posts", force: :cascade do |t|
+    t.text "content"
+    t.boolean "is_event"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "date"
+    t.integer "user_id", null: false
+    t.index ["user_id"], name: "index_posts_on_user_id"
+  end
 
   create_table "roles", force: :cascade do |t|
     t.string "name"
@@ -194,16 +158,12 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_24_212749) do
     t.datetime "updated_at", null: false
   end
 
-
-
   create_table "skills", force: :cascade do |t|
     t.string "name"
     t.text "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
-
-
 
   create_table "user_badges", force: :cascade do |t|
     t.integer "user_id", null: false
@@ -215,6 +175,43 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_24_212749) do
     t.index ["user_id"], name: "index_user_badges_on_user_id"
   end
 
+  create_table "user_roles", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "role_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["role_id"], name: "index_user_roles_on_role_id"
+    t.index ["user_id"], name: "index_user_roles_on_user_id"
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "name", default: "", null: false
+    t.string "role", default: "student", null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.text "personal_information"
+    t.text "about_me"
+    t.text "education"
+    t.text "experience"
+    t.text "skills"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+  end
+
+  create_table "verifications", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "badge_id", null: false
+    t.string "status", default: "pending"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["badge_id"], name: "index_verifications_on_badge_id"
+    t.index ["user_id"], name: "index_verifications_on_user_id"
+  end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
@@ -222,11 +219,13 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_24_212749) do
   add_foreign_key "cv_skills", "cvs"
   add_foreign_key "cv_skills", "skills"
   add_foreign_key "cvs", "users"
+  add_foreign_key "messages", "badges"
+  add_foreign_key "messages", "users"
+  add_foreign_key "posts", "users"
   add_foreign_key "user_badges", "badges"
   add_foreign_key "user_badges", "users"
   add_foreign_key "user_roles", "roles"
   add_foreign_key "user_roles", "users"
   add_foreign_key "verifications", "badges"
   add_foreign_key "verifications", "users"
-  add_foreign_key "posts", "users"
 end

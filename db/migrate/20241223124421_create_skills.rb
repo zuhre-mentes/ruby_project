@@ -1,4 +1,4 @@
-class CreateSkills < ActiveRecord::Migration[8.0]
+class CreateSkills < ActiveRecord::Migration[7.2]
   def change
     create_table :skills do |t|
       t.string :name

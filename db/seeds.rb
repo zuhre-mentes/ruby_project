@@ -68,7 +68,13 @@ user7 = User.create(name: 'Zeynep Kaya', email: 'zeynep.kaya@gmail.com', passwor
 user8 = User.create(name: 'Emre Şahin', email: 'emre.sahin@gmail.com', password: '123456')
 user9 = User.create(name: 'Fatma Arslan', email: 'fatma.arslan@gmail.com', password: '123456')
 user10 = User.create(name: 'Ahmet Koç', email: 'ahmet.koc@gmail.com', password: '123456')
-AdminUser.create!(email: 'dogan.ggumus@gmail.com', password: 'password', password_confirmation: 'password')
+admin = User.create!(
+  email: 'admin@example.com',
+  password: 'password',
+  password_confirmation: 'password',
+  name: 'Doğan Gümüş',
+  role: 'academic'
+)
 
 # Assign Roles
 user1.roles << Role.find_by(name: 'teacher')
@@ -246,4 +252,13 @@ Badge.update_all(image_url: "https://webandcrafts.com/_next/image?url=https%3A%2
 # Eğer her bir badge için farklı görsel istiyor isem burayı kullanacağım.
 # Badge.find_by(name: 'Certified Kubernetes Administrator (CKA)').update(image_url: "https://example.com/image1.jpg")
 # Badge.find_by(name: 'AWS Certified Developer – Associate').update(image_url: "https://example.com/image2.jpg")
+
+# Create a test user
+User.create!(
+  email: 'test@example.com',
+  password: 'password123',
+  password_confirmation: 'password123',
+  name: 'Test User',
+  role: 'student'
+)
 

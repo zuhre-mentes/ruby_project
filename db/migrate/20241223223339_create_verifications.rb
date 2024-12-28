@@ -1,8 +1,11 @@
-class CreateVerifications < ActiveRecord::Migration[6.1]
-  has_one_attached :file
-
-  # Enum için hali hazırda mevcut
-  enum status: { uploaded: 0, in_progress: 1, verified: 2 }
-
-  validates :file, presence: true
+class CreateVerifications < ActiveRecord::Migration[7.2]
+  def change
+    create_table :verifications do |t|
+      t.references :user, null: false, foreign_key: true
+      t.references :badge, null: false, foreign_key: true
+      t.string :status, default: 'pending'
+      
+      t.timestamps
+    end
+  end
 end

@@ -1,8 +1,11 @@
 class HomeController < ApplicationController
-  def index
-    Rails.logger.debug "***** home#index action is being called *****"
+  before_action :authenticate_user!
 
-    @posts = Post.all 
-    @post = Post.new  
+  def index
+    # Dashboard için gerekli verileri buraya ekleyebilirsiniz
+  end
+
+  def profile
+    @user = current_user
   end
 end
