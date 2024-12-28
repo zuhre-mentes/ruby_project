@@ -1,0 +1,846 @@
+<%
+    default_icon = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z'/%3E%3Cpath d='M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1Z'/%3E%3C/svg%3E"
+%>
+
+<div class="animated-background"></div>
+
+<div class="chat-container">
+    <div class="chat-header">
+        <a href="<%= badges_path %>" class="back-button">
+            <i class="bi bi-arrow-left"></i>
+            Geri Dön
+        </a>
+        <div class="badge-info">
+            <div class="badge-icon">
+                <img src="<%= default_icon %>" alt="<%= @badge.name %>">
+            </div>
+            <div class="badge-details">
+                <h1><%= @badge.name %></h1>
+                <p>AI Asistan ile Sohbet</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="chat-messages" id="chatMessages">
+        <div class="message ai-message welcome-message">
+            <div class="message-avatar">
+                <i class="bi bi-robot"></i>
+            </div>
+            <div class="message-content">
+                <p>Merhaba! <%= @badge.name %> rozeti hakkında sorularınızı yanıtlamaya hazırım. Size nasıl yardımcı olabilirim?</p>
+                <div class="message-time">Şimdi</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="quick-questions" id="quickQuestions">
+        <div class="quick-questions-scroll">
+            <button class="quick-question-btn" data-question="Bu rozeti almak için hangi becerilere sahip olmam gerekiyor?">
+                <i class="bi bi-lightbulb"></i>
+                Gerekli Beceriler
+            </button>
+            <button class="quick-question-btn" data-question="Bu rozetin zorluk seviyesi nedir?">
+                <i class="bi bi-bar-chart"></i>
+                Zorluk Seviyesi
+            </button>
+            <button class="quick-question-btn" data-question="Bu rozeti almak için tahmini çalışma süresi ne kadar?">
+                <i class="bi bi-clock"></i>
+                Çalışma Süresi
+            </button>
+            <button class="quick-question-btn" data-question="Bu rozetin sektördeki önemi nedir?">
+                <i class="bi bi-briefcase"></i>
+                Sektördeki Önemi
+            </button>
+            <button class="quick-question-btn" data-question="Bu rozet için önerilen öğrenme kaynakları nelerdir?">
+                <i class="bi bi-book"></i>
+                Öğrenme Kaynakları
+            </button>
+            <button class="quick-question-btn" data-question="Bu rozetin kariyer gelişimimdeki rolü nedir?">
+                <i class="bi bi-graph-up"></i>
+                Kariyer Etkisi
+            </button>
+            <button class="quick-question-btn" data-question="Bu rozeti almak için önerilen ön koşullar nelerdir?">
+                <i class="bi bi-list-check"></i>
+                Ön Koşullar
+            </button>
+            <button class="quick-question-btn" data-question="Bu rozetin geçerlilik süresi ne kadardır?">
+                <i class="bi bi-calendar-check"></i>
+                Geçerlilik Süresi
+            </button>
+            <button class="quick-question-btn" data-question="Bu rozet için sınav veya değerlendirme süreci nasıl işliyor?">
+                <i class="bi bi-pencil-square"></i>
+                Değerlendirme Süreci
+            </button>
+            <button class="quick-question-btn" data-question="Bu rozetin yenileme şartları nelerdir?">
+                <i class="bi bi-arrow-repeat"></i>
+                Yenileme Şartları
+            </button>
+            <button class="quick-question-btn" data-question="Bu rozet için başvuru ücreti ne kadardır?">
+                <i class="bi bi-currency-dollar"></i>
+                Başvuru Ücreti
+            </button>
+            <button class="quick-question-btn" data-question="Bu rozetin uluslararası geçerliliği var mı?">
+                <i class="bi bi-globe"></i>
+                Uluslararası Geçerlilik
+            </button>
+        </div>
+    </div>
+
+    <div class="chat-input">
+        <form id="chatForm" class="chat-form">
+            <div class="input-wrapper">
+                <input type="text" 
+                       id="messageInput" 
+                       placeholder="Mesajınızı yazın..." 
+                       autocomplete="off">
+                <button type="submit" class="send-button">
+                    <i class="bi bi-send"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="ai-response">
+  <div class="response-header">
+    <div class="ai-info">
+      <div class="ai-avatar">
+        <i class="bi bi-robot"></i>
+      </div>
+      <span class="ai-name">AI Asistan</span>
+    </div>
+    <div class="response-actions">
+      <%= link_to new_forum_post_path(ai_response: @ai_response), class: "share-button" do %>
+        <i class="bi bi-share"></i>
+        <span>Paylaş</span>
+      <% end %>
+    </div>
+  </div>
+  <div class="response-content">
+    <%= @ai_response %>
+  </div>
+</div>
+
+<style>
+.animated-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at center, #040B14, #061024, #081537);
+    animation: gradientAnimation 15s ease infinite;
+    z-index: -1;
+}
+
+@keyframes gradientAnimation {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.chat-container {
+    max-width: 1400px;
+    width: 95%;
+    margin: 2rem auto;
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 1.5rem;
+    height: calc(100vh - 4rem);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.chat-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    background: rgba(30, 9, 51, 0.4);
+}
+
+.back-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 0.9rem;
+    padding: 0.75rem 1.25rem;
+    border-radius: 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+}
+
+.back-button:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateX(-2px);
+}
+
+.badge-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.badge-icon {
+    width: 48px;
+    height: 48px;
+    background: rgba(26, 16, 59, 0.7);
+    border-radius: 1rem;
+    padding: 0.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+}
+
+.badge-icon:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(156, 39, 176, 0.2);
+}
+
+.badge-icon img {
+    width: 100%;
+    height: 100%;
+    filter: brightness(0) invert(1);
+}
+
+.badge-details h1 {
+    font-size: 1.2rem;
+    margin: 0;
+    color: #ffffff;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.badge-details p {
+    font-size: 0.85rem;
+    margin: 0.25rem 0 0;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.message {
+    display: flex;
+    gap: 1rem;
+    max-width: 80%;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: messageAppear 0.3s ease forwards;
+}
+
+@keyframes messageAppear {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.ai-message {
+    align-self: flex-start;
+}
+
+.user-message {
+    align-self: flex-end;
+    flex-direction: row-reverse;
+}
+
+.message-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(156, 39, 176, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(156, 39, 176, 0.3);
+    box-shadow: 0 4px 15px rgba(156, 39, 176, 0.1);
+}
+
+.message-avatar i {
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.message-content {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 1rem 1.5rem;
+    border-radius: 1.25rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+}
+
+.user-message .message-content {
+    background: rgba(156, 39, 176, 0.15);
+    border-color: rgba(156, 39, 176, 0.3);
+}
+
+.message-content p {
+    margin: 0;
+    color: #ffffff;
+    line-height: 1.5;
+}
+
+.message-time {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.5);
+    margin-top: 0.5rem;
+}
+
+.welcome-message .message-content {
+    background: linear-gradient(135deg, rgba(156, 39, 176, 0.2), rgba(89, 19, 124, 0.2));
+    border-color: rgba(156, 39, 176, 0.4);
+}
+
+.quick-questions {
+    padding: 1rem;
+    background: rgba(30, 9, 51, 0.4);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.quick-questions-scroll {
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+    padding: 0.75rem;
+    padding-bottom: 1.25rem;
+    scrollbar-width: thin;
+    scrollbar-color: #9C27B0 rgba(30, 9, 51, 0.8);
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    margin-bottom: -0.5rem;
+}
+
+.quick-questions-scroll::-webkit-scrollbar {
+    height: 12px;
+}
+
+.quick-questions-scroll::-webkit-scrollbar-track {
+    background: rgba(30, 9, 51, 0.8);
+    border-radius: 6px;
+    margin: 0 10px;
+    border: 2px solid rgba(156, 39, 176, 0.1);
+}
+
+.quick-questions-scroll::-webkit-scrollbar-thumb {
+    background: linear-gradient(45deg, #9C27B0, #7B1FA2);
+    border-radius: 6px;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 10px rgba(156, 39, 176, 0.5);
+}
+
+.quick-questions-scroll::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(45deg, #AB47BC, #8E24AA);
+    box-shadow: 0 0 15px rgba(156, 39, 176, 0.7);
+}
+
+.quick-question-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    background: rgba(156, 39, 176, 0.15);
+    border: 1px solid rgba(156, 39, 176, 0.3);
+    border-radius: 2rem;
+    color: #ffffff;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: max-content;
+}
+
+.quick-question-btn:hover {
+    background: rgba(156, 39, 176, 0.25);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(156, 39, 176, 0.2);
+}
+
+.quick-question-btn:active {
+    transform: translateY(0);
+}
+
+.quick-question-btn i {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.9);
+    transition: all 0.3s ease;
+}
+
+.quick-question-btn:hover i {
+    transform: scale(1.1);
+}
+
+.chat-input {
+    padding: 2rem;
+    background: rgba(30, 9, 51, 0.6);
+    border-top: 1px solid rgba(156, 39, 176, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.chat-input::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, 
+        transparent 0%, 
+        rgba(156, 39, 176, 0.5) 50%, 
+        transparent 100%
+    );
+    animation: borderGlow 2s infinite;
+}
+
+@keyframes borderGlow {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 1; }
+}
+
+.chat-form {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.input-wrapper {
+    display: flex;
+    gap: 1.5rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(156, 39, 176, 0.2);
+    border-radius: 2.5rem;
+    padding: 1rem 1.5rem;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.input-wrapper::before {
+    content: '';
+    position: absolute;
+    top: -100%;
+    left: -100%;
+    width: 300%;
+    height: 300%;
+    background: radial-gradient(
+        circle at center,
+        rgba(156, 39, 176, 0.1) 0%,
+        transparent 70%
+    );
+    transition: all 0.5s ease;
+    opacity: 0;
+}
+
+.input-wrapper:hover::before {
+    opacity: 1;
+    transform: translate(50%, 50%);
+}
+
+.input-wrapper:focus-within {
+    border-color: rgba(156, 39, 176, 0.5);
+    box-shadow: 0 4px 20px rgba(156, 39, 176, 0.2);
+    transform: translateY(-2px);
+}
+
+#messageInput {
+    flex: 1;
+    background: none;
+    border: none;
+    color: #ffffff;
+    font-size: 1.1rem;
+    padding: 0.5rem;
+    min-height: 24px;
+    max-height: 150px;
+    resize: none;
+    line-height: 1.5;
+}
+
+#messageInput::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+    transition: all 0.3s ease;
+}
+
+#messageInput:focus::placeholder {
+    opacity: 0.7;
+    transform: translateX(10px);
+}
+
+.send-button {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: none;
+    background: linear-gradient(135deg, #9C27B0, #7B1FA2);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.send-button::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at center, rgba(255,255,255,0.8), transparent 70%);
+    top: -100%;
+    left: -100%;
+    transition: all 0.3s ease;
+}
+
+.send-button:hover::before {
+    top: -50%;
+    left: -50%;
+}
+
+.send-button:hover {
+    transform: scale(1.1) rotate(15deg);
+    box-shadow: 0 4px 20px rgba(156, 39, 176, 0.4);
+}
+
+.send-button:active {
+    transform: scale(0.95);
+}
+
+.send-button i {
+    font-size: 1.4rem;
+    position: relative;
+    z-index: 1;
+    transition: all 0.3s ease;
+}
+
+.send-button:hover i {
+    transform: translateX(2px);
+    filter: drop-shadow(0 0 5px rgba(255,255,255,0.5));
+}
+
+.message.loading .message-content {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.typing-indicator {
+    display: flex;
+    gap: 0.3rem;
+}
+
+.typing-indicator span {
+    width: 8px;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    animation: typing 1s infinite;
+}
+
+.typing-indicator span:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.typing-indicator span:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes typing {
+    0%, 100% {
+        transform: translateY(0);
+        opacity: 0.3;
+    }
+    50% {
+        transform: translateY(-3px);
+        opacity: 1;
+    }
+}
+
+@media (max-width: 768px) {
+    .chat-container {
+        margin: 0;
+        height: 100vh;
+        border-radius: 0;
+    }
+
+    .message {
+        max-width: 90%;
+    }
+
+    .quick-question-btn {
+        padding: 0.6rem 1rem;
+        font-size: 0.8rem;
+    }
+}
+
+.message-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 0.5rem;
+}
+
+.share-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: rgba(156, 39, 176, 0.1);
+    border: 1px solid rgba(156, 39, 176, 0.3);
+    border-radius: 1rem;
+    color: #ffffff;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.share-button:hover {
+    background: rgba(156, 39, 176, 0.2);
+    transform: translateY(-2px);
+}
+
+.share-button i {
+    font-size: 0.9rem;
+}
+
+.ai-response {
+  background: rgba(17, 25, 40, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1rem;
+  padding: 2rem;
+  margin: 2rem 0;
+  backdrop-filter: blur(10px);
+}
+
+.response-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.ai-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.ai-avatar {
+  width: 40px;
+  height: 40px;
+  background: rgba(156, 39, 176, 0.1);
+  border: 1px solid rgba(156, 39, 176, 0.3);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ai-avatar i {
+  font-size: 1.5rem;
+  color: #9C27B0;
+}
+
+.ai-name {
+  font-size: 1.1rem;
+  color: #fff;
+  font-weight: 500;
+}
+
+.response-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.share-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.2rem;
+  background: rgba(156, 39, 176, 0.15);
+  border: 1px solid rgba(156, 39, 176, 0.25);
+  border-radius: 0.5rem;
+  color: #fff;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.share-button:hover {
+  background: rgba(156, 39, 176, 0.25);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(156, 39, 176, 0.3);
+}
+
+.share-button i {
+  font-size: 1.1rem;
+}
+
+.response-content {
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.6;
+  font-size: 1rem;
+}
+
+@media (max-width: 768px) {
+  .ai-response {
+    padding: 1.5rem;
+    margin: 1rem 0;
+  }
+
+  .response-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .share-button {
+    width: 100%;
+    justify-content: center;
+  }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const chatForm = document.getElementById('chatForm');
+    const messageInput = document.getElementById('messageInput');
+    const chatMessages = document.getElementById('chatMessages');
+    const quickQuestions = document.getElementById('quickQuestions');
+    
+    // Hazır soru butonları için event listener
+    quickQuestions.addEventListener('click', function(e) {
+        const btn = e.target.closest('.quick-question-btn');
+        if (btn) {
+            const question = btn.dataset.question;
+            messageInput.value = question;
+            sendMessage(question);
+        }
+    });
+
+    chatForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const message = messageInput.value.trim();
+        if (!message) return;
+        sendMessage(message);
+    });
+
+    function sendMessage(message) {
+        // Kullanıcı mesajını ekle
+        addMessage(message, 'user');
+        messageInput.value = '';
+
+        // Yükleniyor mesajını göster
+        const loadingMessage = addLoadingMessage();
+
+        // AI yanıtı için API çağrısı
+        fetch('/api/chat', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
+            },
+            body: JSON.stringify({
+                message: message,
+                badge_id: '<%= @badge.id %>',
+                context: {
+                    badge_name: '<%= @badge.name %>',
+                    badge_description: '<%= @badge.description %>'
+                }
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Yükleniyor mesajını kaldır
+            loadingMessage.remove();
+            // AI yanıtını ekle
+            addMessage(data.response, 'ai');
+        })
+        .catch(error => {
+            // Yükleniyor mesajını kaldır
+            loadingMessage.remove();
+            // Hata mesajını ekle
+            addMessage('Üzgünüm, bir hata oluştu. Lütfen tekrar deneyin.', 'ai');
+            console.error('Error:', error);
+        });
+    }
+
+    function addMessage(content, type) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `message ${type}-message`;
+        
+        const time = new Date().toLocaleTimeString('tr-TR', { 
+            hour: '2-digit', 
+            minute: '2-digit' 
+        });
+        
+        messageDiv.innerHTML = `
+            <div class="message-avatar">
+                <i class="bi bi-${type === 'user' ? 'person' : 'robot'}"></i>
+            </div>
+            <div class="message-content">
+                <p>${content}</p>
+                <div class="message-footer">
+                    <div class="message-time">${time}</div>
+                    ${type === 'ai' ? `
+                        <a href="/forum_posts/new?ai_response=${encodeURIComponent(content)}" class="share-button">
+                            <i class="bi bi-share"></i>
+                            Paylaş
+                        </a>
+                    ` : ''}
+                </div>
+            </div>
+        `;
+        
+        chatMessages.appendChild(messageDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+        return messageDiv;
+    }
+
+    function addLoadingMessage() {
+        const loadingDiv = document.createElement('div');
+        loadingDiv.className = 'message ai-message loading';
+        
+        loadingDiv.innerHTML = `
+            <div class="message-avatar">
+                <i class="bi bi-robot"></i>
+            </div>
+            <div class="message-content">
+                <div class="typing-indicator">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        `;
+        
+        chatMessages.appendChild(loadingDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+        return loadingDiv;
+    }
+
+    function shareMessage(content) {
+        // Forum sayfasına yönlendir
+        window.location.href = `/forum_posts/new?ai_response=${encodeURIComponent(content)}`;
+    }
+});
+</script> 
