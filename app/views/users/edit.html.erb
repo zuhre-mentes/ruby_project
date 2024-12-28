@@ -549,7 +549,7 @@
 }
 </style>
 
-<h1>Edit My Profile</h1>
+<h1>Profilimi Düzenle</h1>
 <%= stylesheet_link_tag 'edit' %>
 
 <div class="edit-profile-container">
@@ -561,32 +561,32 @@
     <% end %>
 
     <div>
-      <%= form.label :personal_information, "Personal Information" %>
+      <%= form.label :personal_information, "Kişisel Bilgiler" %>
       <%= form.text_area :personal_information, rows: 3 %>
     </div>
 
     <div>
-      <%= form.label :about_me, "About Me" %>
+      <%= form.label :about_me, "Hakkımda" %>
       <%= form.text_area :about_me, rows: 3 %>
     </div>
 
     <div>
-      <%= form.label :education, "Education" %>
+      <%= form.label :education, "Eğitim" %>
       <%= form.text_area :education, rows: 3 %>
     </div>
 
     <div>
-      <%= form.label :experience, "Experience" %>
+      <%= form.label :experience, "Deneyim" %>
       <%= form.text_area :experience, rows: 3 %>
     </div>
 
     <div>
-      <%= form.label :skills, "Skills" %>
+      <%= form.label :skills, "Beceriler" %>
       <%= form.text_area :skills, rows: 3 %>
     </div>
 
     <div>
-      <%= form.submit "Update" %>
+      <%= form.submit "Güncelle" %>
     </div>
   <% end %>
 </div>
