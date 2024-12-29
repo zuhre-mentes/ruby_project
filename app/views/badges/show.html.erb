@@ -124,14 +124,14 @@
 </div>
 
 <style>
-/* Reset ve Genel Stiller */
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* Sidebar için arka plan güncelleme */
+
 .sidebar {
   position: fixed;
   left: 0;
@@ -558,7 +558,6 @@
 
 
 <div class="page-wrapper">
-    
     <div class="badge-header">
         <div class="badge-card">
             <div class="badge-main-info">
@@ -617,15 +616,7 @@
         </div>
     </div>
 
-    
-    <div class="badge-content">
-        <div class="description-section">
-            <h2>Açıklama</h2>
-            <p><%= @badge.description %></p>
-        </div>
-    </div>
-
-    
+    <!-- Related Badges Section -->
     <div class="related-badges">
         <div class="related-header">
             <h2 class="section-title">Benzer Rozetler</h2>
@@ -662,161 +653,247 @@
                 <i class="bi bi-chevron-right"></i>
             </button>
         </div>
-
-        <style>
-        .related-badges {
-            padding: 2rem;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 1.5rem;
-            backdrop-filter: blur(10px);
-            margin-top: 3rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .section-title {
-            font-size: 2.2rem;
-            color: #fff;
-            text-align: center;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-        }
-
-        .title-underline {
-            width: 80px;
-            height: 4px;
-            background: linear-gradient(90deg, #4776E6, #8E54E9);
-            margin: 0 auto;
-            border-radius: 2px;
-        }
-
-        .related-badges-container {
-            display: flex;
-            align-items: center;
-            gap: 1.5rem;
-            margin-top: 2.5rem;
-        }
-
-        .related-badges-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 2rem;
-            padding: 1rem;
-        }
-
-        .related-badge-card {
-            background: linear-gradient(145deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
-            border-radius: 1.2rem;
-            padding: 2rem;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .related-badge-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
-            background: linear-gradient(145deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.08));
-        }
-
-        .badge-icon-wrapper {
-            position: relative;
-            width: 100px;
-            height: 100px;
-            margin: 0 auto 1.5rem;
-        }
-
-        .badge-icon {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.1);
-            padding: 1rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            z-index: 1;
-        }
-
-        .icon-glow {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 120%;
-            height: 120%;
-            background: radial-gradient(circle, rgba(71, 118, 230, 0.3), transparent 70%);
-            border-radius: 50%;
-            z-index: 0;
-        }
-
-        .badge-title {
-            font-size: 1.4rem;
-            color: #fff;
-            margin-bottom: 0.8rem;
-            text-align: center;
-        }
-
-        .badge-desc {
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 0.95rem;
-            line-height: 1.6;
-            text-align: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .details-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            background: linear-gradient(90deg, #4776E6, #8E54E9);
-            color: white;
-            text-decoration: none;
-            padding: 0.8rem 1.5rem;
-            border-radius: 0.8rem;
-            font-weight: 500;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.3s ease;
-        }
-
-        .btn-hover-effect {
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: 0.5s;
-        }
-
-        .details-btn:hover .btn-hover-effect {
-            left: 100%;
-        }
-
-        .nav-btn {
-            width: 3rem;
-            height: 3rem;
-            border-radius: 50%;
-            border: none;
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-        }
-
-        .nav-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: scale(1.1);
-        }
-        </style>
     </div>
 </div>
+
+<style>
+/* Genel düzen ayarları */
+.page-wrapper {
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 2rem;
+    margin-left: 100px; /* Sidebar genişliğine göre ayarlandı */
+}
+
+/* Badge card düzeni */
+.badge-card {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 1rem;
+    padding: 2rem;
+    margin-bottom: 2rem;
+}
+
+.badge-main-info {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 3rem;
+    align-items: start;
+}
+
+/* Badge icon card düzeni */
+.badge-icon-card {
+    position: sticky;
+    top: 2rem;
+    width: 100%;
+    background: linear-gradient(145deg, #1E1538, #2D1B4E);
+    border-radius: 1.5rem;
+    padding: 2rem;
+}
+
+/* Badge title section düzeni */
+.badge-title-section {
+    width: 100%;
+    padding-right: 2rem;
+}
+
+/* Related Badges Section */
+.related-badges {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 1rem;
+    padding: 2rem;
+    margin-top: 2rem;
+}
+
+.related-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.section-title {
+    font-size: 2rem;
+    color: #ffffff;
+    margin-bottom: 0.5rem;
+}
+
+.title-underline {
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(90deg, #4776E6, #8E54E9);
+    margin: 0 auto;
+    border-radius: 2px;
+}
+
+.related-badges-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    padding: 0 2rem;
+}
+
+.related-badges-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    width: 100%;
+}
+
+.related-badge-card {
+    background: rgba(30, 9, 51, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 1rem;
+    padding: 2rem;
+    transition: all 0.3s ease;
+}
+.related-badge-card:hover {
+    transform: translateY(-5px) scale(1.02);
+    border-color: rgba(139, 92, 246, 0.4);
+    box-shadow: 0 10px 30px rgba(139, 92, 246, 0.15);
+    background: rgba(40, 15, 65, 0.5);
+}
+
+.badge-icon-wrapper {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 1.5rem;
+    position: relative;
+}
+
+.badge-icon {
+    width: 100%;
+    height: 100%;
+    background: rgba(26, 16, 59, 0.7);
+    border-radius: 1rem;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.icon-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 120%;
+    height: 120%;
+    background: radial-gradient(circle, rgba(156, 39, 176, 0.3), transparent 70%);
+    border-radius: 50%;
+    z-index: -1;
+}
+
+.badge-title {
+    font-size: 1.2rem;
+    color: #ffffff;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.badge-desc {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.9rem;
+    line-height: 1.5;
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.details-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: rgba(156, 39, 176, 0.1);
+    border: 1px solid rgba(156, 39, 176, 0.3);
+    border-radius: 0.75rem;
+    color: #ffffff;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.details-btn:hover {
+    background: rgba(156, 39, 176, 0.3);
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(156, 39, 176, 0.2);
+    border-color: rgba(156, 39, 176, 0.5);
+}
+
+.nav-btn {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 1px solid rgba(156, 39, 176, 0.3);
+    background: rgba(156, 39, 176, 0.1);
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.nav-btn:hover {
+    background: rgba(156, 39, 176, 0.2);
+    transform: scale(1.1);
+}
+
+/* Responsive düzenlemeler */
+@media (max-width: 1400px) {
+    .badge-main-info {
+        grid-template-columns: 280px 1fr;
+        gap: 2rem;
+    }
+    
+    .badge-icon-card {
+        padding: 1.5rem;
+    }
+
+    .related-badges-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 1200px) {
+    .badge-main-info {
+        grid-template-columns: 1fr;
+    }
+    
+    .badge-icon-card {
+        position: relative;
+        top: 0;
+        max-width: 320px;
+        margin: 0 auto;
+    }
+    
+    .badge-title-section {
+        padding-right: 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .page-wrapper {
+        padding: 1rem;
+        margin-left: 80px;
+    }
+    
+    .badge-card {
+        padding: 1rem;
+    }
+
+    .related-badges-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .related-badges {
+        padding: 1rem;
+    }
+}
+</style>
 
 
 <div id="descriptionModal" class="modal">
@@ -1252,6 +1329,8 @@ body {
 .related-badge-card:hover {
     border-color: rgba(156, 39, 176, 0.4);
     background: rgba(45, 27, 78, 0.5);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(156, 39, 176, 0.2);
 }
 
 .related-badge-card .badge-icon {
@@ -1312,8 +1391,11 @@ body {
 }
 
 .related-badge-card .btn-outline:hover {
-    background: rgba(156, 39, 176, 0.15);
-    border-color: rgba(156, 39, 176, 0.4);
+    background: rgba(156, 39, 176, 0.25);
+    border-color: rgba(156, 39, 176, 0.6);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(156, 39, 176, 0.2);
+    color: rgba(255, 255, 255, 0.95);
 }
 
 .related-badges-grid {
@@ -1528,9 +1610,10 @@ body {
 }
 
 .related-badge-card:hover {
-    background: #EDE7F6;
-    border: none;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    background: linear-gradient(145deg, #EDE7F6, #F3E5F5);
+    border: 1px solid rgba(156, 39, 176, 0.2);
+    box-shadow: 0 8px 24px rgba(156, 39, 176, 0.15);
+    transform: translateY(-5px);
 }
 
 .related-badge-card .badge-icon {
@@ -1572,8 +1655,10 @@ body {
 }
 
 .related-badge-card .btn-outline:hover {
-    background: var(--primary-light);
-    transform: translateY(-2px);
+    background: linear-gradient(145deg, #9C27B0, #7B1FA2);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 16px rgba(156, 39, 176, 0.2);
+    color: #ffffff;
 }
 
 .learn-more {
@@ -2340,20 +2425,33 @@ body {
     background: linear-gradient(
         90deg,
         transparent,
-        rgba(255, 255, 255, 0.05),
+        rgba(139, 92, 246, 0.05),
         transparent
     );
     transition: 0.5s;
 }
 
 .related-badge-card:hover {
-    transform: translateY(-5px);
-    border-color: rgba(156, 39, 176, 0.3);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    transform: translateY(-5px) scale(1.02);
+    border-color: rgba(139, 92, 246, 0.3);
+    box-shadow: 
+        0 8px 25px rgba(139, 92, 246, 0.2),
+        0 0 0 1px rgba(139, 92, 246, 0.2);
+    background: rgba(139, 92, 246, 0.1);
 }
 
 .related-badge-card:hover::before {
     left: 100%;
+    animation: shimmer 1s ease-in-out;
+}
+
+@keyframes shimmer {
+    0% {
+        left: -100%;
+    }
+    100% {
+        left: 100%;
+    }
 }
 
 .related-badge-card .badge-icon {
@@ -2368,8 +2466,21 @@ body {
 }
 
 .related-badge-card:hover .badge-icon {
-    transform: scale(1.05);
-    box-shadow: 0 4px 15px rgba(156, 39, 176, 0.2);
+    transform: scale(1.05) rotate(5deg);
+    box-shadow: 
+        0 4px 15px rgba(156, 39, 176, 0.3),
+        0 0 30px rgba(156, 39, 176, 0.2);
+    border-color: rgba(156, 39, 176, 0.4);
+    animation: iconPulse 2s infinite;
+}
+
+@keyframes iconPulse {
+    0%, 100% {
+        transform: scale(1.05) rotate(5deg);
+    }
+    50% {
+        transform: scale(1.1) rotate(-5deg); 
+    }
 }
 
 .related-badge-card .badge-icon img {

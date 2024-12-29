@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .content {
+      background: #f9f9f9;
+      padding: 20px;
+      border-radius: 8px;
+    }
+    .badge-info {
+      margin: 20px 0;
+      padding: 15px;
+      background: #fff;
+      border-radius: 6px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .footer {
+      text-align: center;
+      margin-top: 30px;
+      font-size: 0.9em;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>Rozet Doğrulama Başvurunuz Alındı</h1>
+  </div>
+
+  <div class="content">
+    <p>Sayın <%= @user.name %>,</p>
+
+    <p>Rozet doğrulama başvurunuz başarıyla alınmıştır. Başvurunuzun detayları aşağıdaki gibidir:</p>
+
+    <div class="badge-info">
+      <h3>Rozet Bilgileri:</h3>
+      <p><strong>Rozet Adı:</strong> <%= @badge.name %></p>
+      <p><strong>Başvuru Tarihi:</strong> <%= @verification.created_at.strftime("%d/%m/%Y %H:%M") %></p>
+    </div>
+
+    <p>Başvurunuz inceleme sürecindedir. İnceleme tamamlandığında size tekrar bilgilendirme yapılacaktır.</p>
+
+    <p>Başvurunuzun durumunu <a href="<%= verifications_url %>">buradan</a> takip edebilirsiniz.</p>
+  </div>
+
+  <div class="footer">
+    <p>Bu e-posta otomatik olarak gönderilmiştir. Lütfen yanıtlamayınız.</p>
+    <p>© <%= Time.current.year %> Rubytes. Tüm hakları saklıdır.</p>
+  </div>
+</body>
+</html> 
