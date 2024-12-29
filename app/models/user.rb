@@ -17,4 +17,6 @@ class User < ApplicationRecord
   has_many :cvs
   has_many :posts, dependent: :destroy
   has_many :messages, dependent: :destroy
+  has_many :user_events
+  has_many :attended_events, through: :user_events, source: :post
 end

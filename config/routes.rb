@@ -23,7 +23,15 @@ Rails.application.routes.draw do
 
   resources :verifications, only: [:new, :create, :show, :index]
   resources :forum_posts
-  resources :posts, only: [:create, :destroy]
+  resources :posts, only: [:index, :new, :create, :destroy]
+
+  resources :events, only: [:index, :create, :destroy] do
+    member do
+      post :join
+      delete :leave
+    end
+  end
+  
 
   get "/verification_success", to: "verifications#success"
   get "/verification_failure", to: "verifications#failure"

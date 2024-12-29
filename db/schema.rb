@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_12_28_123456) do
+ActiveRecord::Schema[7.2].define(version: 2024_12_29_112839) do
   create_table "active_admin_comments", force: :cascade do |t|
     t.string "namespace"
     t.text "body"
@@ -110,14 +110,6 @@ ActiveRecord::Schema[7.2].define(version: 2024_12_28_123456) do
     t.index ["user_id"], name: "index_cvs_on_user_id"
   end
 
-  create_table "events", force: :cascade do |t|
-    t.string "name"
-    t.text "description"
-    t.datetime "date"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "forum_posts", force: :cascade do |t|
     t.string "title", null: false
     t.text "content", null: false
@@ -148,6 +140,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_12_28_123456) do
     t.datetime "updated_at", null: false
     t.datetime "date"
     t.integer "user_id", null: false
+    t.string "description"
     t.index ["user_id"], name: "index_posts_on_user_id"
   end
 
@@ -173,6 +166,15 @@ ActiveRecord::Schema[7.2].define(version: 2024_12_28_123456) do
     t.datetime "updated_at", null: false
     t.index ["badge_id"], name: "index_user_badges_on_badge_id"
     t.index ["user_id"], name: "index_user_badges_on_user_id"
+  end
+
+  create_table "user_events", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "post_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["post_id"], name: "index_user_events_on_post_id"
+    t.index ["user_id"], name: "index_user_events_on_user_id"
   end
 
   create_table "user_roles", force: :cascade do |t|
@@ -224,6 +226,8 @@ ActiveRecord::Schema[7.2].define(version: 2024_12_28_123456) do
   add_foreign_key "posts", "users"
   add_foreign_key "user_badges", "badges"
   add_foreign_key "user_badges", "users"
+  add_foreign_key "user_events", "posts"
+  add_foreign_key "user_events", "users"
   add_foreign_key "user_roles", "roles"
   add_foreign_key "user_roles", "users"
   add_foreign_key "verifications", "badges"

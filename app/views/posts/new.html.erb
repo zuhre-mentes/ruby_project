@@ -1,0 +1,33 @@
+<h1>Yeni Gönderi Oluştur</h1>
+
+<%= form_with model: @post, url: posts_path, local: true do |form| %>
+  <% if @post.errors.any? %>
+    <div class="error-messages">
+      <h2>Hatalar:</h2>
+      <ul>
+        <% @post.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :content, "Gönderi İçeriği" %>
+    <%= form.text_area :content, rows: 5, required: true %>
+  </div>
+
+  <div>
+    <%= form.label :is_event, "Bu bir etkinlik mi?" %>
+    <%= form.check_box :is_event %>
+  </div>
+
+  <div>
+    <%= form.label :date, "Tarih" %>
+    <%= form.datetime_select :date %>
+  </div>
+
+  <div>
+    <%= form.submit "Gönder", class: "btn btn-primary" %>
+  </div>
+<% end %>
