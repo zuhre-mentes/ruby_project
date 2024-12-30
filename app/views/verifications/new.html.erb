@@ -115,14 +115,14 @@
       <span>Dashboard</span>
     <% end %>
     
-    <%= link_to edit_user_registration_path, class: "nav-item" do %>
+    <%= link_to profile_path, class: "nav-item" do %>
       <i class="bi bi-person-badge"></i>
-      <span>Profil</span>
+      <span>Profile</span>
     <% end %>
     
     <%= link_to badges_path, class: "nav-item" do %>
       <i class="bi bi-stars"></i>
-      <span>Rozetler</span>
+      <span>Badges</span>
     <% end %>
     
     <%= link_to forum_posts_path, class: "nav-item" do %>
@@ -132,12 +132,12 @@
 
     <%= link_to events_index_path, class: "nav-item" do %>
       <i class="bi bi-calendar-event"></i>
-      <span>Etkinlikler</span>
+      <span>Events</span>
     <% end %>
 
     <%= link_to "#", class: "nav-item" do %>
       <i class="bi bi-briefcase"></i>
-      <span>İş İlanları</span>
+      <span>Job Listings</span>
     <% end %>
 
     <%= link_to "#", class: "nav-item" do %>
@@ -153,21 +153,21 @@
     <div class="nav-footer">
       <%= button_to destroy_user_session_path, method: :delete, class: "nav-item logout-btn" do %>
         <i class="bi bi-box-arrow-right"></i>
-        <span>Çıkış Yap</span>
+        <span>Logout</span>
       <% end %>
     </div>
   </nav>
 </div>
 
 <style>
-/* Reset ve Genel Stiller */
+/* Reset and General Styles */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* Sidebar için arka plan güncelleme */
+/* Sidebar background update */
 .sidebar {
   position: fixed;
   left: 0;
@@ -594,15 +594,15 @@
 
 <div class="verification-container">
     <div class="verification-header">
-        <h1>Rozet Doğrulama Sistemi</h1>
-        <p class="subtitle">Belgelerinizi yükleyin ve doğrulama sürecini başlatın</p>
+        <h1>Badge Verification System</h1>
+        <p class="subtitle">Upload your documents and start the verification process</p>
     </div>
 
     <div class="badge-selection-container">
         <div class="badge-select-button" onclick="toggleBadgeSelection()">
             <div class="badge-preview">
                 <i class="bi bi-award"></i>
-                <span id="selectedBadgeName">Rozet Seçin</span>
+                <span id="selectedBadgeName">Select Badge</span>
             </div>
             <i class="bi bi-chevron-down"></i>
         </div>
@@ -610,7 +610,7 @@
         <div class="badge-dropdown" id="badgeDropdown">
             <div class="search-box">
                 <i class="bi bi-search"></i>
-                <input type="text" placeholder="Rozet ara..." oninput="filterBadges(this.value)">
+                <input type="text" placeholder="Search badge..." oninput="filterBadges(this.value)">
             </div>
             <div class="badge-list">
                 <% Badge.all.each do |badge| %>
@@ -634,24 +634,24 @@
                 <div class="step-icon">
                     <i class="bi bi-cloud-upload"></i>
                 </div>
-                <h3>Dosya Yükleme</h3>
-                <p>En fazla 3 PDF dosyası yükleyebilirsiniz</p>
+                <h3>File Upload</h3>
+                <p>You can upload up to 3 PDF files</p>
                 
                 <%= f.hidden_field :badge_id, id: 'badge_id_field' %>
                 
                 <div class="upload-area" id="dropZone">
                     <%= f.file_field :files, multiple: true, accept: '.pdf', class: 'file-input', id: 'fileInput', style: 'display: none;' %>
                     <i class="bi bi-file-earmark-arrow-up"></i>
-                    <span>Dosya Seç</span>
-                    <small>veya sürükleyip bırakın</small>
-                    <small class="file-limit">(Maksimum 3 PDF dosyası)</small>
+                    <span>Select File</span>
+                    <small>or drag and drop</small>
+                    <small class="file-limit">(Maximum 3 PDF files)</small>
                 </div>
                 
                 <div class="selected-files" id="fileList">
-                    <p>Seçilen dosya yok</p>
+                    <p>No file selected</p>
                 </div>
                 
-                <%= f.submit 'Yükle ve Doğrula', class: 'upload-button', id: 'uploadButton', disabled: true %>
+                <%= f.submit 'Upload and Verify', class: 'upload-button', id: 'uploadButton', disabled: true %>
             </div>
         <% end %>
 
@@ -659,8 +659,8 @@
             <div class="step-icon">
                 <i class="bi bi-hourglass-split"></i>
             </div>
-            <h3>İşleniyor</h3>
-            <p>Dosyalarınız inceleniyor. Bu işlem 10-15 dakika sürebilir.</p>
+            <h3>Processing</h3>
+            <p>Your files are being reviewed. This process may take 10-15 minutes.</p>
             <div class="progress-indicator">
                 <div class="progress-circle"></div>
             </div>
@@ -670,19 +670,19 @@
             <div class="step-icon">
                 <i class="bi bi-check-circle"></i>
             </div>
-            <h3>Doğrulandı</h3>
-            <p>Tebrikler! Belgeleriniz başarıyla doğrulandı.</p>
+            <h3>Verified</h3>
+            <p>Congratulations! Your documents have been successfully verified.</p>
             <button class="download-button" disabled>
                 <i class="bi bi-download"></i>
-                Sertifika İndir
+                Download Certificate
             </button>
         </div>
     </div>
 
-    <!-- Dinamik Aktif Başvurular Card'ı -->
+    <!-- Dynamic Active Applications Card -->
     <div class="active-verifications-card" id="activeVerifications">
         <div class="card-header">
-            <h2>Aktif Başvurularınız</h2>
+            <h2>Your Active Applications</h2>
         </div>
         <div class="card-content" id="verificationsContent">
             <% if current_user.verifications.exists? %>
@@ -696,7 +696,7 @@
                                 <%= verification.created_at.strftime("%d/%m/%Y") %>
                                 <div class="status-wrapper">
                                     <span class="status-dot <%= verification.status %>" 
-                                          data-tooltip="<%= verification.status == 'pending' ? 'İnceleniyor' : 'Tamamlandı' %>">
+                                          data-tooltip="<%= verification.status == 'pending' ? 'Under Review' : 'Completed' %>">
                                     </span>
                                 </div>
                             </div>
@@ -705,7 +705,7 @@
                 </div>
             <% else %>
                 <div class="empty-state">
-                    <p>Henüz aktif başvurunuz bulunmamaktadır.</p>
+                    <p>You don't have any active applications yet.</p>
                 </div>
             <% end %>
         </div>

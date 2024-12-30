@@ -74,12 +74,12 @@
     
     <%= link_to profile_path, class: "nav-item" do %>
       <i class="bi bi-person-badge"></i>
-      <span>Profil</span>
+      <span>Profile</span>
     <% end %>
     
     <%= link_to badges_path, class: "nav-item" do %>
       <i class="bi bi-stars"></i>
-      <span>Rozetler</span>
+      <span>Badges</span>
     <% end %>
     
     <%= link_to forum_posts_path, class: "nav-item" do %>
@@ -89,12 +89,12 @@
 
     <%= link_to events_index_path, class: "nav-item" do %>
       <i class="bi bi-calendar-event"></i>
-      <span>Etkinlikler</span>
+      <span>Events</span>
     <% end %>
 
     <%= link_to "#", class: "nav-item" do %>
       <i class="bi bi-briefcase"></i>
-      <span>İş İlanları</span>
+      <span>Job Listings</span>
     <% end %>
 
     <%= link_to "#", class: "nav-item" do %>
@@ -110,7 +110,7 @@
     <div class="nav-footer">
       <%= button_to destroy_user_session_path, method: :delete, class: "nav-item logout-btn" do %>
         <i class="bi bi-box-arrow-right"></i>
-        <span>Çıkış Yap</span>
+        <span>Logout</span>
       <% end %>
     </div>
   </nav>
@@ -121,138 +121,1386 @@
   <!-- Top Bar -->
   <div class="top-bar">
     <div class="page-title">
+      <div class="title-wrapper">
       <h1>Dashboard</h1>
-      <p>Bu ay için genel bakış</p>
+        <div class="title-badge">
+          <i class="bi bi-grid-1x2-fill"></i>
+        </div>
+      </div>
+      <p class="welcome-text">Welcome, <%= current_user.name %>!</p>
     </div>
     
-    <div class="user-section">
-      <div class="date-picker">
-        <i class="bi bi-calendar3"></i>
-        <span><%= Time.current.strftime("%d/%m/%Y") %></span>
+    <div class="top-bar-actions">
+      <div class="search-container">
+        <i class="bi "></i>
+        <input type="text" placeholder="Search..." class="search-input">
+        <div class="search-suggestions">
+          <div class="suggestion-item">
+            <i class="bi bi-person"></i>
+            <span>Users</span>
+          </div>
+          <div class="suggestion-item">
+            <i class="bi bi-calendar-event"></i>
+            <span>Events</span>
+          </div>
+          <div class="suggestion-item">
+            <i class="bi bi-chat-square-text"></i>
+            <span>Forum Posts</span>
+          </div>
+        </div>
+    </div>
+    
+      <div class="notification-bell">
+        <i class="bi bi-bell"></i>
+        <span class="notification-badge pulse">3</span>
       </div>
-      
-      <div class="user-menu">
+
+      <!-- Notification Modal -->
+      <div class="notification-modal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4>Notifications</h4>
+            <button class="close-modal">
+              <i class="bi bi-x-lg"></i>
+            </button>
+          </div>
+          
+          <div class="modal-body">
+            <div class="notification-actions-header">
+              <span class="notification-count">3 New Notifications</span>
+              <button class="mark-all-read">
+                <i class="bi bi-check2-all"></i>
+                Mark All as Read
+              </button>
+            </div>
+
+            <div class="notifications-list">
+              <div class="notification-item unread">
+                <div class="notification-icon purple">
+                  <i class="bi bi-star-fill"></i>
+                </div>
+                <div class="notification-content">
+                  <p>You earned a new badge!</p>
+                  <small>2 minutes ago</small>
+                </div>
+                <div class="notification-actions">
+                  <button class="mark-read" title="Mark as Read">
+                    <i class="bi bi-check2-all"></i>
+                  </button>
+                  <button class="delete-notification" title="Delete Notification">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div class="notification-item unread">
+                <div class="notification-icon blue">
+                  <i class="bi bi-calendar-event"></i>
+                </div>
+                <div class="notification-content">
+                  <p>Upcoming event reminder</p>
+                  <small>1 hour ago</small>
+                </div>
+                <div class="notification-actions">
+                  <button class="mark-read" title="Mark as Read">
+                    <i class="bi bi-check2-all"></i>
+                  </button>
+                  <button class="delete-notification" title="Delete Notification">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div class="notification-item">
+                <div class="notification-icon green">
+                  <i class="bi bi-chat-square-text"></i>
+                </div>
+                <div class="notification-content">
+                  <p>New comment on your forum post</p>
+                  <small>3 hours ago</small>
+                </div>
+                <div class="notification-actions">
+                  <button class="delete-notification" title="Delete Notification">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <a href="#" class="view-all-notifications">
+              <i class="bi bi-arrow-right-circle"></i>
+              View All Notifications
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="user-profile">
+        <div class="status-indicator online" title="Online"></div>
+        <img src="https://img.freepik.com/free-vector/blue-circle-with-white-user_78370-4707.jpg" alt="Profile" class="profile-image">
         <div class="user-info">
-          <span><%= current_user.name %></span>
-          <small>Öğrenci</small>
+          <span class="user-name"><%= current_user.name %></span>
+          <span class="user-role">
+            <i class="bi bi-mortarboard-fill"></i>
+            Student
+          </span>
+          </div>
+        
+        
+          </div>
         </div>
-        <div class="user-avatar">
-          <i class="bi bi-person-circle"></i>
-        </div>
-        <%= button_to destroy_user_session_path, method: :delete, class: "logout-btn" do %>
-          <i class="bi bi-box-arrow-right"></i>
-        <% end %>
-      </div>
-    </div>
-  </div>
-
-  <!-- Stats Grid -->
-  <div class="stats-grid">
-    <div class="stat-card">
-      <div class="stat-icon purple">
-        <i class="bi bi-award-fill"></i>
-      </div>
-      <div class="stat-info">
-        <h3>Toplam Rozet</h3>
-        <h2>12</h2>
-        <p class="trend positive">
-          <i class="bi bi-arrow-up-right"></i>
-          <span>%8.5</span> Bu ay
-        </p>
-      </div>
-    </div>
-
-    <div class="stat-card">
-      <div class="stat-icon blue">
-        <i class="bi bi-graph-up"></i>
-      </div>
-      <div class="stat-info">
-        <h3>Başarı Puanı</h3>
-        <h2>853</h2>
-        <p class="trend positive">
-          <i class="bi bi-arrow-up-right"></i>
-          <span>%12.3</span> Bu ay
-        </p>
-      </div>
-    </div>
-
-    <div class="stat-card">
-      <div class="stat-icon green">
-        <i class="bi bi-lightning-charge"></i>
-      </div>
-      <div class="stat-info">
-        <h3>Aktivite</h3>
-        <h2>89%</h2>
-        <p class="trend negative">
-          <i class="bi bi-arrow-down-right"></i>
-          <span>%3.2</span> Bu ay
-        </p>
-      </div>
-    </div>
-  </div>
-
-  <!-- Activity Section -->
-  <div class="activity-section">
-    <div class="activity-chart">
-      <div class="section-header">
-        <h2>Aktivite Grafiği</h2>
-        <div class="chart-controls">
-          <button class="active">Günlük</button>
-          <button>Haftalık</button>
-          <button>Aylık</button>
-        </div>
-      </div>
-      <div class="chart-placeholder">
-        <!-- Grafik placeholder -->
-        <div class="chart-lines">
-          <div class="line"></div>
-          <div class="line"></div>
-          <div class="line"></div>
-          <div class="line"></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="recent-badges">
-      <div class="section-header">
-        <h2>Son Rozetler</h2>
-        <a href="#" class="view-all">Tümünü Gör</a>
       </div>
       
-      <div class="badge-list">
-        <div class="badge-item">
-          <div class="badge-icon purple">
-            <i class="bi bi-star-fill"></i>
-          </div>
-          <div class="badge-info">
-            <h4>Başlangıç Rozeti</h4>
-            <p>2 gün önce kazanıldı</p>
+  <style>
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.25rem 2.5rem;
+      background: rgba(17, 24, 39, 0.8);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(139, 92, 246, 0.15);
+      border-radius: 20px;
+      margin: 1.5rem 2.5rem;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
+      transition: all 0.4s ease;
+    }
+
+    .top-bar:hover {
+      box-shadow: 0 15px 50px rgba(139, 92, 246, 0.2);
+      border-color: rgba(139, 92, 246, 0.25);
+      transform: translateY(-2px);
+    }
+
+    .page-title {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .title-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+    }
+
+    .title-wrapper h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #fff;
+      margin: 0;
+      background: linear-gradient(135deg, #fff 0%, #e2e8f0 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -0.5px;
+    }
+
+    .welcome-text {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 1.1rem;
+      margin: 0;
+    }
+
+    .title-badge {
+      background: linear-gradient(135deg, #4C1D95, #6D28D9);
+      padding: 1rem;
+      border-radius: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 20px rgba(109, 40, 217, 0.25);
+      transition: all 0.3s ease;
+    }
+
+    .title-badge:hover {
+      transform: rotate(15deg) scale(1.1);
+    }
+
+    .title-badge i {
+      font-size: 1.5rem;
+      color: #fff;
+    }
+
+    .top-bar-actions {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    @media (max-width: 768px) {
+      .top-bar {
+        padding: 1rem;
+        margin: 1rem;
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .title-wrapper h1 {
+        font-size: 1.5rem;
+      }
+
+      .top-bar-actions {
+        width: 100%;
+        justify-content: space-between;
+      }
+    }
+  </style>
+
+  <style>
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background: rgba(17, 24, 39, 0.7);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(139, 92, 246, 0.1);
+      border-radius: 16px;
+      margin: 1rem 2rem;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s ease;
+    }
+
+    .top-bar:hover {
+      box-shadow: 0 12px 40px rgba(139, 92, 246, 0.15);
+      border-color: rgba(139, 92, 246, 0.2);
+    }
+
+    .page-title {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .title-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .title-wrapper h1 {
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: #fff;
+      margin: 0;
+      background: linear-gradient(135deg, #fff 0%, #e2e8f0 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .title-badge {
+      background: linear-gradient(135deg, #4C1D95, #6D28D9);
+      padding: 0.75rem;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+    }
+
+    .title-badge i {
+      font-size: 1.2rem;
+      color: #fff;
+    }
+
+    .welcome-text {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 0.95rem;
+      margin: 0;
+    }
+
+    .top-bar-actions {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .search-container {
+      position: relative;
+      width: 300px;
+      z-index: 10000;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 0.75rem 1rem 0.75rem 2.75rem;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(139, 92, 246, 0.2);
+      border-radius: 12px;
+      color: #fff;
+      font-size: 0.95rem;
+      transition: all 0.3s ease;
+      position: relative;
+      z-index: 10000;
+    }
+
+    .search-input:focus {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: rgba(139, 92, 246, 0.4);
+      box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15);
+      outline: none;
+    }
+
+    .search-suggestions {
+      position: absolute;
+      top: calc(100% + 0.5rem);
+      left: 0;
+      width: 100%;
+      background: rgba(17, 24, 39, 1);
+      border: 1px solid rgba(139, 92, 246, 0.2);
+      border-radius: 12px;
+      padding: 0.5rem;
+      display: none;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+      z-index: 10001;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    .search-input:focus + .search-suggestions {
+      display: block;
+      animation: fadeInSuggestions 0.2s ease;
+    }
+
+    @keyframes fadeInSuggestions {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .suggestion-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem;
+      color: rgba(255, 255, 255, 0.9);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      position: relative;
+      z-index: 10002;
+      background: rgba(17, 24, 39, 1);
+    }
+
+    .suggestion-item:hover {
+      background: rgba(139, 92, 246, 0.2);
+      color: #fff;
+    }
+
+    .suggestion-item i {
+      font-size: 1rem;
+      color: #8B5CF6;
+    }
+
+    .notification-bell {
+      position: relative;
+      padding: 0.5rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .notification-dropdown {
+      position: fixed;
+      top: 80px;
+      right: 100px;
+      width: 320px;
+      background: rgb(17, 24, 39);
+      border: 1px solid rgba(139, 92, 246, 0.2);
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+      display: none;
+      z-index: 999999;
+    }
+
+    .notification-dropdown.show {
+      display: block;
+      animation: fadeIn 0.2s ease;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .notification-bell i {
+      font-size: 1.25rem;
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    .notification-badge {
+      position: absolute;
+      top: 0;
+      right: 0;
+      background: #EF4444;
+      color: white;
+      border-radius: 50%;
+      padding: 0.2rem 0.4rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      border: 2px solid rgba(17, 24, 39, 0.7);
+    }
+
+    .notification-badge.pulse {
+      animation: badgePulse 2s infinite;
+    }
+
+    @keyframes badgePulse {
+      0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+      70% { box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+    }
+
+    .user-profile {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.5rem;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(139, 92, 246, 0.2);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .user-profile:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(139, 92, 246, 0.3);
+    }
+
+    .status-indicator {
+      position: absolute;
+      bottom: 0.5rem;
+      left: 2.5rem;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      border: 2px solid rgba(17, 24, 39, 0.7);
+    }
+
+    .status-indicator.online {
+      background: #10B981;
+      box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
+    }
+
+    .profile-image {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      object-fit: cover;
+      border: 2px solid rgba(139, 92, 246, 0.3);
+    }
+
+    .user-info {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .user-name {
+      color: #fff;
+      font-weight: 500;
+      font-size: 0.95rem;
+    }
+
+    .user-role {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 0.85rem;
+    }
+
+    .user-role i {
+      font-size: 0.9rem;
+      color: #8B5CF6;
+    }
+
+    .dropdown-toggle {
+      color: rgba(255, 255, 255, 0.6);
+      transition: transform 0.3s ease;
+    }
+
+    .user-profile:hover .dropdown-toggle {
+      transform: rotate(180deg);
+    }
+
+    .profile-dropdown {
+      position: absolute;
+      top: calc(100% + 0.5rem);
+      right: 0;
+      width: 220px;
+      background: rgba(17, 24, 39, 0.95);
+      border: 1px solid rgba(139, 92, 246, 0.2);
+      border-radius: 12px;
+      padding: 0.5rem;
+      display: none;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    }
+
+    .user-profile:hover .profile-dropdown {
+      display: block;
+      animation: dropdownFadeIn 0.2s ease;
+    }
+
+    @keyframes dropdownFadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .dropdown-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem;
+      color: rgba(255, 255, 255, 0.8);
+      text-decoration: none;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+    }
+
+    .dropdown-item:hover {
+      background: rgba(139, 92, 246, 0.1);
+      color: #fff;
+    }
+
+    .dropdown-item i {
+      font-size: 1rem;
+      color: #8B5CF6;
+    }
+
+    .dropdown-divider {
+      height: 1px;
+      background: rgba(255, 255, 255, 0.1);
+      margin: 0.5rem 0;
+    }
+
+    .text-danger {
+      color: #EF4444 !important;
+    }
+
+    .text-danger i {
+      color: #EF4444 !important;
+    }
+
+    .text-danger:hover {
+      background: rgba(239, 68, 68, 0.1) !important;
+    }
+
+    @media (max-width: 1024px) {
+      .search-container {
+        width: 250px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .top-bar {
+        margin: 0.5rem;
+        padding: 0.75rem;
+      }
+
+      .search-container {
+        display: none;
+      }
+
+      .user-info {
+        display: none;
+      }
+
+      .top-bar-actions {
+        gap: 1rem;
+      }
+
+      .title-wrapper h1 {
+        font-size: 1.5rem;
+      }
+
+      .title-badge {
+        padding: 0.5rem;
+      }
+    }
+  </style>
+
+  <!-- Dashboard Content -->
+  <div class="dashboard-content">
+    <!-- Left Section -->
+    <div class="dashboard-main">
+      <!-- Welcome Card -->
+      <div class="welcome-card">
+        <div class="welcome-content">
+        <div class="welcome-text">
+            <div class="welcome-header">
+          <h2>Welcome, <%= current_user.name %></h2>
+              <div class="welcome-badge">
+                <i class="bi bi-stars"></i>
+              </div>
+            </div>
+          <p>What would you like to learn today?</p>
+            <div class="stats-row">
+              <div class="stat-item">
+                <div class="stat-icon">
+                  <i class="bi bi-trophy-fill"></i>
+                </div>
+                <div class="stat-info">
+                  <span class="stat-value">12</span>
+                  <span class="stat-label">Badges</span>
+                </div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-icon">
+                  <i class="bi bi-lightning-fill"></i>
+                </div>
+                <div class="stat-info">
+                  <span class="stat-value">85%</span>
+                  <span class="stat-label">Progress</span>
+                </div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-icon">
+                  <i class="bi bi-clock-fill"></i>
+                </div>
+                <div class="stat-info">
+                  <span class="stat-value">24</span>
+                  <span class="stat-label">Hours</span>
+                </div>
+              </div>
+            </div>
+        </div>
+        <div class="welcome-actions">
+          <a href="https://rubyonrails.org/" class="action-btn primary">
+            <i class="bi bi-play-circle"></i>
+              <span>Start Learning</span>
+              <div class="btn-shine"></div>
+            </a>
+            
           </div>
         </div>
+        <div class="welcome-decoration">
+          <div class="decoration-circle"></div>
+          <div class="decoration-line"></div>
+        </div>
+      </div>
 
-        <div class="badge-item">
-          <div class="badge-icon blue">
-            <i class="bi bi-lightning-fill"></i>
+      <style>
+      .welcome-card {
+        background: linear-gradient(145deg, rgba(139, 92, 246, 0.1), rgba(76, 29, 149, 0.15));
+        border-radius: 1.5rem;
+        padding: 2.5rem;
+        border: 1px solid rgba(139, 92, 246, 0.2);
+        box-shadow: 
+          0 8px 32px rgba(0, 0, 0, 0.1),
+          0 2px 8px rgba(139, 92, 246, 0.1);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .welcome-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 
+          0 12px 40px rgba(0, 0, 0, 0.15),
+          0 4px 12px rgba(139, 92, 246, 0.15);
+        border-color: rgba(139, 92, 246, 0.3);
+      }
+
+      .welcome-content {
+        position: relative;
+        z-index: 2;
+      }
+
+      .welcome-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+      }
+
+      .welcome-text h2 {
+        font-size: 2.25rem;
+        font-weight: 700;
+        background: linear-gradient(135deg, #fff 0%, #e2e8f0 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 0.75rem;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .welcome-badge {
+        background: linear-gradient(135deg, #8B5CF6, #6D28D9);
+        padding: 0.75rem;
+        border-radius: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+        animation: badgeFloat 3s ease-in-out infinite;
+      }
+
+      @keyframes badgeFloat {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+      }
+
+      .welcome-badge i {
+        font-size: 1.5rem;
+        color: #fff;
+      }
+
+      .welcome-text p {
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 1.2rem;
+        margin-bottom: 2rem;
+        font-weight: 500;
+      }
+
+      .stats-row {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+      }
+
+      .stat-item {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(139, 92, 246, 0.2);
+        border-radius: 1rem;
+        padding: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        transition: all 0.3s ease;
+      }
+
+      .stat-item:hover {
+        background: rgba(139, 92, 246, 0.1);
+        transform: translateY(-2px);
+        border-color: rgba(139, 92, 246, 0.3);
+      }
+
+      .stat-icon {
+        background: linear-gradient(135deg, #8B5CF6, #6D28D9);
+        width: 40px;
+        height: 40px;
+        border-radius: 0.75rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 12px rgba(139, 92, 246, 0.2);
+      }
+
+      .stat-icon i {
+        font-size: 1.25rem;
+        color: #fff;
+      }
+
+      .stat-info {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+      }
+
+      .stat-value {
+        color: #fff;
+        font-size: 1.25rem;
+        font-weight: 600;
+      }
+
+      .stat-label {
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 0.875rem;
+      }
+
+      .welcome-actions {
+        display: flex;
+        gap: 1rem;
+        margin-top: 1rem;
+      }
+
+      .action-btn {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 1rem 1.75rem;
+        border-radius: 1rem;
+        font-weight: 600;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .action-btn.primary {
+        background: linear-gradient(135deg, #8B5CF6, #6D28D9);
+        color: white;
+        border: none;
+        box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+      }
+
+      .action-btn.primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
+      }
+
+      .btn-shine {
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(
+          45deg,
+          transparent,
+          rgba(255, 255, 255, 0.1),
+          transparent
+        );
+        transform: rotate(45deg);
+        animation: btnShine 3s infinite;
+      }
+
+      @keyframes btnShine {
+        0% { transform: translateX(-100%) rotate(45deg); }
+        100% { transform: translateX(100%) rotate(45deg); }
+      }
+
+      .action-btn.secondary {
+        background: rgba(255, 255, 255, 0.05);
+        color: #fff;
+        border: 1px solid rgba(139, 92, 246, 0.3);
+      }
+
+      .action-btn.secondary:hover {
+        background: rgba(139, 92, 246, 0.1);
+        transform: translateY(-2px);
+      }
+
+      .action-btn i {
+        font-size: 1.25rem;
+      }
+
+      .welcome-decoration {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        overflow: hidden;
+        z-index: 1;
+      }
+
+      .decoration-circle {
+        position: absolute;
+        top: -50%;
+        right: -20%;
+        width: 400px;
+        height: 400px;
+        background: radial-gradient(
+          circle,
+          rgba(139, 92, 246, 0.1) 0%,
+          rgba(139, 92, 246, 0.05) 50%,
+          transparent 70%
+        );
+        border-radius: 50%;
+        animation: circlePulse 4s ease-in-out infinite;
+      }
+
+      .decoration-line {
+        position: absolute;
+        bottom: 20%;
+        left: -10%;
+        width: 120%;
+        height: 2px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(139, 92, 246, 0.2),
+          transparent
+        );
+        transform: rotate(-5deg);
+      }
+
+      @keyframes circlePulse {
+        0%, 100% { transform: scale(1); opacity: 0.5; }
+        50% { transform: scale(1.1); opacity: 0.7; }
+      }
+
+      @media (max-width: 768px) {
+        .welcome-card {
+          padding: 1.5rem;
+        }
+
+        .welcome-text h2 {
+          font-size: 1.75rem;
+        }
+
+        .welcome-text p {
+          font-size: 1rem;
+        }
+
+        .stats-row {
+          grid-template-columns: 1fr;
+          gap: 1rem;
+        }
+
+        .welcome-actions {
+          flex-direction: column;
+        }
+
+        .action-btn {
+          width: 100%;
+          justify-content: center;
+        }
+      }
+      </style>
+
+      <!-- Badge Leaderboard Card -->
+      <div class="leaderboard-card">
+        <div class="leaderboard-header">
+          <div class="header-content">
+            <h3>Badge Leaderboard</h3>
+            <p>Users with the most badges</p>
           </div>
-          <div class="badge-info">
-            <h4>Hızlı Öğrenen</h4>
-            <p>5 gün önce kazanıldı</p>
+          <div class="header-actions">
+            <button class="time-filter active">Weekly</button>
+            <button class="time-filter">Monthly</button>
+            <button class="time-filter">All Time</button>
+        </div>
+            </div>
+
+        <div class="leaderboard-list">
+          <!-- Top 3 Users with Special Design -->
+          <div class="top-users">
+            <!-- Second Place -->
+            <div class="top-user second-place">
+              <div class="rank-badge">2</div>
+              <div class="user-avatar">
+                <img src="https://ui-avatars.com/api/?name=Ahmet+Y&background=3B82F6&color=fff" alt="Ahmet Y.">
+                <div class="badge-count">
+                  <i class="bi bi-award-fill"></i>
+                  <span>24</span>
           </div>
         </div>
+              <div class="user-info">
+                <span class="user-name">Ahmet Y.</span>
+                <span class="badge-text">24 Badges</span>
+      </div>
+            </div>
 
-        <div class="badge-item">
-          <div class="badge-icon green">
-            <i class="bi bi-trophy-fill"></i>
+            <!-- First Place -->
+            <div class="top-user first-place">
+              <div class="rank-badge">1</div>
+              <div class="user-avatar">
+                <img src="https://ui-avatars.com/api/?name=Mehmet+K&background=8B5CF6&color=fff" alt="Mehmet K.">
+                <div class="badge-count">
+                  <i class="bi bi-award-fill"></i>
+                  <span>32</span>
+                </div>
+              </div>
+              <div class="user-info">
+                <span class="user-name">Mehmet K.</span>
+                <span class="badge-text">32 Badges</span>
+              </div>
+              <div class="crown">
+                <i class="bi bi-crown-fill"></i>
+              </div>
+            </div>
+
+            <!-- Third Place -->
+            <div class="top-user third-place">
+              <div class="rank-badge">3</div>
+              <div class="user-avatar">
+                <img src="https://ui-avatars.com/api/?name=Ayşe+M&background=10B981&color=fff" alt="Ayşe M.">
+                <div class="badge-count">
+                  <i class="bi bi-award-fill"></i>
+                  <span>19</span>
+                </div>
+              </div>
+              <div class="user-info">
+                <span class="user-name">Ayşe M.</span>
+                <span class="badge-text">19 Badges</span>
+              </div>
+            </div>
           </div>
-          <div class="badge-info">
-            <h4>İlk Başarı</h4>
-            <p>1 hafta önce kazanıldı</p>
+
+          <!-- Other Users -->
+          <div class="other-users">
+            <div class="leaderboard-item">
+              <div class="rank">4</div>
+              <div class="user-info">
+                <img src="https://ui-avatars.com/api/?name=Fatma+S&background=EF4444&color=fff" alt="Fatma S.">
+                <div class="user-details">
+                  <span class="user-name">Fatma S.</span>
+                  <span class="badge-count">16 Badges</span>
+                </div>
+              </div>
+              <div class="badge-indicator">
+                <i class="bi bi-award-fill"></i>
+                <span>16</span>
+              </div>
+            </div>
+
+            <div class="leaderboard-item">
+              <div class="rank">5</div>
+              <div class="user-info">
+                <img src="https://ui-avatars.com/api/?name=Can+B&background=F59E0B&color=fff" alt="Can B.">
+                <div class="user-details">
+                  <span class="user-name">Can B.</span>
+                  <span class="badge-count">14 Badges</span>
+                </div>
+              </div>
+              <div class="badge-indicator">
+                <i class="bi bi-award-fill"></i>
+                <span>14</span>
+              </div>
+            </div>
           </div>
+        </div>
+      </div>
+
+      <style>
+        .leaderboard-card {
+          background: rgba(28, 26, 39, 0.7);
+          backdrop-filter: blur(10px);
+          border: 1px solid rgba(139, 92, 246, 0.1);
+          border-radius: 16px;
+          padding: 2rem;
+          margin-top: 2rem;
+          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+          transition: all 0.3s ease;
+        }
+
+        .leaderboard-card:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 12px 40px rgba(139, 92, 246, 0.15);
+          border-color: rgba(139, 92, 246, 0.2);
+        }
+
+        .leaderboard-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 2rem;
+        }
+
+        .header-content h3 {
+          font-size: 1.5rem;
+          font-weight: 600;
+          color: #fff;
+          margin-bottom: 0.5rem;
+        }
+
+        .header-content p {
+          color: rgba(255, 255, 255, 0.6);
+          font-size: 0.9rem;
+        }
+
+        .header-actions {
+          display: flex;
+          gap: 0.5rem;
+        }
+
+        .time-filter {
+          background: rgba(139, 92, 246, 0.1);
+          border: 1px solid rgba(139, 92, 246, 0.2);
+          color: rgba(255, 255, 255, 0.8);
+          padding: 0.5rem 1rem;
+          border-radius: 8px;
+          cursor: pointer;
+          transition: all 0.3s ease;
+        }
+
+        .time-filter:hover {
+          background: rgba(139, 92, 246, 0.2);
+          border-color: rgba(139, 92, 246, 0.3);
+        }
+
+        .time-filter.active {
+          background: rgba(139, 92, 246, 0.3);
+          border-color: rgba(139, 92, 246, 0.4);
+          color: #fff;
+        }
+
+        .top-users {
+          display: flex;
+          justify-content: center;
+          align-items: flex-end;
+          gap: 2rem;
+          margin-bottom: 3rem;
+          padding: 0 1rem;
+        }
+
+        .top-user {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          position: relative;
+          transition: all 0.3s ease;
+        }
+
+        .top-user:hover {
+          transform: translateY(-10px);
+        }
+
+        .rank-badge {
+          position: absolute;
+          top: -15px;
+          left: 50%;
+          transform: translateX(-50%);
+          background: rgba(139, 92, 246, 0.2);
+          color: #fff;
+          width: 24px;
+          height: 24px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-weight: 600;
+          font-size: 0.9rem;
+          border: 2px solid rgba(139, 92, 246, 0.3);
+        }
+
+        .user-avatar {
+          position: relative;
+          margin-bottom: 1rem;
+        }
+
+        .user-avatar img {
+          width: 64px;
+          height: 64px;
+          border-radius: 16px;
+          border: 2px solid rgba(139, 92, 246, 0.3);
+        }
+
+        .first-place .user-avatar img {
+          width: 80px;
+          height: 80px;
+          border-color: #F59E0B;
+          box-shadow: 0 0 20px rgba(245, 158, 11, 0.3);
+        }
+
+        .badge-count {
+          position: absolute;
+          bottom: -10px;
+          right: -10px;
+          background: rgba(139, 92, 246, 0.9);
+          padding: 0.25rem 0.5rem;
+          border-radius: 8px;
+          display: flex;
+          align-items: center;
+          gap: 0.25rem;
+          font-size: 0.8rem;
+          color: #fff;
+          border: 2px solid rgba(28, 26, 39, 0.7);
+        }
+
+        .first-place .badge-count {
+          background: #F59E0B;
+        }
+
+        .user-info {
+          text-align: center;
+        }
+
+        .user-name {
+          color: #fff;
+          font-weight: 500;
+          font-size: 0.95rem;
+          margin-bottom: 0.25rem;
+          display: block;
+        }
+
+        .badge-text {
+          color: rgba(255, 255, 255, 0.6);
+          font-size: 0.85rem;
+        }
+
+        .crown {
+          position: absolute;
+          top: -30px;
+          color: #F59E0B;
+          font-size: 1.5rem;
+          animation: crownFloat 2s ease-in-out infinite;
+        }
+
+        @keyframes crownFloat {
+          0%, 100% { transform: translateY(0) rotate(5deg); }
+          50% { transform: translateY(-5px) rotate(-5deg); }
+        }
+
+        .other-users {
+          display: flex;
+          flex-direction: column;
+          gap: 1rem;
+        }
+
+        .leaderboard-item {
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+          padding: 1rem;
+          background: rgba(255, 255, 255, 0.03);
+          border: 1px solid rgba(139, 92, 246, 0.1);
+          border-radius: 12px;
+          transition: all 0.3s ease;
+        }
+
+        .leaderboard-item:hover {
+          background: rgba(139, 92, 246, 0.05);
+          transform: translateX(5px);
+        }
+
+        .rank {
+          width: 24px;
+          height: 24px;
+          background: rgba(139, 92, 246, 0.1);
+          border-radius: 6px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-weight: 600;
+          color: rgba(255, 255, 255, 0.8);
+        }
+
+        .leaderboard-item .user-info {
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+          flex: 1;
+        }
+
+        .leaderboard-item img {
+          width: 40px;
+          height: 40px;
+          border-radius: 10px;
+          border: 2px solid rgba(139, 92, 246, 0.2);
+        }
+
+        .user-details {
+          text-align: left;
+        }
+
+        .badge-indicator {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          color: #8B5CF6;
+          font-weight: 500;
+        }
+
+        .badge-indicator i {
+          font-size: 1.1rem;
+        }
+
+        @media (max-width: 768px) {
+          .leaderboard-header {
+            flex-direction: column;
+            gap: 1rem;
+            align-items: flex-start;
+          }
+
+          .top-users {
+            gap: 1rem;
+          }
+
+          .user-avatar img {
+            width: 48px;
+            height: 48px;
+          }
+
+          .first-place .user-avatar img {
+            width: 64px;
+            height: 64px;
+          }
+        }
+      </style>
+
+      <!-- Progress Section -->
+      
+    </div>
+
+    <!-- Right Section -->
+    <div class="dashboard-sidebar">
+      <!-- Recent Badges -->
+      <div class="recent-badges-card">
+        <div class="section-header">
+          <h3>Son Rozetler</h3>
+          <a href="#" class="view-all">Tümünü Gör</a>
+        </div>
+        <div class="badge-list">
+          <div class="badge-item">
+            <div class="badge-icon purple">
+              <i class="bi bi-star-fill"></i>
+            </div>
+            <div class="badge-info">
+              <h4>Başlangıç Rozeti</h4>
+              <p>2 gün önce</p>
+            </div>
+          </div>
+          <div class="badge-item">
+            <div class="badge-icon blue">
+              <i class="bi bi-lightning-fill"></i>
+            </div>
+            <div class="badge-info">
+              <h4>Hızlı Öğrenen</h4>
+              <p>5 gün önce</p>
+            </div>
+          </div>
+          <div class="badge-item">
+            <div class="badge-icon green">
+              <i class="bi bi-trophy-fill"></i>
+            </div>
+            <div class="badge-info">
+              <h4>İlk Başarı</h4>
+              <p>1 hafta önce</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="quick-links-card">
+        <div class="section-header">
+          <h3>Hızlı Erişim</h3>
+        </div>
+        <div class="quick-links-list">
+          <a href="/badges/" class="quick-link">
+            <i class="bi bi-book"></i>
+            <span>Eğitimler</span>
+          </a>
+          <a href="/events/index" class="quick-link">
+            <i class="bi bi-calendar-event"></i>
+            <span>Etkinlikler</span>
+          </a>
+          <a href="/forum_posts/" class="quick-link">
+            <i class="bi bi-chat-square-text"></i>
+            <span>Forum</span>
+          </a>
+          <a href="/jobs/" class="quick-link">
+            <i class="bi bi-person-workspace"></i>
+            <span>İş İlanları</span>
+          </a>
         </div>
       </div>
     </div>
   </div>
 </div>
+
+
 
 <style>
 /* Reset ve Genel Stiller */
@@ -716,17 +1964,50 @@ html {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 1.5rem;
+  background: rgba(28, 26, 39, 0.7);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(139, 92, 246, 0.1);
+  border-radius: 16px;
   margin-bottom: 2rem;
+  transition: all 0.3s ease;
+}
+
+.top-bar:hover {
+  background: rgba(28, 26, 39, 0.8);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.page-title {
+  position: relative;
 }
 
 .page-title h1 {
   font-size: 1.75rem;
   font-weight: 600;
   margin-bottom: 0.25rem;
+  background: linear-gradient(135deg, #fff 0%, #e2e8f0 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  transition: all 0.3s ease;
+}
+
+.page-title:hover h1 {
+  transform: translateX(5px);
+  background: linear-gradient(135deg, #8B5CF6 0%, #6D28D9 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .page-title p {
   color: rgba(255,255,255,0.6);
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.page-title:hover p {
+  color: rgba(255,255,255,0.8);
 }
 
 .user-section {
@@ -738,62 +2019,121 @@ html {
 .date-picker {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 1rem;
-  background: rgba(28, 26, 39, 0.7);
-  backdrop-filter: blur(10px);
-  border-radius: 8px;
+  gap: 0.75rem;
+  padding: 0.75rem 1.25rem;
+  background: rgba(139, 92, 246, 0.1);
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  border-radius: 12px;
   color: rgba(255,255,255,0.8);
+  transition: all 0.3s ease;
+}
+
+.date-picker:hover {
+  background: rgba(139, 92, 246, 0.15);
+  border-color: rgba(139, 92, 246, 0.3);
+  transform: translateY(-2px);
+}
+
+.date-picker i {
+  color: #8B5CF6;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+}
+
+.date-picker:hover i {
+  transform: scale(1.1) rotate(10deg);
 }
 
 .user-menu {
   display: flex;
   align-items: center;
   gap: 1rem;
+  padding: 0.5rem;
+  background: rgba(139, 92, 246, 0.1);
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.user-menu:hover {
+  background: rgba(139, 92, 246, 0.15);
+  border-color: rgba(139, 92, 246, 0.3);
+  transform: translateY(-2px);
 }
 
 .user-info {
   text-align: right;
+  padding: 0.5rem 1rem;
 }
 
 .user-info span {
   display: block;
   font-weight: 500;
+  color: rgba(255,255,255,0.9);
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
 }
 
 .user-info small {
-  color: rgba(255,255,255,0.9);
+  color: rgba(255,255,255,0.6);
+  font-size: 0.8rem;
+  transition: all 0.3s ease;
+}
+
+.user-menu:hover .user-info span {
+  color: #fff;
+}
+
+.user-menu:hover .user-info small {
+  color: rgba(255,255,255,0.8);
 }
 
 .user-avatar {
   width: 40px;
   height: 40px;
-  background: rgba(28, 26, 39, 0.7);
-  backdrop-filter: blur(10px);
-  border-radius: 50%;
+  background: rgba(139, 92, 246, 0.2);
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: all 0.3s ease;
 }
 
 .user-avatar i {
   font-size: 1.5rem;
-  color: rgba(255,255,255,0.8);
-}
-
-.logout-btn {
-  background: none;
-  border: none;
-  color: rgba(255,255,255,0.6);
-  cursor: pointer;
-  padding: 0.5rem;
-  border-radius: 8px;
+  color: #8B5CF6;
   transition: all 0.3s ease;
 }
 
-.logout-btn:hover {
-  background: rgba(255,255,255,0.1);
-  color: #fff;
+.user-menu:hover .user-avatar {
+  background: rgba(139, 92, 246, 0.3);
+  transform: scale(1.05);
+}
+
+.user-menu:hover .user-avatar i {
+  transform: scale(1.1);
+  color: #9F7AEA;
+}
+
+@media (max-width: 768px) {
+  .top-bar {
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+  }
+
+  .user-section {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .date-picker {
+    padding: 0.5rem 1rem;
+  }
+
+  .user-info {
+    display: none;
+  }
 }
 
 /* Stats Grid */
@@ -985,15 +2325,15 @@ html {
 }
 
 .badge-icon.purple {
-  background: linear-gradient(135deg, #8B5CF6 0%, #6D28D9 100%);
+  background: linear-gradient(135deg, #8B5CF6, #6D28D9);
 }
 
 .badge-icon.blue {
-  background: linear-gradient(135deg, #3B82F6 0%, #1D4ED8 100%);
+  background: linear-gradient(135deg, #3B82F6, #1D4ED8);
 }
 
 .badge-icon.green {
-  background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+  background: linear-gradient(135deg, #10B981, #059669);
 }
 
 .badge-info h4 {
@@ -1119,4 +2459,911 @@ html {
   opacity: 1;
   transform: translateX(0);
 }
+
+.badges-section {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: rgba(28, 26, 39, 0.7);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  border: 1px solid rgba(139, 92, 246, 0.1);
+}
+
+.badges-section .section-header {
+  margin-bottom: 2rem;
+}
+
+.badges-section .section-header h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #fff;
+  text-align: left;
+}
+
+.badges-container {
+  overflow: hidden;
+}
+
+.badges-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.badge-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(139, 92, 246, 0.1);
+  border-radius: 12px;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.badge-card:hover {
+  background: rgba(139, 92, 246, 0.05);
+  border-color: rgba(139, 92, 246, 0.2);
+  transform: translateX(5px);
+}
+
+.badge-icon {
+  width: 50px;
+  height: 50px;
+  background: rgba(139, 92, 246, 0.1);
+  border-radius: 10px;
+  padding: 0.75rem;
+  flex-shrink: 0;
+}
+
+.badge-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+}
+
+.badge-content {
+  flex: 1;
+}
+
+.badge-content h3 {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #fff;
+  margin-bottom: 0.25rem;
+}
+
+.badge-content p {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.6);
+  margin-bottom: 0.75rem;
+  line-height: 1.4;
+}
+
+.badge-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #8B5CF6;
+  text-decoration: none;
+  font-size: 0.85rem;
+  transition: all 0.3s ease;
+}
+
+.badge-link:hover {
+  color: #9F7AEA;
+  gap: 0.75rem;
+}
+
+.badge-link i {
+  font-size: 0.9rem;
+  transition: transform 0.3s ease;
+}
+
+.badge-link:hover i {
+  transform: translateX(3px);
+}
+
+@media (max-width: 768px) {
+  .badges-section {
+    padding: 1.5rem;
+  }
+  
+  .badges-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .badge-card {
+    padding: 1rem;
+  }
+}
+
+/* Dashboard Content */
+.dashboard-content {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+/* Welcome Card */
+.welcome-card {
+  background: rgba(28, 26, 39, 0.7);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(139, 92, 246, 0.1);
+  border-radius: 16px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+.welcome-text h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(135deg, #8B5CF6, #6D28D9);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.welcome-text p {
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 1.5rem;
+}
+
+.welcome-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.action-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.action-btn.primary {
+  background: linear-gradient(135deg, #8B5CF6, #6D28D9);
+  color: white;
+}
+
+.action-btn.secondary {
+  background: rgba(139, 92, 246, 0.1);
+  color: #8B5CF6;
+  border: 1px solid rgba(139, 92, 246, 0.2);
+}
+
+.action-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(139, 92, 246, 0.2);
+}
+
+/* Progress Section */
+.progress-section {
+  background: rgba(28, 26, 39, 0.7);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(139, 92, 246, 0.1);
+  border-radius: 16px;
+  padding: 2rem;
+}
+
+.progress-filters {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.filter-btn {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.6);
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.filter-btn.active {
+  background: rgba(139, 92, 246, 0.1);
+  color: #8B5CF6;
+}
+
+.progress-chart {
+  margin-top: 1.5rem;
+  height: 300px;
+  position: relative;
+}
+
+/* Quick Links Card */
+.quick-links-card {
+  background: rgba(28, 26, 39, 0.7);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(139, 92, 246, 0.1);
+  border-radius: 16px;
+  padding: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.quick-links-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.quick-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(139, 92, 246, 0.1);
+  border-radius: 12px;
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.8);
+  transition: all 0.3s ease;
+}
+
+.quick-link:hover {
+  background: rgba(139, 92, 246, 0.1);
+  transform: translateY(-2px);
+}
+
+.quick-link i {
+  font-size: 1.5rem;
+  color: #8B5CF6;
+}
+
+.quick-link span {
+  font-size: 0.85rem;
+}
+
+@media (max-width: 1024px) {
+  .dashboard-content {
+    grid-template-columns: 1fr;
+  }
+  
+  .dashboard-sidebar {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .welcome-actions {
+    flex-direction: column;
+  }
+  
+  .quick-links-list {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Notification Bell Styles */
+.notification-bell {
+  position: relative;
+  z-index: 999999;
+}
+
+.notification-dropdown {
+  position: fixed;
+  top: 80px;
+  right: 100px;
+  width: 320px;
+  background: rgb(17, 24, 39);
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+  display: none;
+  z-index: 999999;
+}
+
+.notification-dropdown.show {
+  display: block;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dropdown-header,
+.notifications-list,
+.notification-item,
+.dropdown-footer {
+  position: relative;
+  z-index: 999999;
+  background: rgb(17, 24, 39);
+}
+
+.notifications-list {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.notification-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.notification-item.unread {
+  background: rgba(139, 92, 246, 0.1);
+}
+
+.notification-item:hover {
+  background: rgba(139, 92, 246, 0.15);
+}
+
+.dropdown-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(17, 24, 39, 1);
+  position: relative;
+  z-index: 99999;
+}
+
+.dropdown-header h4 {
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 500;
+  margin: 0;
+}
+
+.mark-all-read {
+  background: none;
+  border: none;
+  color: #8B5CF6;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.mark-all-read:hover {
+  color: #9F7AEA;
+}
+
+.notification-bell i {
+  font-size: 1.25rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.notification-badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: #EF4444;
+  color: white;
+  border-radius: 50%;
+  padding: 0.2rem 0.4rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border: 2px solid rgba(17, 24, 39, 0.7);
+}
+
+.notification-badge.pulse {
+  animation: badgePulse 2s infinite;
+}
+
+@keyframes badgePulse {
+  0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+  70% { box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+}
+
+.user-profile {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.user-profile:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(139, 92, 246, 0.3);
+}
+
+.status-indicator {
+  position: absolute;
+  bottom: 0.5rem;
+  left: 2.5rem;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 2px solid rgba(17, 24, 39, 0.7);
+}
+
+.status-indicator.online {
+  background: #10B981;
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
+}
+
+.profile-image {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  object-fit: cover;
+  border: 2px solid rgba(139, 92, 246, 0.3);
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.user-name {
+  color: #fff;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.user-role {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.85rem;
+}
+
+.user-role i {
+  font-size: 0.9rem;
+  color: #8B5CF6;
+}
+
+.dropdown-toggle {
+  color: rgba(255, 255, 255, 0.6);
+  transition: transform 0.3s ease;
+}
+
+.user-profile:hover .dropdown-toggle {
+  transform: rotate(180deg);
+}
+
+.profile-dropdown {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  width: 220px;
+  background: rgba(17, 24, 39, 0.95);
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  border-radius: 12px;
+  padding: 0.5rem;
+  display: none;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+.user-profile:hover .profile-dropdown {
+  display: block;
+  animation: dropdownFadeIn 0.2s ease;
+}
+
+@keyframes dropdownFadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.dropdown-item:hover {
+  background: rgba(139, 92, 246, 0.1);
+  color: #fff;
+}
+
+.dropdown-item i {
+  font-size: 1rem;
+  color: #8B5CF6;
+}
+
+.dropdown-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+  margin: 0.5rem 0;
+}
+
+.text-danger {
+  color: #EF4444 !important;
+}
+
+.text-danger i {
+  color: #EF4444 !important;
+}
+
+.text-danger:hover {
+  background: rgba(239, 68, 68, 0.1) !important;
+}
+
+@media (max-width: 1024px) {
+  .search-container {
+    width: 250px;
+  }
+}
+
+@media (max-width: 768px) {
+  .top-bar {
+    margin: 0.5rem;
+    padding: 0.75rem;
+  }
+
+  .search-container {
+    display: none;
+  }
+
+  .user-info {
+    display: none;
+  }
+
+  .top-bar-actions {
+    gap: 1rem;
+  }
+
+  .title-wrapper h1 {
+    font-size: 1.5rem;
+  }
+
+  .title-badge {
+    padding: 0.5rem;
+  }
+}
 </style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Bildirim zili tıklama olayı
+  const notificationBell = document.querySelector('.notification-bell');
+  const notificationDropdown = document.querySelector('.notification-dropdown');
+  
+  notificationBell.addEventListener('click', function(e) {
+    e.stopPropagation();
+    notificationDropdown.classList.toggle('show');
+  });
+
+  // Sayfa herhangi bir yerine tıklandığında dropdown'ı kapat
+  document.addEventListener('click', function(e) {
+    if (!notificationBell.contains(e.target)) {
+      notificationDropdown.classList.remove('show');
+    }
+  });
+
+  // Bildirimleri okundu olarak işaretleme
+  const markReadButtons = document.querySelectorAll('.mark-read');
+  markReadButtons.forEach(button => {
+    button.addEventListener('click', function(e) {
+      e.stopPropagation();
+      const notificationItem = this.closest('.notification-item');
+      notificationItem.classList.remove('unread');
+      updateNotificationCount();
+    });
+  });
+
+  // Tüm bildirimleri okundu olarak işaretleme
+  const markAllReadButton = document.querySelector('.mark-all-read');
+  markAllReadButton.addEventListener('click', function(e) {
+    e.stopPropagation();
+    const unreadNotifications = document.querySelectorAll('.notification-item.unread');
+    unreadNotifications.forEach(notification => {
+      notification.classList.remove('unread');
+    });
+    updateNotificationCount();
+  });
+
+  // Bildirim sayısını güncelleme
+  function updateNotificationCount() {
+    const unreadCount = document.querySelectorAll('.notification-item.unread').length;
+    const badge = document.querySelector('.notification-badge');
+    
+    if (unreadCount === 0) {
+      badge.style.display = 'none';
+    } else {
+      badge.style.display = 'flex';
+      badge.textContent = unreadCount;
+    }
+  }
+
+  // Bildirim öğelerine tıklama olayı
+  const notificationItems = document.querySelectorAll('.notification-item');
+  notificationItems.forEach(item => {
+    item.addEventListener('click', function(e) {
+      if (!e.target.closest('.notification-actions')) {
+        // Bildirime tıklandığında yapılacak işlem
+        this.classList.remove('unread');
+        updateNotificationCount();
+      }
+    });
+  });
+
+  // Silme butonları için olay dinleyicisi
+  const deleteButtons = document.querySelectorAll('.delete-notification');
+  deleteButtons.forEach(button => {
+    button.addEventListener('click', function(e) {
+      e.stopPropagation();
+      const notificationItem = this.closest('.notification-item');
+      notificationItem.style.animation = 'fadeOut 0.3s ease forwards';
+      
+      setTimeout(() => {
+        notificationItem.remove();
+        updateNotificationCount();
+      }, 300);
+    });
+  });
+
+  // Başlangıçta bildirim sayısını güncelle
+  updateNotificationCount();
+});
+</script>
+
+<style>
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(10px);
+  }
+}
+
+.notification-item {
+  animation: fadeIn 0.3s ease;
+}
+
+.notification-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.notification-actions button {
+  background: none;
+  border: none;
+  padding: 0.25rem;
+  border-radius: 4px;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.6);
+  transition: all 0.2s ease;
+}
+
+.notification-actions button:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.delete-notification {
+  color: #EF4444 !important;
+}
+
+.delete-notification:hover {
+  background: rgba(239, 68, 68, 0.1) !important;
+  color: #EF4444 !important;
+}
+</style>
+
+<style>
+.notification-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: none;
+  z-index: 999999999;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+.notification-modal.show {
+  opacity: 1;
+  visibility: visible;
+  display: flex;
+}
+
+.modal-content {
+  position: relative;
+  width: 400px;
+  max-width: 90%;
+  max-height: 90vh;
+  background: rgb(17, 24, 39);
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  border-radius: 16px;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+  z-index: 9999999999;
+  overflow: hidden;
+  transform: scale(0.95);
+  transition: transform 0.3s ease;
+}
+
+.notification-modal.show .modal-content {
+  transform: scale(1);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem;
+  border-bottom: 1px solid rgba(139, 92, 246, 0.2);
+  background: rgb(17, 24, 39);
+}
+
+.modal-header h4 {
+  margin: 0;
+  color: #fff;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.close-modal {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.6);
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.close-modal:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.modal-body {
+  padding: 1.25rem;
+  max-height: calc(90vh - 140px);
+  overflow-y: auto;
+  background: rgb(17, 24, 39);
+}
+
+.modal-footer {
+  padding: 1.25rem;
+  border-top: 1px solid rgba(139, 92, 246, 0.2);
+  background: rgb(17, 24, 39);
+  text-align: center;
+}
+
+.notification-actions-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding: 0 0.5rem;
+}
+
+.notification-count {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.9rem;
+}
+
+.mark-all-read {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: none;
+  border: none;
+  color: #8B5CF6;
+  font-size: 0.9rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.mark-all-read:hover {
+  background: rgba(139, 92, 246, 0.1);
+}
+
+.notifications-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.notification-item {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(139, 92, 246, 0.1);
+  border-radius: 12px;
+  padding: 1rem;
+  transition: all 0.3s ease;
+}
+
+.notification-item.unread {
+  background: rgba(139, 92, 246, 0.1);
+}
+
+.notification-item:hover {
+  transform: translateX(5px);
+  background: rgba(139, 92, 246, 0.15);
+}
+
+@media (max-width: 480px) {
+  .modal-content {
+    width: 95%;
+    margin: 1rem;
+  }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const notificationBell = document.querySelector('.notification-bell');
+  const notificationModal = document.querySelector('.notification-modal');
+  const closeModal = document.querySelector('.close-modal');
+
+  function openModal() {
+    notificationModal.classList.add('show');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    notificationModal.classList.remove('show');
+    document.body.style.overflow = '';
+  }
+
+  notificationBell.addEventListener('click', function(e) {
+    e.stopPropagation();
+    openModal();
+  });
+
+  closeModal.addEventListener('click', function(e) {
+    e.stopPropagation();
+    closeModal();
+  });
+
+  notificationModal.addEventListener('click', function(e) {
+    if (e.target === this) {
+      closeModal();
+    }
+  });
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && notificationModal.classList.contains('show')) {
+      closeModal();
+    }
+  });
+});
+</script>

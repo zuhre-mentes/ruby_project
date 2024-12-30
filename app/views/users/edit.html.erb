@@ -72,14 +72,14 @@
       <span>Dashboard</span>
     <% end %>
     
-    <%= link_to edit_user_registration_path, class: "nav-item" do %>
+    <%= link_to profile_path, class: "nav-item" do %>
       <i class="bi bi-person-badge"></i>
-      <span>Profil</span>
+      <span>Profile</span>
     <% end %>
     
     <%= link_to badges_path, class: "nav-item" do %>
       <i class="bi bi-stars"></i>
-      <span>Rozetler</span>
+      <span>Badges</span>
     <% end %>
     
     <%= link_to forum_posts_path, class: "nav-item" do %>
@@ -89,12 +89,12 @@
 
     <%= link_to events_index_path, class: "nav-item" do %>
       <i class="bi bi-calendar-event"></i>
-      <span>Etkinlikler</span>
+      <span>Events</span>
     <% end %>
 
     <%= link_to "#", class: "nav-item" do %>
       <i class="bi bi-briefcase"></i>
-      <span>İş İlanları</span>
+      <span>Job Listings</span>
     <% end %>
 
     <%= link_to "#", class: "nav-item" do %>
@@ -110,7 +110,7 @@
     <div class="nav-footer">
       <%= button_to destroy_user_session_path, method: :delete, class: "nav-item logout-btn" do %>
         <i class="bi bi-box-arrow-right"></i>
-        <span>Çıkış Yap</span>
+        <span>Logout</span>
       <% end %>
     </div>
   </nav>
@@ -549,44 +549,39 @@
 }
 </style>
 
-<h1>Profilimi Düzenle</h1>
+<h1>Edit My Profile</h1>
 <%= stylesheet_link_tag 'edit' %>
 
 <div class="edit-profile-container">
   <%= form_with model: @user, local: true do |form| %>
-    <% if flash[:alert] %>
-      <div class="error-message">
-        <%= flash[:alert] %>
-      </div>
-    <% end %>
-
+    
     <div>
-      <%= form.label :personal_information, "Kişisel Bilgiler" %>
+      <%= form.label :personal_information, "Personal Information" %>
       <%= form.text_area :personal_information, rows: 3 %>
     </div>
 
     <div>
-      <%= form.label :about_me, "Hakkımda" %>
+      <%= form.label :about_me, "About Me" %>
       <%= form.text_area :about_me, rows: 3 %>
     </div>
 
     <div>
-      <%= form.label :education, "Eğitim" %>
+      <%= form.label :education, "Education" %>
       <%= form.text_area :education, rows: 3 %>
     </div>
 
     <div>
-      <%= form.label :experience, "Deneyim" %>
+      <%= form.label :experience, "Experience" %>
       <%= form.text_area :experience, rows: 3 %>
     </div>
 
     <div>
-      <%= form.label :skills, "Beceriler" %>
+      <%= form.label :skills, "Skills" %>
       <%= form.text_area :skills, rows: 3 %>
     </div>
 
     <div>
-      <%= form.submit "Güncelle" %>
+      <%= form.submit "Update" %>
     </div>
   <% end %>
 </div>

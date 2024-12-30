@@ -73,14 +73,14 @@
       <span>Dashboard</span>
     <% end %>
     
-    <%= link_to edit_user_registration_path, class: "nav-item" do %>
+    <%= link_to profile_path, class: "nav-item" do %>
       <i class="bi bi-person-badge"></i>
-      <span>Profil</span>
+      <span>Profile</span>
     <% end %>
     
     <%= link_to badges_path, class: "nav-item" do %>
       <i class="bi bi-stars"></i>
-      <span>Rozetler</span>
+      <span>Badges</span>
     <% end %>
     
     <%= link_to forum_posts_path, class: "nav-item" do %>
@@ -90,12 +90,12 @@
 
     <%= link_to events_index_path, class: "nav-item" do %>
       <i class="bi bi-calendar-event"></i>
-      <span>Etkinlikler</span>
+      <span>Events</span>
     <% end %>
 
     <%= link_to "#", class: "nav-item" do %>
       <i class="bi bi-briefcase"></i>
-      <span>İş İlanları</span>
+      <span>Job Listings</span>
     <% end %>
 
     <%= link_to "#", class: "nav-item" do %>
@@ -118,14 +118,14 @@
 </div>
 
 <style>
-/* Reset ve Genel Stiller */
+/* Reset and General Styles */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* Sidebar için arka plan güncelleme */
+/* Sidebar background update */
 .sidebar {
   position: fixed;
   left: 0;
@@ -593,7 +593,7 @@
         <div class="search-input-group">
           <div class="input-with-icon">
             <i class="bi bi-search"></i>
-            <%= text_field_tag :search, params[:search], placeholder: "Forum'da ara...", class: "search-input" %>
+            <%= text_field_tag :search, params[:search], placeholder: "Search in forum...", class: "search-input" %>
           </div>
           
           <div class="select-with-icon">
@@ -633,7 +633,7 @@
               </span>
               <span class="post-date">
                 <i class="bi bi-clock"></i>
-                <%= time_ago_in_words(post.created_at) %> önce
+                <%= time_ago_in_words(post.created_at) %> ago
               </span>
             </div>
             <h2 class="post-title"><%= post.title %></h2>

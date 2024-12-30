@@ -82,14 +82,14 @@
       <span>Dashboard</span>
     <% end %>
     
-    <%= link_to edit_user_registration_path, class: "nav-item" do %>
+    <%= link_to profile_path, class: "nav-item" do %>
       <i class="bi bi-person-badge"></i>
-      <span>Profil</span>
+      <span>Profile</span>
     <% end %>
     
     <%= link_to badges_path, class: "nav-item" do %>
       <i class="bi bi-stars"></i>
-      <span>Rozetler</span>
+      <span>Badges</span>
     <% end %>
     
     <%= link_to forum_posts_path, class: "nav-item" do %>
@@ -99,12 +99,12 @@
 
     <%= link_to events_index_path, class: "nav-item" do %>
       <i class="bi bi-calendar-event"></i>
-      <span>Etkinlikler</span>
+      <span>Events</span>
     <% end %>
 
     <%= link_to "#", class: "nav-item" do %>
       <i class="bi bi-briefcase"></i>
-      <span>İş İlanları</span>
+      <span>Job Listings</span>
     <% end %>
 
     <%= link_to "#", class: "nav-item" do %>
@@ -120,21 +120,21 @@
     <div class="nav-footer">
       <%= button_to destroy_user_session_path, method: :delete, class: "nav-item logout-btn" do %>
         <i class="bi bi-box-arrow-right"></i>
-        <span>Çıkış Yap</span>
+        <span>Logout</span>
       <% end %>
     </div>
   </nav>
 </div>
 
 <style>
-/* Reset ve Genel Stiller */
+/* Reset and General Styles */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* Sidebar için arka plan güncelleme */
+/* Sidebar background update */
 .sidebar {
   position: fixed;
   left: 0;
@@ -571,18 +571,18 @@
                 <div class="search-input-wrapper">
                     <i class="bi bi-search"></i>
                     <%= text_field_tag :search, params[:search], 
-                        placeholder: "Sertifika ara...", 
+                        placeholder: "Search certificates...", 
                         class: "search-input" %>
         </div>
 
                 <div class="search-controls">
                     <%= select_tag :category, 
-                        options_for_select([["Tüm Kategoriler", ""]] + 
+                        options_for_select([["All Categories", ""]] + 
                             BadgeCategory.pluck(:name).map { |name| [name, name] },
                             params[:category]), 
                         class: "category-select" %>
 
-                    <%= submit_tag "Ara", class: "search-btn", name: nil %>
+                    <%= submit_tag "Search", class: "search-btn", name: nil %>
         </div>
                     <% end %>
         </div>
@@ -614,8 +614,8 @@
                     </div>
 
                     <div class="badge-actions">
-                        <a href="<%= badge_path(badge) %>" class="btn-outline">Detaylar</a>
-                        <a href="<%= new_verification_path %>" class="btn-solid">Başvur</a>
+                        <a href="<%= badge_path(badge) %>" class="btn-outline">Details</a>
+                        <a href="<%= new_verification_path %>" class="btn-solid">Apply</a>
                     </div>
                 </div>
             <% end %>

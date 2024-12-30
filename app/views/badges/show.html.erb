@@ -79,14 +79,14 @@
       <span>Dashboard</span>
     <% end %>
     
-    <%= link_to edit_user_registration_path, class: "nav-item" do %>
+    <%= link_to profile_path, class: "nav-item" do %>
       <i class="bi bi-person-badge"></i>
-      <span>Profil</span>
+      <span>Profile</span>
     <% end %>
     
     <%= link_to badges_path, class: "nav-item" do %>
       <i class="bi bi-stars"></i>
-      <span>Rozetler</span>
+      <span>Badges</span>
     <% end %>
     
     <%= link_to forum_posts_path, class: "nav-item" do %>
@@ -96,12 +96,12 @@
 
     <%= link_to events_index_path, class: "nav-item" do %>
       <i class="bi bi-calendar-event"></i>
-      <span>Etkinlikler</span>
+      <span>Events</span>
     <% end %>
 
     <%= link_to "#", class: "nav-item" do %>
       <i class="bi bi-briefcase"></i>
-      <span>İş İlanları</span>
+      <span>Job Listings</span>
     <% end %>
 
     <%= link_to "#", class: "nav-item" do %>
@@ -117,7 +117,7 @@
     <div class="nav-footer">
       <%= button_to destroy_user_session_path, method: :delete, class: "nav-item logout-btn" do %>
         <i class="bi bi-box-arrow-right"></i>
-        <span>Çıkış Yap</span>
+        <span>Logout</span>
       <% end %>
     </div>
   </nav>
@@ -578,7 +578,7 @@
                     <div class="apply-button-container">
                         <a href="/verifications/new" class="apply-button">
                             <i class="bi bi-check-circle"></i>
-                            <span>Başvur</span>
+                            <span>Apply</span>
                         </a>
                     </div>
                 </div>
@@ -619,7 +619,7 @@
     <!-- Related Badges Section -->
     <div class="related-badges">
         <div class="related-header">
-            <h2 class="section-title">Benzer Rozetler</h2>
+            <h2 class="section-title">Similar Badges</h2>
             <div class="title-underline"></div>
         </div>
         <div class="related-badges-container">
@@ -628,11 +628,11 @@
             </button>
             
             <div class="related-badges-grid" id="badgesGrid">
-                <% Badge.where.not(id: @badge.id).limit(3).each do |related_badge| %>
+                <% Badge.where.not(id: @badge.id).each do |related_badge| %>
                     <div class="related-badge-card">
                         <div class="badge-icon-wrapper">
                             <div class="badge-icon">
-                                <img src="<%= default_icon %>" alt="<%= related_badge.name %>">
+                                <img src="<%= default_icon %>" >
                             </div>
                             <div class="icon-glow"></div>
                         </div>
@@ -641,7 +641,7 @@
                             <p class="badge-desc"><%= truncate(related_badge.description, length: 100) %></p>
                         </div>
                         <a href="<%= badge_path(related_badge) %>" class="details-btn">
-                            <span>Detaylar</span>
+                            <span>Details</span>
                             <i class="bi bi-arrow-right"></i>
                             <div class="btn-hover-effect"></div>
                         </a>
@@ -662,11 +662,17 @@
     max-width: 1600px;
     margin: 0 auto;
     padding: 2rem;
-    margin-left: 100px; /* Sidebar genişliğine göre ayarlandı */
+    margin-left: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 /* Badge card düzeni */
 .badge-card {
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
     background: rgba(255, 255, 255, 0.03);
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -700,6 +706,9 @@
 
 /* Related Badges Section */
 .related-badges {
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
     background: rgba(255, 255, 255, 0.03);
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -733,6 +742,7 @@
     align-items: center;
     gap: 2rem;
     padding: 0 2rem;
+    overflow: hidden;
 }
 
 .related-badges-grid {
@@ -740,15 +750,19 @@
     grid-template-columns: repeat(3, 1fr);
     gap: 2rem;
     width: 100%;
+    transition: transform 0.3s ease;
 }
 
 .related-badge-card {
+    width: 100%;
+    max-width: 350px;
     background: rgba(30, 9, 51, 0.4);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 1rem;
     padding: 2rem;
     transition: all 0.3s ease;
 }
+
 .related-badge-card:hover {
     transform: translateY(-5px) scale(1.02);
     border-color: rgba(139, 92, 246, 0.4);
@@ -824,6 +838,8 @@
 }
 
 .nav-btn {
+    position: absolute;
+    z-index: 2;
     width: 48px;
     height: 48px;
     border-radius: 50%;
@@ -835,9 +851,23 @@
     justify-content: center;
     cursor: pointer;
     transition: all 0.3s ease;
+    backdrop-filter: blur(8px);
 }
 
-.nav-btn:hover {
+.nav-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.prev-btn {
+    left: 0;
+}
+
+.next-btn {
+    right: 0;
+}
+
+.nav-btn:hover:not(:disabled) {
     background: rgba(156, 39, 176, 0.2);
     transform: scale(1.1);
 }
@@ -877,8 +907,8 @@
 
 @media (max-width: 768px) {
     .page-wrapper {
-        padding: 1rem;
         margin-left: 80px;
+        padding: 1rem;
     }
     
     .badge-card {
@@ -2663,77 +2693,57 @@ body {
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    const badgesGrid = document.getElementById('badgesGrid');
     const prevBtn = document.getElementById('prevBtn');
     const nextBtn = document.getElementById('nextBtn');
-    const grid = document.getElementById('badgesGrid');
-    let currentPage = 0;
-    let totalPages = 0;
-    
-    
-    fetchTotalBadges();
-    
+    const cards = document.querySelectorAll('.related-badge-card');
+    const cardWidth = cards[0]?.offsetWidth || 0;
+    const visibleCards = 3;
+    let currentIndex = 0;
+
+    // Başlangıçta sadece ilk 3 kartı göster
+    updateVisibility();
+
+    function updateVisibility() {
+        cards.forEach((card, index) => {
+            if (index >= currentIndex && index < currentIndex + visibleCards) {
+                card.style.display = 'flex';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+
+        // Butonların durumunu güncelle
+        prevBtn.disabled = currentIndex === 0;
+        nextBtn.disabled = currentIndex >= cards.length - visibleCards;
+    }
+
     prevBtn.addEventListener('click', () => {
-        if (currentPage > 0) {
-            currentPage--;
-            loadRelatedBadges(currentPage);
-            updateButtonStates();
+        if (currentIndex > 0) {
+            currentIndex--;
+            updateVisibility();
         }
     });
-    
+
     nextBtn.addEventListener('click', () => {
-        if (currentPage < totalPages - 1) {
-            currentPage++;
-            loadRelatedBadges(currentPage);
-            updateButtonStates();
+        if (currentIndex < cards.length - visibleCards) {
+            currentIndex++;
+            updateVisibility();
         }
     });
-    
-    function fetchTotalBadges() {
-        fetch(`/badges/<%= @badge.id %>/related?count=true`)
-            .then(response => response.json())
-            .then(data => {
-                totalPages = Math.ceil(data.total_count / 3);
-                updateButtonStates();
-            })
-            .catch(error => {
-                console.error('Error fetching total badges:', error);
-            });
+
+    // Responsive davranış için
+    function updateLayout() {
+        const containerWidth = badgesGrid.offsetWidth;
+        const newVisibleCards = containerWidth < 768 ? 1 : containerWidth < 1200 ? 2 : 3;
+        if (visibleCards !== newVisibleCards) {
+            visibleCards = newVisibleCards;
+            currentIndex = 0;
+            updateVisibility();
+        }
     }
-    
-    function loadRelatedBadges(page) {
-        grid.style.opacity = '0.5';
-        fetch(`/badges/<%= @badge.id %>/related?page=${page}`)
-            .then(response => response.json())
-            .then(data => {
-                grid.innerHTML = data.badges.map(badge => `
-                    <div class="related-badge-card">
-                        <div class="badge-icon">
-                            <img src="${badge.icon_url || '<%= default_icon %>'}" alt="${badge.name}">
-                        </div>
-                        <div class="badge-content">
-                            <h3>${badge.name}</h3>
-                            <p>${badge.description.substring(0, 100)}${badge.description.length > 100 ? '...' : ''}</p>
-                        </div>
-                        <a href="/badges/${badge.id}" class="details-btn">
-                            <span>Detaylar</span>
-                            <i class="bi bi-arrow-right"></i>
-                        </a>
-                    </div>
-                `).join('');
-                grid.style.opacity = '1';
-            })
-            .catch(error => {
-                console.error('Error loading badges:', error);
-                grid.style.opacity = '1';
-            });
-    }
-    
-    function updateButtonStates() {
-        prevBtn.disabled = currentPage === 0;
-        nextBtn.disabled = currentPage === totalPages - 1;
-        
-        prevBtn.style.visibility = currentPage === 0 ? 'hidden' : 'visible';
-        nextBtn.style.visibility = currentPage === totalPages - 1 ? 'hidden' : 'visible';
-    }
+
+    window.addEventListener('resize', updateLayout);
+    updateLayout();
 });
 </script>

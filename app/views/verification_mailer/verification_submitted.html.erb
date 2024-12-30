@@ -37,28 +37,28 @@
 </head>
 <body>
   <div class="header">
-    <h1>Rozet Doğrulama Başvurunuz Alındı</h1>
+    <h1>Badge Verification Application Received</h1>
   </div>
 
   <div class="content">
-    <p>Sayın <%= @user.name %>,</p>
+    <p>Dear <%= @user.name %>,</p>
 
-    <p>Rozet doğrulama başvurunuz başarıyla alınmıştır. Başvurunuzun detayları aşağıdaki gibidir:</p>
+    <p>Your badge verification application has been successfully received. Details of your application are as follows:</p>
 
     <div class="badge-info">
-      <h3>Rozet Bilgileri:</h3>
-      <p><strong>Rozet Adı:</strong> <%= @badge.name %></p>
-      <p><strong>Başvuru Tarihi:</strong> <%= @verification.created_at.strftime("%d/%m/%Y %H:%M") %></p>
+      <h3>Badge Information:</h3>
+      <p><strong>Badge Name:</strong> <%= @badge.name %></p>
+      <p><strong>Application Date:</strong> <%= @verification.created_at.strftime("%d/%m/%Y %H:%M") %></p>
     </div>
 
-    <p>Başvurunuz inceleme sürecindedir. İnceleme tamamlandığında size tekrar bilgilendirme yapılacaktır.</p>
+    <p>Your application is under review. You will be notified again when the review is completed.</p>
 
-    <p>Başvurunuzun durumunu <a href="<%= verifications_url %>">buradan</a> takip edebilirsiniz.</p>
+    <p>You can track the status of your application <a href="<%= verifications_url %>">here</a>.</p>
   </div>
 
   <div class="footer">
-    <p>Bu e-posta otomatik olarak gönderilmiştir. Lütfen yanıtlamayınız.</p>
-    <p>© <%= Time.current.year %> Rubytes. Tüm hakları saklıdır.</p>
+    <p>This email was sent automatically. Please do not reply.</p>
+    <p>© <%= Time.current.year %> Rubytes. All rights reserved.</p>
   </div>
 </body>
 </html> 

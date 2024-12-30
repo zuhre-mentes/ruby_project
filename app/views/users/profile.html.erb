@@ -72,14 +72,14 @@
       <span>Dashboard</span>
     <% end %>
     
-    <%= link_to edit_user_registration_path, class: "nav-item" do %>
+    <%= link_to profile_path, class: "nav-item" do %>
       <i class="bi bi-person-badge"></i>
-      <span>Profil</span>
+      <span>Profile</span>
     <% end %>
     
     <%= link_to badges_path, class: "nav-item" do %>
       <i class="bi bi-stars"></i>
-      <span>Rozetler</span>
+      <span>Badges</span>
     <% end %>
     
     <%= link_to forum_posts_path, class: "nav-item" do %>
@@ -89,12 +89,12 @@
 
     <%= link_to events_index_path, class: "nav-item" do %>
       <i class="bi bi-calendar-event"></i>
-      <span>Etkinlikler</span>
+      <span>Events</span>
     <% end %>
 
     <%= link_to "#", class: "nav-item" do %>
       <i class="bi bi-briefcase"></i>
-      <span>İş İlanları</span>
+      <span>Job Listings</span>
     <% end %>
 
     <%= link_to "#", class: "nav-item" do %>
@@ -110,7 +110,7 @@
     <div class="nav-footer">
       <%= button_to destroy_user_session_path, method: :delete, class: "nav-item logout-btn" do %>
         <i class="bi bi-box-arrow-right"></i>
-        <span>Çıkış Yap</span>
+        <span>Logout</span>
       <% end %>
     </div>
   </nav>
@@ -465,10 +465,10 @@ h1 {
   color: #8B5CF6;
   text-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
   position: absolute;
-  top: 0; /* Üst kenara sabitler */
-  left: 50%; /* Sol kenardan %50 uzaklık */
-  transform: translateX(-50%); /* Ortalar */
-  z-index: 1000; /* Üstte görünmesini sağlar */
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
 }
 
 /* Rozetler Bölümü */
@@ -577,54 +577,340 @@ h1 {
 
 </style>
 
-<h1>PROFİLİM</h1>
-<%= stylesheet_link_tag 'profile' %>
+<h1 class="profile-title">PROFİLİM</h1>
 
+<!-- Profil Kutusu -->
 <div class="profile-container">
-  <p><strong>Email:</strong> <%= @user.email %></p>
-  <p><strong>Rol:</strong> <%= @user.role.capitalize %></p>
-  <h2>Kazandığım Rozetler</h2>
-  <div class="badges-container">
-  <% if @badges.any? %>
-    <% @badges.each do |badge| %>
-      <div class="badge">
-        <img src="<%= badge.icon_url || 'default_badge_icon.png' %>" alt="<%= badge.name %>">
-        <h4><%= badge.name %></h4>
-        <p><%= badge.description %></p>
-        <small>Kazandığı Tarih: <%= badge.user_badges.find_by(user_id: @user.id)&.awarded_at || 'Bilinmiyor' %></small>
-      </div>
+  <!-- Kişisel Bilgiler ve Hakkımda -->
+  <div class="profile-section">
+    <h3>Personal Information</h3>
+    <p><%= @user.personal_information || "No personal information added yet." %></p>
+  </div>
+
+  <div class="profile-section">
+    <h3>About Me</h3>
+    <p><%= @user.about_me || "No information added yet." %></p>
+  </div>
+
+  <div class="profile-section">
+    <h3>Education</h3>
+    <p><%= @user.education || "No education information added yet." %></p>
+  </div>
+
+  <div class="profile-section">
+    <h3>Experience</h3>
+    <p><%= @user.experience || "No experience information added yet." %></p>
+  </div>
+
+  <div class="profile-section">
+    <h3>Skills</h3>
+    <p><%= @user.skills || "No skills information added yet." %></p>
+  </div>
+
+  <!-- Profil Düzenle Butonu -->
+  <%= link_to "Profilimi Düzenle", edit_user_path(current_user), class: "profile-edit-button" %>
+</div>
+
+<!-- Rozetler Başlığı -->
+<h2 class="badges-title">Kazandığım Rozetler</h2>
+
+<!-- Rozetler Kutusu -->
+<div class="badges-container">
+  <div class="badges-wrapper">
+    <% if @badges.any? %>
+      <% @badges.each do |badge| %>
+        <div class="badge">
+          <img src="<%= badge.icon_url || 'default_badge_icon.png' %>" alt="<%= badge.name %>">
+          <h4><%= badge.name %></h4>
+          <p><%= badge.description %></p>
+          <small>Kazandığı Tarih: <%= badge.user_badges.find_by(user_id: @user.id)&.awarded_at || 'Bilinmiyor' %></small>
+        </div>
+      <% end %>
+    <% else %>
+      <p class="no-badges-message">Henüz rozet kazanmadınız.</p>
     <% end %>
-  <% else %>
-    <p>Henüz rozet kazanmadınız.</p>
-  <% end %>
-</div> 
-
-  <div class="profile-section">
-    <h3>Kişisel Bilgiler</h3>
-    <p><%= @user.personal_information || "Henüz kişisel bilgi eklenmedi." %></p>
   </div>
+</div>
 
-  <div class="profile-section">
-    <h3>Hakkımda</h3>
-    <p><%= @user.about_me || "Henüz bilgi eklenmedi." %></p>
+<!-- Katıldığım Etkinlikler Başlığı -->
+<h2 class="events-title">Katıldığım Etkinlikler</h2>
+
+<!-- Katıldığım Etkinlikler Kutusu -->
+<div class="events-container">
+  <div class="events-wrapper">
+    <% if @user.attended_events.any? %>
+      <% @user.attended_events.each do |event| %>
+        <div class="event">
+          <div class="event-content">
+            <div>
+              <h4><%= event.content %></h4>
+              <p><%= event.description %></p>
+              <small>Tarih: <%= event.date.strftime("%d %B %Y, %H:%M") %></small>
+            </div>
+            <!-- Vazgeç Butonu -->
+            <%= button_to "Vazgeç", leave_event_path(event), method: :delete, class: "leave-button", data: { confirm: "Bu etkinlikten ayrılmak istediğinizden emin misiniz?" } %>
+          </div>
+        </div>
+      <% end %>
+    <% else %>
+      <p class="no-events-message">Henüz bir etkinliğe katılmadınız.</p>
+    <% end %>
   </div>
-
-  <div class="profile-section">
-    <h3>Eğitim</h3>
-    <p><%= @user.education || "Henüz eğitim bilgisi eklenmedi." %></p>
-  </div>
-
-  <div class="profile-section">
-    <h3>Deneyim</h3>
-    <p><%= @user.experience || "Henüz deneyim bilgisi eklenmedi." %></p>
-  </div>
-
-  <div class="profile-section">
-    <h3>Beceriler</h3>
-    <p><%= @user.skills || "Henüz beceri bilgisi eklenmedi." %></p>
-  </div>
-
-  <%= link_to "Profilimi Düzenle", edit_user_path(current_user) %> <!-- Profil düzenleme linki -->
 </div>
 
 
+
+<style>
+/* Genel Ayarlar */
+body {
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(45deg, #0a0a1f, #13111C, #0d1a2d);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  color: #fff;
+  font-family: 'Arial', sans-serif;
+}
+
+/* Başlık Tasarımı */
+.profile-title {
+  margin: 2rem 0;
+  font-size: 2.5rem;
+  font-family: 'Orbitron', sans-serif;
+  color: #ffffff;
+  text-shadow: 0 4px 12px rgba(139, 92, 246, 0.8);
+  text-transform: uppercase;
+}
+
+/* Profil Kutusu */
+.profile-container {
+  width: 90%;
+  max-width: 800px;
+  padding: 2rem 3rem;
+  background: rgba(13, 12, 24, 0.9);
+  backdrop-filter: blur(20px);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  margin-top: 8rem;
+  margin-bottom: 2rem; /* Rozetler kutusuna boşluk bırakır */
+}
+
+/* Bilgi Bölümleri */
+.profile-container .profile-section h3 {
+  color: #8B5CF6;
+  font-size: 1.3rem;
+  font-weight: bold;
+  text-shadow: 0 2px 6px rgba(139, 92, 246, 0.5);
+  margin-bottom: 0.8rem;
+  text-align: left;
+}
+
+.profile-container .profile-section p {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 1rem;
+  line-height: 1.6;
+  text-align: left;
+}
+
+/* Profil Düzenleme Butonu */
+.profile-edit-button {
+  display: block;
+  margin: 2rem auto 0;
+  padding: 0.8rem 2rem;
+  background: linear-gradient(135deg, #8B5CF6, #6D28D9);
+  border-radius: 8px;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: bold;
+  text-align: center;
+  text-decoration: none;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.profile-edit-button:hover {
+  background: linear-gradient(135deg, #9061F9, #7E3AF2);
+  transform: scale(1.05);
+}
+
+/* Rozetler Başlığı */
+.badges-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #8B5CF6;
+  margin: 2rem 0 1rem 0; /* Başlık ile üstten boşluk ve kutu arasında boşluk */
+  text-align: left; /* Sola hizalar */
+  width: 90%; /* Sayfanın genişliğine göre hizalama için */
+  max-width: 800px;
+}
+
+/* Rozetler Kutusu */
+.badges-container {
+  width: 90%;
+  max-width: 800px;
+  padding: 2rem;
+  background: rgba(13, 12, 24, 0.9);
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  margin-bottom: 5rem; /* Alt boşluk */
+  text-align: center; /* Kutunun içindeki içeriği ortalamak için */
+  min-height: 300px;
+}
+
+/* Henüz rozet yok mesajı */
+.no-badges-message {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.8);
+  margin-top: 3rem; /* Kutunun içinde üst boşluk */
+}
+
+/* Rozet Kartları */
+.badges-wrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+}
+
+.badge {
+  text-align: center;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.badge:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 15px rgba(139, 92, 246, 0.5);
+}
+
+.badge img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 50%;
+  margin-bottom: 0.5rem;
+}
+
+.badge h4 {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #8B5CF6;
+}
+
+.badge p {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.badge small {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* Katıldığım Etkinlikler Başlığı */
+.events-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #8B5CF6;
+  margin: 2rem 0 1rem 0;
+  text-align: left;
+  width: 90%;
+  max-width: 800px;
+}
+
+/* Katıldığım Etkinlikler Kutusu */
+.events-container {
+  width: 90%;
+  max-width: 800px;
+  padding: 2rem;
+  background: rgba(13, 12, 24, 0.9);
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  margin-bottom: 5rem;
+  text-align: center;
+  min-height: 300px;
+}
+
+/* Etkinlik Mesajı */
+.no-events-message {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.8);
+  margin-top: 3rem;
+}
+
+/* Etkinlik Kartları */
+.events-wrapper {
+  display: flex; /* Grid yerine flex kullanıyoruz */
+  flex-direction: column; /* Elemanları alt alta yerleştir */
+  gap: 1.5rem; /* Kartlar arasında boşluk */
+}
+
+.event {
+  text-align: left;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex; /* İçeriği düzenlemek için flex kullanıyoruz */
+  flex-direction: column;
+}
+
+.event:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 15px rgba(139, 92, 246, 0.5);
+}
+
+.event-content {
+  display: flex; /* İçerik ve butonu aynı satıra koymak için */
+  justify-content: space-between; /* İçerik solda, buton sağda */
+  align-items: center; /* Dikeyde ortalar */
+}
+
+.event h4 {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #8B5CF6;
+  margin: 0;
+  text-align: left;
+  
+}
+
+.event p {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.8);
+  margin-top: 1rem;
+  text-align: left;
+}
+
+.event small {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.6);
+  display: block; 
+  text-align: left;
+  margin-top: 1rem; 
+}
+
+.leave-button {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  background: linear-gradient(135deg, #8B5CF6, #6D28D9);
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-size: 0.9rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  align-self: flex-end; /* Sağ tarafa hizalar */
+}
+
+.leave-button:hover {
+  background: linear-gradient(135deg, #6D28D9, #8B5CF6);
+  transform: scale(1.05);
+}
+
+</style>

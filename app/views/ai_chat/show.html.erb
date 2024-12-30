@@ -72,14 +72,14 @@
       <span>Dashboard</span>
     <% end %>
     
-    <%= link_to edit_user_registration_path, class: "nav-item" do %>
+    <%= link_to profile_path, class: "nav-item" do %>
       <i class="bi bi-person-badge"></i>
-      <span>Profil</span>
+      <span>Profile</span>
     <% end %>
     
     <%= link_to badges_path, class: "nav-item" do %>
       <i class="bi bi-stars"></i>
-      <span>Rozetler</span>
+      <span>Badges</span>
     <% end %>
     
     <%= link_to forum_posts_path, class: "nav-item" do %>
@@ -89,12 +89,12 @@
 
     <%= link_to events_index_path, class: "nav-item" do %>
       <i class="bi bi-calendar-event"></i>
-      <span>Etkinlikler</span>
+      <span>Events</span>
     <% end %>
 
     <%= link_to "#", class: "nav-item" do %>
       <i class="bi bi-briefcase"></i>
-      <span>İş İlanları</span>
+      <span>Job Listings</span>
     <% end %>
 
     <%= link_to "#", class: "nav-item" do %>
@@ -110,7 +110,7 @@
     <div class="nav-footer">
       <%= button_to destroy_user_session_path, method: :delete, class: "nav-item logout-btn" do %>
         <i class="bi bi-box-arrow-right"></i>
-        <span>Çıkış Yap</span>
+        <span>Logout</span>
       <% end %>
     </div>
   </nav>
@@ -564,7 +564,9 @@
         <div class="chat-icon">
             <i class="bi bi-robot"></i>
         </div>
-        <h1>AI Chat</h1>
+        <div class="badge-details">
+            <h1><%= @badge.name %></h1>
+        </div>
     </div>
 
     <div class="chat-messages" id="chatMessages">
@@ -573,61 +575,61 @@
                 <i class="bi bi-robot"></i>
             </div>
             <div class="message-content">
-                <p>Merhaba! <%= @badge.name %> rozeti hakkında sorularınızı yanıtlamaya hazırım. Size nasıl yardımcı olabilirim?</p>
-                <div class="message-time">Şimdi</div>
+                <p>Hello! I'm ready to answer your questions about the <%= @badge.name %> badge. How can I help you?</p>
+                <div class="message-time">Now</div>
             </div>
         </div>
     </div>
 
     <div class="quick-questions" id="quickQuestions">
         <div class="quick-questions-scroll">
-            <button class="quick-question-btn" data-question="Bu rozeti almak için hangi becerilere sahip olmam gerekiyor?">
+            <button class="quick-question-btn" data-question="What skills do I need to earn this badge?">
                 <i class="bi bi-lightbulb"></i>
-                Gerekli Beceriler
+                Required Skills
             </button>
-            <button class="quick-question-btn" data-question="Bu rozetin zorluk seviyesi nedir?">
+            <button class="quick-question-btn" data-question="What is the difficulty level of this badge?">
                 <i class="bi bi-bar-chart"></i>
-                Zorluk Seviyesi
+                Difficulty Level
             </button>
-            <button class="quick-question-btn" data-question="Bu rozeti almak için tahmini çalışma süresi ne kadar?">
+            <button class="quick-question-btn" data-question="What is the estimated study time for this badge?">
                 <i class="bi bi-clock"></i>
-                Çalışma Süresi
+                Study Time
             </button>
-            <button class="quick-question-btn" data-question="Bu rozetin sektördeki önemi nedir?">
+            <button class="quick-question-btn" data-question="What is the importance of this badge in the industry?">
                 <i class="bi bi-briefcase"></i>
-                Sektördeki Önemi
+                Industry Importance
             </button>
-            <button class="quick-question-btn" data-question="Bu rozet için önerilen öğrenme kaynakları nelerdir?">
+            <button class="quick-question-btn" data-question="What are the recommended learning resources for this badge?">
                 <i class="bi bi-book"></i>
-                Öğrenme Kaynakları
+                Learning Resources
             </button>
-            <button class="quick-question-btn" data-question="Bu rozetin kariyer gelişimimdeki rolü nedir?">
+            <button class="quick-question-btn" data-question="What is the role of this badge in career development?">
                 <i class="bi bi-graph-up"></i>
-                Kariyer Etkisi
+                Career Impact
             </button>
-            <button class="quick-question-btn" data-question="Bu rozeti almak için önerilen ön koşullar nelerdir?">
+            <button class="quick-question-btn" data-question="What are the recommended prerequisites for this badge?">
                 <i class="bi bi-list-check"></i>
-                Ön Koşullar
+                Prerequisites
             </button>
-            <button class="quick-question-btn" data-question="Bu rozetin geçerlilik süresi ne kadardır?">
+            <button class="quick-question-btn" data-question="What is the validity period of this badge?">
                 <i class="bi bi-calendar-check"></i>
-                Geçerlilik Süresi
+                Validity Period
             </button>
-            <button class="quick-question-btn" data-question="Bu rozet için sınav veya değerlendirme süreci nasıl işliyor?">
+            <button class="quick-question-btn" data-question="How does the exam or assessment process work for this badge?">
                 <i class="bi bi-pencil-square"></i>
-                Değerlendirme Süreci
+                Assessment Process
             </button>
-            <button class="quick-question-btn" data-question="Bu rozetin yenileme şartları nelerdir?">
+            <button class="quick-question-btn" data-question="What are the renewal requirements for this badge?">
                 <i class="bi bi-arrow-repeat"></i>
-                Yenileme Şartları
+                Renewal Requirements
             </button>
-            <button class="quick-question-btn" data-question="Bu rozet için başvuru ücreti ne kadardır?">
+            <button class="quick-question-btn" data-question="What is the application fee for this badge?">
                 <i class="bi bi-currency-dollar"></i>
-                Başvuru Ücreti
+                Application Fee
             </button>
-            <button class="quick-question-btn" data-question="Bu rozetin uluslararası geçerliliği var mı?">
+            <button class="quick-question-btn" data-question="Does this badge have international validity?">
                 <i class="bi bi-globe"></i>
-                Uluslararası Geçerlilik
+                International Validity
             </button>
         </div>
     </div>
@@ -637,7 +639,7 @@
             <div class="input-wrapper">
                 <input type="text" 
                        id="messageInput" 
-                       placeholder="Mesajınızı yazın..." 
+                       placeholder="Type your message..." 
                        autocomplete="off">
                 <button type="submit" class="send-button">
                     <i class="bi bi-send"></i>

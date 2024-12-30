@@ -2,7 +2,7 @@
 
 <%= link_to forum_posts_path, class: "back-link" do %>
   <i class="bi bi-arrow-left"></i>
-  <span>Geri Dön</span>
+  <span>Go Back</span>
 <% end %>
 
 <div class="new-post-container">
@@ -15,8 +15,8 @@
 
   <div class="form-header">
     <div class="header-content">
-      <h1>Yeni Gönderi Oluştur</h1>
-      <p>Düşüncelerinizi ve deneyimlerinizi topluluğumuzla paylaşın</p>
+      <h1>Create New Post</h1>
+      <p>Share your thoughts and experiences with our community</p>
     </div>
   </div>
 
@@ -26,39 +26,39 @@
         <div class="form-group">
           <div class="input-wrapper title-input">
             <i class="bi bi-type"></i>
-            <%= f.text_field :title, class: "form-input", placeholder: "Başlık", required: true %>
+            <%= f.text_field :title, class: "form-input", placeholder: "Title", required: true %>
             <div class="input-focus-effect"></div>
           </div>
-          <small class="input-help">Gönderiniz için açıklayıcı bir başlık girin</small>
+          <small class="input-help">Enter a descriptive title for your post</small>
         </div>
 
         <div class="form-row">
           <div class="form-group">
             <div class="input-wrapper author-input">
               <i class="bi bi-person"></i>
-              <%= f.text_field :author_name, class: "form-input", placeholder: "Yazar Adı", required: true %>
+              <%= f.text_field :author_name, class: "form-input", placeholder: "Author Name", required: true %>
               <div class="input-focus-effect"></div>
             </div>
-            <small class="input-help">Gönderinin yazarı olarak görünecek isim</small>
+            <small class="input-help">Name that will appear as the post's author</small>
           </div>
 
           <div class="form-group">
             <div class="select-wrapper category-select">
               <i class="bi bi-tag"></i>
-              <%= f.select :category, ForumPost::CATEGORIES, { prompt: "Kategori Seçin" }, { class: "form-select", required: true } %>
+              <%= f.select :category, ForumPost::CATEGORIES, { prompt: "Select Category" }, { class: "form-select", required: true } %>
               <i class="bi bi-chevron-down dropdown-icon"></i>
               <div class="input-focus-effect"></div>
             </div>
-            <small class="input-help">Gönderinizin kategorisini seçin</small>
+            <small class="input-help">Choose a category for your post</small>
           </div>
         </div>
 
         <div class="form-group">
           <div class="textarea-wrapper content-input">
-            <%= f.text_area :content, class: "form-textarea", placeholder: "Gönderinizin içeriğini buraya yazın...", rows: 10, required: true %>
+            <%= f.text_area :content, class: "form-textarea", placeholder: "Write your post content here...", rows: 10, required: true %>
             <div class="input-focus-effect"></div>
           </div>
-          <small class="input-help">Gönderinizin detaylı içeriğini yazın</small>
+          <small class="input-help">Write the detailed content of your post</small>
         </div>
       </div>
 
@@ -66,12 +66,12 @@
         <div class="action-buttons">
           <%= link_to forum_posts_path, class: "cancel-button" do %>
             <i class="bi bi-x-lg"></i>
-            <span>İptal Et</span>
+            <span>Cancel</span>
           <% end %>
 
           <%= button_tag type: "submit", class: "submit-button" do %>
             <i class="bi bi-send"></i>
-            <span>Gönderiyi Yayınla</span>
+            <span>Publish Post</span>
           <% end %>
         </div>
       </div>
@@ -490,7 +490,7 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-  // Form elemanları için hover ve focus efektleri
+  // Form elements hover and focus effects
   const formElements = document.querySelectorAll('.input-wrapper, .select-wrapper, .textarea-wrapper');
   
   formElements.forEach(element => {
@@ -520,7 +520,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
-  // Form gönderildiğinde loading durumu
+  // Loading state when form is submitted
   const form = document.querySelector('.post-form');
   form.addEventListener('submit', function(e) {
     const submitButton = this.querySelector('.submit-button');
