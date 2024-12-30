@@ -1,26 +1,240 @@
-<h2>Başvuru Yap</h2>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Apply for Position</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
 
-<%= form_for [@position, @application] do |f| %>
-  <% if @application.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@application.errors.count, "error") %> prohibited this application from being saved:</h2>
-      <ul>
-        <% @application.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-      </ul>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css" rel="stylesheet">
+  <!-- Animate.css -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+  <!-- Google Fonts - Orbitron -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+  <%= javascript_importmap_tags %>
+
+  <style>
+    /* Reset ve Genel Stiller */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: linear-gradient(45deg, #0a0a1f, #13111C, #0d1a2d);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+      color: #fff;
+      position: relative;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .card {
+      background: rgba(13, 12, 24, 0.6);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(139, 92, 246, 0.1);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    .card-header {
+      background: rgba(13, 12, 24, 0.4);
+      border-bottom: 1px solid rgba(139, 92, 246, 0.1);
+    }
+
+    .form-label {
+      color: rgba(255, 255, 255, 0.9);
+      font-weight: 500;
+    }
+
+    .form-control {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(139, 92, 246, 0.2);
+      color: #fff;
+      transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: #8B5CF6;
+      box-shadow: 0 0 0 0.25rem rgba(139, 92, 246, 0.25);
+      color: #fff;
+    }
+
+    .form-control::placeholder {
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    .form-text {
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #8B5CF6 10%, #6D28D9 90%);
+      border: none;
+      box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
+    }
+
+    .btn-outline-secondary {
+      color: rgba(255, 255, 255, 0.8);
+      border-color: rgba(255, 255, 255, 0.2);
+      background: transparent;
+    }
+
+    .btn-outline-secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.3);
+      color: #fff;
+    }
+
+    .alert-danger {
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid rgba(239, 68, 68, 0.2);
+      color: #fff;
+    }
+
+    .cv-card {
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: all 0.3s ease;
+    }
+
+    .cv-card:hover {
+      border-color: rgba(139, 92, 246, 0.5);
+      transform: translateY(-2px);
+    }
+
+    .cv-card.selected {
+      border-color: #8B5CF6;
+      background: rgba(139, 92, 246, 0.1);
+    }
+
+    .cv-card .check-icon {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      color: #8B5CF6;
+      opacity: 0;
+      transition: all 0.3s ease;
+    }
+
+    .cv-card.selected .check-icon {
+      opacity: 1;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container py-5">
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div class="card animate__animated animate__fadeIn">
+          <div class="card-header">
+            <h2 class="mb-0" style="font-family: 'Orbitron', sans-serif;">Apply for Position</h2>
+          </div>
+          <div class="card-body">
+            <% if @resumes.empty? %>
+              <div class="alert alert-danger">
+                <i class="bi bi-exclamation-triangle me-2"></i>
+                You need to upload a CV before applying for positions.
+                <%= link_to "Upload CV", new_resume_path, class: "alert-link" %>
+              </div>
+            <% else %>
+              <%= form_with(model: [@position, @application], local: true, class: 'needs-validation') do |f| %>
+                <% if @application.errors.any? %>
+                  <div class="alert alert-danger">
+                    <h4>
+                      <i class="bi bi-exclamation-triangle me-2"></i>
+                      The following errors prevented the application from being submitted:
+                    </h4>
+                    <ul class="mb-0 mt-2">
+                      <% @application.errors.full_messages.each do |msg| %>
+                        <li><%= msg %></li>
+                      <% end %>
+                    </ul>
+                  </div>
+                <% end %>
+
+                <div class="mb-4">
+                  <label class="form-label">Select CV to Submit</label>
+                  <div class="row">
+                    <% @resumes.each do |resume| %>
+                      <div class="col-md-6 mb-3">
+                        <div class="card cv-card h-100" data-cv-id="<%= resume.id %>" onclick="selectCV(this)">
+                          <div class="card-body">
+                            <i class="bi bi-check-circle-fill check-icon"></i>
+                            <h5 class="card-title mb-3">
+                              <i class="bi bi-file-earmark-pdf me-2"></i>
+                              <%= resume.title %>
+                            </h5>
+                            <p class="card-text text-muted">
+                              <%= truncate(resume.description, length: 100) %>
+                            </p>
+                            <small class="text-muted">
+                              <i class="bi bi-clock-history me-1"></i>
+                              Updated <%= time_ago_in_words(resume.updated_at) %> ago
+                            </small>
+                          </div>
+                        </div>
+                      </div>
+                    <% end %>
+                  </div>
+                  <%= f.hidden_field :resume_id, id: 'selected_resume_id' %>
+                </div>
+
+                <div class="d-grid gap-2">
+                  <%= f.button type: 'submit', class: 'btn btn-primary', id: 'submit_button', disabled: true do %>
+                    <i class="bi bi-send me-2"></i>Submit Application
+                  <% end %>
+                  <%= link_to position_path(@position), class: 'btn btn-outline-secondary' do %>
+                    <i class="bi bi-x-lg me-2"></i>Cancel
+                  <% end %>
+                </div>
+              <% end %>
+            <% end %>
+          </div>
+        </div>
+      </div>
     </div>
-  <% end %>
-
-  <div class="form-group">
-    <%= f.label :resume %>
-    <%= f.file_field :resume, class: "form-control" %>
   </div>
 
-  <div class="form-group">
-    <%= f.label :cover_letter %>
-    <%= f.text_area :cover_letter, class: "form-control" %>
-  </div>
-
-  <%= f.submit "Başvur", class: "btn btn-primary" %>
-<% end %>
+  <script>
+    function selectCV(element) {
+      // Remove selected class from all cards
+      document.querySelectorAll('.cv-card').forEach(card => {
+        card.classList.remove('selected');
+      });
+      
+      // Add selected class to clicked card
+      element.classList.add('selected');
+      
+      // Update hidden input with selected CV ID
+      const cvId = element.dataset.cvId;
+      document.getElementById('selected_resume_id').value = cvId;
+      
+      // Enable submit button
+      document.getElementById('submit_button').disabled = false;
+    }
+  </script>
+</body>
+</html>

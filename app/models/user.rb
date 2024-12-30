@@ -20,4 +20,5 @@ class User < ApplicationRecord
   has_many :user_events
   has_many :attended_events, through: :user_events, source: :post
   has_many :resumes, dependent: :destroy
+  has_many :applications, dependent: :destroy
 end

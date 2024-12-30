@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_12_30_191213) do
+ActiveRecord::Schema[7.2].define(version: 2024_12_30_212738) do
   create_table "active_admin_comments", force: :cascade do |t|
     t.string "namespace"
     t.text "body"
@@ -71,7 +71,11 @@ ActiveRecord::Schema[7.2].define(version: 2024_12_30_191213) do
     t.string "cv_file"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "cv_id"
+    t.integer "resume_id", null: false
+    t.index ["cv_id"], name: "index_applications_on_cv_id"
     t.index ["position_id"], name: "index_applications_on_position_id"
+    t.index ["resume_id"], name: "index_applications_on_resume_id"
     t.index ["user_id"], name: "index_applications_on_user_id"
   end
 
@@ -182,6 +186,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_12_30_191213) do
     t.string "image"
     t.string "position_type"
     t.integer "views_count"
+    t.string "location"
     t.index ["company_id"], name: "index_positions_on_company_id"
   end
 
@@ -278,7 +283,9 @@ ActiveRecord::Schema[7.2].define(version: 2024_12_30_191213) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "applications", "cvs"
   add_foreign_key "applications", "positions"
+  add_foreign_key "applications", "resumes"
   add_foreign_key "applications", "users"
   add_foreign_key "badges", "badge_categories"
   add_foreign_key "companies", "users"
