@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>İlan Düzenle</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Google Fonts - Orbitron -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        background: #0D0C18;
+        color: #fff;
+        font-family: system-ui, -apple-system, sans-serif;
+      }
+
+      /* Sidebar Styles */
+      .sidebar {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 70px;
+        height: 100vh;
+        background: rgba(13, 12, 24, 0.95);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        padding: 1.5rem 0.5rem;
+        border-right: 1px solid rgba(139, 92, 246, 0.1);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 1000;
+        overflow: hidden;
+        box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
+      }
+
+      .sidebar:hover {
+        width: 240px;
+      }
+
+      /* Logo Styles */
+      .logo {
+        padding: 0.75rem;
+        margin-bottom: 2rem;
+        position: relative;
+      }
+
+      .logo-container {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .logo i {
+        font-size: 2rem;
+        color: #8B5CF6;
+        filter: drop-shadow(0 0 8px rgba(139, 92, 246, 0.5));
+      }
+
+      .logo span {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 1.4rem;
+        font-weight: 600;
+        color: #8B5CF6;
+        opacity: 0;
+        transform: translateX(-10px);
+        transition: all 0.3s ease;
+      }
+
+      .sidebar:hover .logo span {
+        opacity: 1;
+        transform: translateX(0);
+      }
+
+      /* Menu Styles */
+      .menu-label {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.75rem;
+        color: rgba(255,255,255,0.6);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      .sidebar:hover .menu-label {
+        opacity: 1;
+      }
+
+      .nav-menu {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+
+      .nav-item {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 0.75rem;
+        color: rgba(255,255,255,0.8);
+        text-decoration: none;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+      }
+
+      .nav-item i {
+        font-size: 1.25rem;
+        min-width: 24px;
+      }
+
+      .nav-item span {
+        font-size: 0.95rem;
+        opacity: 0;
+        transform: translateX(-10px);
+        transition: all 0.3s ease;
+      }
+
+      .sidebar:hover .nav-item span {
+        opacity: 1;
+        transform: translateX(0);
+      }
+
+      .nav-item:hover, .nav-item.active {
+        background: rgba(139, 92, 246, 0.2);
+        color: #8B5CF6;
+      }
+
+      /* Main Content */
+      main {
+        margin-left: 70px;
+        min-height: 100vh;
+        transition: margin-left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        background: #0D0C18;
+      }
+
+      .sidebar:hover + main {
+        margin-left: 240px;
+      }
+
+      /* Form Styles */
+      .edit-card {
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid rgba(139, 92, 246, 0.2);
+        border-radius: 16px;
+        padding: 2rem;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+      }
+
+      .form-label {
+        color: rgba(255, 255, 255, 0.8);
+        font-weight: 500;
+      }
+
+      .form-control {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(139, 92, 246, 0.2);
+        color: #fff;
+        padding: 0.75rem 1rem;
+      }
+
+      .form-control:focus {
+        background: rgba(255, 255, 255, 0.08);
+        border-color: rgba(139, 92, 246, 0.4);
+        color: #fff;
+        box-shadow: 0 0 0 0.25rem rgba(139, 92, 246, 0.25);
+      }
+
+      .form-control::placeholder {
+        color: rgba(255, 255, 255, 0.5);
+      }
+
+      .form-select {
+        background-color: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(139, 92, 246, 0.2);
+        color: #fff;
+      }
+
+      .form-select:focus {
+        background-color: rgba(255, 255, 255, 0.08);
+        border-color: rgba(139, 92, 246, 0.4);
+        box-shadow: 0 0 0 0.25rem rgba(139, 92, 246, 0.25);
+      }
+
+      .btn-primary {
+        background: #8B5CF6;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        font-weight: 500;
+      }
+
+      .btn-primary:hover {
+        background: #7C3AED;
+      }
+
+      .btn-outline-light {
+        border-color: rgba(255, 255, 255, 0.2);
+      }
+
+      .btn-outline-light:hover {
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      /* Page Header */
+      .page-header {
+        background: rgba(255, 255, 255, 0.02);
+        border-bottom: 1px solid rgba(139, 92, 246, 0.1);
+        padding: 1.5rem 0;
+        margin-bottom: 2rem;
+      }
+
+      .page-title {
+        font-size: 1.8rem;
+        font-weight: 600;
+        margin: 0;
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .sidebar {
+          width: 70px;
+        }
+        
+        .sidebar:hover {
+          width: 70px;
+        }
+        
+        .logo span,
+        .menu-label,
+        .nav-item span {
+          display: none;
+        }
+        
+        main {
+          margin-left: 70px !important;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <%= render 'shared/flash' %>
+    
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="logo">
+        <div class="logo-container">
+          <i class="bi bi-gem-fill"></i>
+          <span>Rubytes</span>
+        </div>
+      </div>
+      
+      <nav class="nav-menu">
+        <div class="menu-label">MENU</div>
+        
+        <%= link_to root_path, class: "nav-item" do %>
+          <i class="bi bi-columns-gap"></i>
+          <span>Dashboard</span>
+        <% end %>
+        
+        <%= link_to "#", class: "nav-item" do %>
+          <i class="bi bi-person-badge"></i>
+          <span>Profil</span>
+        <% end %>
+        
+        <%= link_to "#", class: "nav-item" do %>
+          <i class="bi bi-stars"></i>
+          <span>Rozetler</span>
+        <% end %>
+        
+        <%= link_to "#", class: "nav-item" do %>
+          <i class="bi bi-chat-square-heart"></i>
+          <span>Forum</span>
+        <% end %>
+
+        <%= link_to "#", class: "nav-item" do %>
+          <i class="bi bi-calendar-event"></i>
+          <span>Etkinlikler</span>
+        <% end %>
+
+        <%= link_to positions_path, class: "nav-item active" do %>
+          <i class="bi bi-briefcase"></i>
+          <span>İş İlanları</span>
+        <% end %>
+
+        <%= link_to "#", class: "nav-item" do %>
+          <i class="bi bi-file-earmark-person"></i>
+          <span>CV</span>
+        <% end %>
+        
+        <%= link_to "#", class: "nav-item" do %>
+          <i class="bi bi-robot"></i>
+          <span>AI Chat</span>
+        <% end %>
+
+        <div class="nav-footer">
+          <%= link_to "#", class: "nav-item logout-btn" do %>
+            <i class="bi bi-box-arrow-right"></i>
+            <span>Çıkış Yap</span>
+          <% end %>
+        </div>
+      </nav>
+    </div>
+
+    <!-- Main Content -->
+    <main>
+      <!-- Page Header -->
+      <div class="page-header">
+        <div class="container">
+          <div class="d-flex justify-content-between align-items-center">
+            <h1 class="page-title">İlan Düzenle</h1>
+            <%= link_to dashboard_positions_path, class: "btn btn-outline-light" do %>
+              <i class="bi bi-arrow-left me-2"></i>İlanlarıma Dön
+            <% end %>
+          </div>
+        </div>
+      </div>
+
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-8">
+            <div class="edit-card">
+              <%= form_with(model: @position, local: true) do |f| %>
+                <div class="mb-3">
+                  <%= f.label :title, "İlan Başlığı", class: "form-label" %>
+                  <%= f.text_field :title, class: "form-control", placeholder: "Örn: Senior Ruby on Rails Developer" %>
+                </div>
+
+                <div class="mb-3">
+                  <%= f.label :description, "İlan Detayı", class: "form-label" %>
+                  <%= f.text_area :description, class: "form-control", rows: 6, placeholder: "İlan detaylarını buraya yazın..." %>
+                </div>
+
+                <div class="mb-3">
+                  <%= f.label :category, "İlan Kategorisi", class: "form-label" %>
+                  <%= f.select :category, ["Full Time", "Part Time", "Internship"], {}, class: "form-select" %>
+                </div>
+
+                <div class="mb-3">
+                  <%= f.label :application_deadline, "Son Başvuru Tarihi", class: "form-label" %>
+                  <%= f.date_field :application_deadline, class: "form-control" %>
+                </div>
+
+                <div class="d-flex gap-2">
+                  <%= f.submit "Güncelle", class: "btn btn-primary" %>
+                  <%= link_to "İptal", dashboard_positions_path, class: "btn btn-outline-light" %>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

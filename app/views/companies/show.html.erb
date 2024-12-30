@@ -1,0 +1,358 @@
+<!-- Hero Section -->
+<div class="hero-section position-relative overflow-hidden">
+  <!-- Animated Background Particles -->
+  <div id="particles-js" class="position-absolute top-0 start-0 w-100 h-100"></div>
+  
+  <!-- 3D Animated Elements -->
+  <div class="animated-shapes">
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+    <div class="shape shape-3"></div>
+  </div>
+
+  <!-- Hero Content -->
+  <div class="container position-relative z-index-2 py-5">
+    <div class="row align-items-center min-vh-50">
+      <div class="col-lg-8">
+        <div class="hero-content" data-aos="fade-up">
+          <!-- Company Logo -->
+          <div class="company-logo mb-4 animate__animated animate__fadeIn">
+            <% if @company.logo.attached? %>
+              <%= image_tag @company.logo, class: "rounded-3 shadow-sm", style: "width: 120px; height: 120px; object-fit: cover;" %>
+            <% else %>
+              <div class="bg-light rounded-3 d-flex align-items-center justify-content-center" style="width: 120px; height: 120px;">
+                <i class="bi bi-building text-primary fs-1"></i>
+              </div>
+            <% end %>
+          </div>
+
+          <h1 class="display-4 text-white fw-bold mb-3 animate__animated animate__fadeInUp">
+            <%= @company.name %>
+          </h1>
+          <p class="lead text-white-50 mb-4 animate__animated animate__fadeInUp animate__delay-1s">
+            <%= @company.description %>
+          </p>
+          
+          <!-- Company Stats -->
+          <div class="row g-4 mt-4 stats-container">
+            <div class="col-md-4 animate__animated animate__fadeInUp animate__delay-2s">
+              <div class="stat-item text-center text-white">
+                <div class="stat-icon mb-2">
+                  <i class="bi bi-briefcase-fill"></i>
+                </div>
+                <h3 class="h2 mb-0"><%= @company.positions.count %></h3>
+                <p class="mb-0 text-white-50">Aktif İlan</p>
+              </div>
+            </div>
+            <div class="col-md-4 animate__animated animate__fadeInUp animate__delay-3s">
+              <div class="stat-item text-center text-white">
+                <div class="stat-icon mb-2">
+                  <i class="bi bi-geo-alt-fill"></i>
+                </div>
+                <h3 class="h2 mb-0"><%= @company.location %></h3>
+                <p class="mb-0 text-white-50">Konum</p>
+              </div>
+            </div>
+            <div class="col-md-4 animate__animated animate__fadeInUp animate__delay-4s">
+              <div class="stat-item text-center text-white">
+                <div class="stat-icon mb-2">
+                  <i class="bi bi-people-fill"></i>
+                </div>
+                <h3 class="h2 mb-0"><%= @company.employee_count %></h3>
+                <p class="mb-0 text-white-50">Çalışan</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Company Contact Info -->
+      <div class="col-lg-4">
+        <div class="contact-card glassmorphism p-4 rounded-4 animate__animated animate__fadeInRight">
+          <h4 class="text-white mb-4">İletişim Bilgileri</h4>
+          
+          <div class="d-flex align-items-center mb-3">
+            <div class="contact-icon me-3">
+              <i class="bi bi-envelope-fill text-white"></i>
+            </div>
+            <div>
+              <p class="text-white-50 mb-0">Email</p>
+              <p class="text-white mb-0"><%= @company.email %></p>
+            </div>
+          </div>
+
+          <div class="d-flex align-items-center mb-3">
+            <div class="contact-icon me-3">
+              <i class="bi bi-telephone-fill text-white"></i>
+            </div>
+            <div>
+              <p class="text-white-50 mb-0">Telefon</p>
+              <p class="text-white mb-0"><%= @company.phone %></p>
+            </div>
+          </div>
+
+          <div class="d-flex align-items-center">
+            <div class="contact-icon me-3">
+              <i class="bi bi-globe text-white"></i>
+            </div>
+            <div>
+              <p class="text-white-50 mb-0">Website</p>
+              <a href="<%= @company.website %>" class="text-white text-decoration-none" target="_blank">
+                <%= @company.website %>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Company Positions Section -->
+<div class="container py-5">
+  <div class="section-title text-center mb-5" data-aos="fade-up">
+    <h2 class="display-6 fw-bold">Açık Pozisyonlar</h2>
+    <p class="text-muted"><%= @company.name %> şirketinin güncel iş ilanları</p>
+  </div>
+
+  <!-- Positions Grid -->
+  <div class="row g-4">
+    <% @company.positions.each_with_index do |position, index| %>
+      <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="<%= index * 100 %>">
+        <div class="card h-100 border-0 shadow-sm position-relative job-card">
+          <!-- Position Type Badge -->
+          <div class="position-absolute top-0 end-0 m-3">
+            <span class="badge bg-<%= position.category == 'Tam Zamanlı' ? 'success' : (position.category == 'Yarı Zamanlı' ? 'info' : 'warning') %>">
+              <%= position.category %>
+            </span>
+          </div>
+
+          <div class="card-body">
+            <h5 class="card-title mb-3"><%= position.title %></h5>
+            <p class="card-text text-muted mb-4" style="min-height: 48px;">
+              <%= position.description.truncate(100) %>
+            </p>
+
+            <!-- Position Details -->
+            <div class="d-flex justify-content-between align-items-center text-muted small mb-3">
+              <div>
+                <i class="bi bi-cash me-1"></i>
+                <%= position.salary.present? ? "#{position.salary} TL" : "Belirtilmemiş" %>
+              </div>
+              <div>
+                <i class="bi bi-calendar me-1"></i>
+                <%= position.application_deadline&.strftime("%d/%m/%Y") %>
+              </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="d-flex gap-2">
+              <%= link_to position_path(position), class: "btn btn-outline-primary flex-grow-1 hover-scale" do %>
+                <i class="bi bi-eye me-1"></i>Detaylar
+              <% end %>
+              <%= link_to new_position_application_path(position_id: position.id), class: "btn btn-primary flex-grow-1 hover-scale" do %>
+                <i class="bi bi-send me-1"></i>Başvur
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<!-- Company Description Section -->
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-10">
+      <div class="card glassmorphism border-0 p-4" data-aos="fade-up">
+        <h3 class="text-white mb-4">Şirket Hakkında</h3>
+        <div class="text-white-50">
+          <%= @company.description %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<% content_for :styles do %>
+<style>
+  /* Hero Section Styles */
+  .hero-section {
+    background: linear-gradient(135deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);
+    min-height: 60vh;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Glassmorphism Effect */
+  .glassmorphism {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+  }
+
+  /* Animated Shapes */
+  .animated-shapes .shape {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    animation: float 6s infinite;
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .shape-1 {
+    width: 150px;
+    height: 150px;
+    top: 10%;
+    left: 5%;
+    animation-delay: 0s;
+    background: linear-gradient(45deg, rgba(255,255,255,0.1), rgba(255,255,255,0.2));
+  }
+
+  .shape-2 {
+    width: 200px;
+    height: 200px;
+    top: 60%;
+    right: 5%;
+    animation-delay: 2s;
+    background: linear-gradient(-45deg, rgba(255,255,255,0.1), rgba(255,255,255,0.2));
+  }
+
+  .shape-3 {
+    width: 100px;
+    height: 100px;
+    bottom: 10%;
+    left: 30%;
+    animation-delay: 4s;
+    background: linear-gradient(90deg, rgba(255,255,255,0.1), rgba(255,255,255,0.2));
+  }
+
+  @keyframes float {
+    0% { transform: translateY(0) rotate(0deg) scale(1); }
+    50% { transform: translateY(-20px) rotate(180deg) scale(1.1); }
+    100% { transform: translateY(0) rotate(360deg) scale(1); }
+  }
+
+  /* Stats Styling */
+  .stat-item {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 16px;
+    padding: 20px;
+    transition: all 0.3s ease;
+  }
+
+  .stat-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  }
+
+  .stat-icon {
+    font-size: 2.5rem;
+    background: linear-gradient(45deg, #fff, rgba(255,255,255,0.5));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* Contact Card */
+  .contact-card {
+    transition: all 0.3s ease;
+  }
+
+  .contact-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+  }
+
+  .contact-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    font-size: 1.2rem;
+  }
+
+  /* Job Cards */
+  .job-card {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+
+  .job-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1) !important;
+  }
+
+  /* Hover Scale Effect */
+  .hover-scale {
+    transition: transform 0.3s ease;
+  }
+
+  .hover-scale:hover {
+    transform: scale(1.05);
+  }
+
+  /* Particles Enhanced */
+  #particles-js {
+    opacity: 0.6;
+  }
+</style>
+<% end %>
+
+<% content_for :scripts do %>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Initialize AOS
+    AOS.init({
+      duration: 1000,
+      once: true
+    });
+
+    // Initialize Particles.js
+    particlesJS('particles-js', {
+      particles: {
+        number: { value: 80, density: { enable: true, value_area: 800 } },
+        color: { value: '#ffffff' },
+        shape: { type: 'circle' },
+        opacity: { value: 0.5, random: false },
+        size: { value: 3, random: true },
+        line_linked: {
+          enable: true,
+          distance: 150,
+          color: '#ffffff',
+          opacity: 0.4,
+          width: 1
+        },
+        move: {
+          enable: true,
+          speed: 2,
+          direction: 'none',
+          random: false,
+          straight: false,
+          out_mode: 'out',
+          bounce: false
+        }
+      },
+      interactivity: {
+        detect_on: 'canvas',
+        events: {
+          onhover: { enable: true, mode: 'repulse' },
+          onclick: { enable: true, mode: 'push' },
+          resize: true
+        }
+      },
+      retina_detect: true
+    });
+  });
+</script>
+<% end %> 

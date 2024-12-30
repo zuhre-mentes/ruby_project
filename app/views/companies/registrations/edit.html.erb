@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Profil Düzenle</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Google Fonts - Orbitron -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        background: #0D0C18;
+        color: #fff;
+        font-family: system-ui, -apple-system, sans-serif;
+      }
+
+      /* Sidebar Styles */
+      .sidebar {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 70px;
+        height: 100vh;
+        background: rgba(13, 12, 24, 0.95);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        padding: 1.5rem 0.5rem;
+        border-right: 1px solid rgba(139, 92, 246, 0.1);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 1000;
+        overflow: hidden;
+        box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
+      }
+
+      .sidebar:hover {
+        width: 240px;
+      }
+
+      /* Logo Styles */
+      .logo {
+        padding: 0.75rem;
+        margin-bottom: 2rem;
+        position: relative;
+      }
+
+      .logo-container {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .logo i {
+        font-size: 2rem;
+        color: #8B5CF6;
+        filter: drop-shadow(0 0 8px rgba(139, 92, 246, 0.5));
+      }
+
+      .logo span {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 1.4rem;
+        font-weight: 600;
+        color: #8B5CF6;
+        opacity: 0;
+        transform: translateX(-10px);
+        transition: all 0.3s ease;
+      }
+
+      .sidebar:hover .logo span {
+        opacity: 1;
+        transform: translateX(0);
+      }
+
+      /* Menu Styles */
+      .menu-label {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.75rem;
+        color: rgba(255,255,255,0.6);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      .sidebar:hover .menu-label {
+        opacity: 1;
+      }
+
+      .nav-menu {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+
+      .nav-item {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 0.75rem;
+        color: rgba(255,255,255,0.8);
+        text-decoration: none;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+      }
+
+      .nav-item i {
+        font-size: 1.25rem;
+        min-width: 24px;
+      }
+
+      .nav-item span {
+        font-size: 0.95rem;
+        opacity: 0;
+        transform: translateX(-10px);
+        transition: all 0.3s ease;
+      }
+
+      .sidebar:hover .nav-item span {
+        opacity: 1;
+        transform: translateX(0);
+      }
+
+      .nav-item:hover, .nav-item.active {
+        background: rgba(139, 92, 246, 0.2);
+        color: #8B5CF6;
+      }
+
+      /* Main Content */
+      main {
+        margin-left: 70px;
+        min-height: 100vh;
+        transition: margin-left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        background: #0D0C18;
+        padding: 2rem 0;
+      }
+
+      .sidebar:hover + main {
+        margin-left: 240px;
+      }
+
+      /* Form Styles */
+      .edit-card {
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid rgba(139, 92, 246, 0.2);
+        border-radius: 16px;
+        padding: 2rem;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+      }
+
+      .form-label {
+        color: rgba(255, 255, 255, 0.8);
+        font-weight: 500;
+      }
+
+      .form-control {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(139, 92, 246, 0.2);
+        color: #fff;
+        padding: 0.75rem 1rem;
+      }
+
+      .form-control:focus {
+        background: rgba(255, 255, 255, 0.08);
+        border-color: rgba(139, 92, 246, 0.4);
+        color: #fff;
+        box-shadow: 0 0 0 0.25rem rgba(139, 92, 246, 0.25);
+      }
+
+      .form-control::placeholder {
+        color: rgba(255, 255, 255, 0.5);
+      }
+
+      .btn-primary {
+        background: #8B5CF6;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        font-weight: 500;
+      }
+
+      .btn-primary:hover {
+        background: #7C3AED;
+      }
+
+      .btn-outline-light {
+        border-color: rgba(255, 255, 255, 0.2);
+      }
+
+      .btn-outline-light:hover {
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      /* Profile Card */
+      .profile-card {
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid rgba(139, 92, 246, 0.2);
+        border-radius: 16px;
+        padding: 2rem;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+      }
+
+      .profile-image {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        margin: 0 auto 1.5rem;
+        overflow: hidden;
+        border: 3px solid rgba(139, 92, 246, 0.3);
+      }
+
+      .profile-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .sidebar {
+          width: 70px;
+        }
+        
+        .sidebar:hover {
+          width: 70px;
+        }
+        
+        .logo span,
+        .menu-label,
+        .nav-item span {
+          display: none;
+        }
+        
+        main {
+          margin-left: 70px !important;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <%= render 'shared/flash' %>
+    
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="logo">
+        <div class="logo-container">
+          <i class="bi bi-gem-fill"></i>
+          <span>Rubytes</span>
+        </div>
+      </div>
+      
+      <nav class="nav-menu">
+        <div class="menu-label">MENU</div>
+        
+        <%= link_to root_path, class: "nav-item" do %>
+          <i class="bi bi-columns-gap"></i>
+          <span>Dashboard</span>
+        <% end %>
+        
+        <%= link_to "#", class: "nav-item active" do %>
+          <i class="bi bi-person-badge"></i>
+          <span>Profil</span>
+        <% end %>
+        
+        <%= link_to "#", class: "nav-item" do %>
+          <i class="bi bi-stars"></i>
+          <span>Rozetler</span>
+        <% end %>
+        
+        <%= link_to "#", class: "nav-item" do %>
+          <i class="bi bi-chat-square-heart"></i>
+          <span>Forum</span>
+        <% end %>
+
+        <%= link_to "#", class: "nav-item" do %>
+          <i class="bi bi-calendar-event"></i>
+          <span>Etkinlikler</span>
+        <% end %>
+
+        <%= link_to positions_path, class: "nav-item" do %>
+          <i class="bi bi-briefcase"></i>
+          <span>İş İlanları</span>
+        <% end %>
+
+        <%= link_to "#", class: "nav-item" do %>
+          <i class="bi bi-file-earmark-person"></i>
+          <span>CV</span>
+        <% end %>
+        
+        <%= link_to "#", class: "nav-item" do %>
+          <i class="bi bi-robot"></i>
+          <span>AI Chat</span>
+        <% end %>
+
+        <div class="nav-footer">
+          <%= link_to "#", class: "nav-item logout-btn" do %>
+            <i class="bi bi-box-arrow-right"></i>
+            <span>Çıkış Yap</span>
+          <% end %>
+        </div>
+      </nav>
+    </div>
+
+    <!-- Main Content -->
+    <main>
+      <div class="container">
+        <div class="row">
+          <!-- Left Side - Profile Card -->
+          <div class="col-md-4 mb-4">
+            <div class="profile-card">
+              <div class="text-center">
+                <!-- Company Logo -->
+                <div class="profile-image">
+                  <% if current_company.logo.attached? %>
+                    <%= image_tag current_company.logo %>
+                  <% else %>
+                    <div class="bg-dark d-flex align-items-center justify-content-center h-100">
+                      <i class="bi bi-building text-primary" style="font-size: 3rem;"></i>
+                    </div>
+                  <% end %>
+                </div>
+
+                <!-- Company Name and Info -->
+                <h4 class="mb-2"><%= current_company.name %></h4>
+                <p class="text-muted mb-4"><%= current_company.email %></p>
+                
+                <hr class="border-secondary">
+                
+                <!-- Statistics -->
+                <div class="row text-center mt-4">
+                  <div class="col">
+                    <h5 class="mb-0"><%= current_company.positions.count %></h5>
+                    <small class="text-muted">Aktif İlanlar</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Side - Edit Form -->
+          <div class="col-md-8">
+            <div class="edit-card">
+              <h4 class="mb-4">Profil Düzenle</h4>
+
+              <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put, multipart: true }) do |f| %>
+                <%= render "devise/shared/error_messages", resource: resource %>
+
+                <!-- Company Name -->
+                <div class="mb-3">
+                  <%= f.label :name, "Şirket Adı", class: "form-label" %>
+                  <%= f.text_field :name, class: "form-control" %>
+                </div>
+
+                <!-- Company Description -->
+                <div class="mb-3">
+                  <%= f.label :description, "Şirket Açıklaması", class: "form-label" %>
+                  <%= f.text_area :description, rows: 4, class: "form-control" %>
+                </div>
+
+                <!-- Email -->
+                <div class="mb-3">
+                  <%= f.label :email, "E-posta", class: "form-label" %>
+                  <%= f.email_field :email, class: "form-control" %>
+                </div>
+
+                <!-- Logo Upload -->
+                <div class="mb-4">
+                  <%= f.label :logo, "Şirket Logosu", class: "form-label" %>
+                  
+                  <!-- Current Logo Display -->
+                  <% if current_company.logo.attached? %>
+                    <div class="mb-3">
+                      <div class="d-flex align-items-center">
+                        <%= image_tag current_company.logo, class: "rounded-3 me-3", style: "width: 100px; height: 100px; object-fit: cover;" %>
+                        <div>
+                          <p class="mb-2">Mevcut Logo</p>
+                          <%= link_to "Logoyu Kaldır", remove_logo_company_path, 
+                              method: :delete,
+                              data: { confirm: "Logoyu kaldırmak istediğinize emin misiniz?" },
+                              class: "btn btn-sm btn-outline-danger" %>
+                        </div>
+                      </div>
+                    </div>
+                  <% end %>
+
+                  <!-- New Logo Upload -->
+                  <div class="input-group">
+                    <%= f.file_field :logo, 
+                        class: "form-control",
+                        accept: "image/png,image/jpeg,image/jpg",
+                        data: {
+                          max_file_size: 5.megabytes,
+                          preview_target: 'logo-preview-edit'
+                        }
+                    %>
+                  </div>
+                  <div class="form-text text-muted">
+                    <i class="bi bi-info-circle me-1"></i>
+                    PNG, JPEG veya JPG formatı, maksimum 5MB
+                  </div>
+                  
+                  <!-- Logo Preview -->
+                  <div id="logo-preview-edit" class="mt-3 d-none">
+                    <p class="mb-2">Önizleme:</p>
+                    <img src="" alt="Logo Önizleme" class="img-thumbnail" style="max-height: 200px;">
+                  </div>
+                </div>
+
+                <!-- Password Change -->
+                <div class="edit-card mb-4">
+                  <h5 class="mb-3">Şifre Değiştir</h5>
+                  <div class="mb-3">
+                    <%= f.label :password, "Yeni Şifre", class: "form-label" %>
+                    <small class="text-muted d-block mb-2">(değiştirmek istemiyorsanız boş bırakın)</small>
+                    <%= f.password_field :password, class: "form-control" %>
+                  </div>
+
+                  <div class="mb-3">
+                    <%= f.label :password_confirmation, "Yeni Şifre Tekrar", class: "form-label" %>
+                    <%= f.password_field :password_confirmation, class: "form-control" %>
+                  </div>
+                </div>
+
+                <!-- Current Password -->
+                <div class="mb-4">
+                  <%= f.label :current_password, "Mevcut Şifre", class: "form-label" %>
+                  <small class="text-muted d-block mb-2">(değişiklikleri onaylamak için mevcut şifreniz gerekli)</small>
+                  <%= f.password_field :current_password, class: "form-control" %>
+                </div>
+
+                <!-- Buttons -->
+                <div class="d-flex gap-2">
+                  <%= f.submit "Güncelle", class: "btn btn-primary" %>
+                  <%= link_to "Geri", :back, class: "btn btn-outline-light" %>
+                </div>
+              <% end %>
+
+              <hr class="border-secondary my-4">
+
+              <!-- Delete Account -->
+              <div class="text-danger">
+                <h5>Hesabı Sil</h5>
+                <p>Hesabınızı silmek istediğinize emin misiniz? Bu işlem geri alınamaz.</p>
+                <%= button_to "Hesabı Sil", registration_path(resource_name), 
+                    data: { confirm: "Emin misiniz? Bu işlem geri alınamaz!" },
+                    method: :delete, 
+                    class: "btn btn-danger" %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Logo Preview JavaScript -->
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const fileInput = document.querySelector('input[type="file"]');
+      const preview = document.getElementById('logo-preview-edit');
+      const previewImg = preview.querySelector('img');
+      const maxSize = parseInt(fileInput.dataset.maxFileSize);
+
+      fileInput.addEventListener('change', function() {
+        const file = this.files[0];
+        
+        if (file) {
+          // File size check
+          if (file.size > maxSize) {
+            alert('Dosya çok büyük! Maksimum boyut 5MB olmalıdır.');
+            this.value = '';
+            preview.classList.add('d-none');
+            return;
+          }
+
+          // File type check
+          if (!file.type.match('image/(jpeg|jpg|png)')) {
+            alert('Sadece JPEG, JPG ve PNG formatları desteklenmektedir.');
+            this.value = '';
+            preview.classList.add('d-none');
+            return;
+          }
+
+          // Show preview
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            previewImg.src = e.target.result;
+            preview.classList.remove('d-none');
+          }
+          reader.readAsDataURL(file);
+        } else {
+          preview.classList.add('d-none');
+        }
+      });
+    });
+    </script>
+  </body>
+</html> 
