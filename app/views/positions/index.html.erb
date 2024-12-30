@@ -1033,6 +1033,56 @@
           margin-left: 70px;
         }
       }
+
+      /* Search and Filter Section */
+      .search-section {
+        background: rgba(13, 12, 24, 0.6);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(139, 92, 246, 0.1);
+        border-radius: 1rem;
+        padding: 1.5rem;
+      }
+
+      .search-box {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(139, 92, 246, 0.2);
+        border-radius: 0.5rem;
+      }
+
+      .search-box .form-control {
+        color: #fff;
+      }
+
+      .search-box .form-control::placeholder {
+        color: rgba(255, 255, 255, 0.5);
+      }
+
+      .filter-box .form-select {
+        background-color: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(139, 92, 246, 0.2);
+        color: #fff;
+      }
+
+      .filter-box .form-select:focus {
+        border-color: #8B5CF6;
+        box-shadow: 0 0 0 0.25rem rgba(139, 92, 246, 0.25);
+      }
+
+      .text-purple {
+        color: #8B5CF6;
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, #8B5CF6 10%, #6D28D9 90%);
+        border: none;
+        box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+        transition: all 0.3s ease;
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
+      }
     </style>
   </head>
 
@@ -1137,93 +1187,92 @@
               </div>
           </div>
 
-            <!-- Search Form -->
-            <div class="card search-card mb-5">
-              <div class="card-body p-4">
-                <form action="/positions" method="get" class="row g-3 search-form">
-                  <div class="col-md-6">
-                    <div class="input-group">
-                      <span class="input-group-text">
-                        <i class="bi bi-search"></i>
-                      </span>
-                      <input type="text" name="q" class="form-control" 
-                             placeholder="Search position or company..." value="<%= params[:q] %>">
-                    </div>
+            <!-- Search and Filter Section -->
+            <div class="search-section mb-5">
+              <%= form_tag positions_path, method: :get, class: "d-flex gap-3" do %>
+                <div class="search-box flex-grow-1">
+                  <div class="input-group">
+                    <span class="input-group-text bg-transparent border-0">
+                      <i class="bi bi-search text-purple"></i>
+                    </span>
+                    <%= text_field_tag :query, params[:query], class: "form-control bg-transparent border-0", placeholder: "Search position or company..." %>
                   </div>
-                  <div class="col-md-4">
-                    <select name="type" class="form-select">
-                      <option value="">All Job Types</option>
-                      <option value="Full Time" <%= 'selected' if params[:type] == 'Full Time' %>>Full Time</option>
-                      <option value="Part Time" <%= 'selected' if params[:type] == 'Part Time' %>>Part Time</option>
-                      <option value="Internship" <%= 'selected' if params[:type] == 'Internship' %>>Internship</option>
-                    </select>
-                  </div>
-                  <div class="col-md-2">
-                    <button type="submit" class="btn btn-primary btn-search w-100">
-                      <i class="bi bi-search me-2"></i>Search
-                    </button>
-                  </div>
-                </form>
-              </div>
+                </div>
+
+                <div class="filter-box" style="min-width: 200px;">
+                  <%= select_tag :category, 
+                    options_for_select([
+                      ["Tüm İş Türleri", "All Job Types"],
+                      ["Tam Zamanlı", "Full Time"],
+                      ["Yarı Zamanlı", "Part Time"],
+                      ["Staj", "Internship"]
+                    ], selected: params[:category] || "All Job Types"),
+                    class: "form-select bg-transparent text-white",
+                    onchange: "this.form.submit();"
+                  %>
+                </div>
+
+                <%= submit_tag "Search", class: "btn btn-primary px-4" %>
+              <% end %>
             </div>
 
-            <!-- Job Listings -->
-  <div class="row g-4">
+            <!-- Positions Grid -->
+            <div class="row g-4">
               <% @positions.each do |position| %>
                 <div class="col-md-6 col-lg-4">
                   <div class="card bg-dark border-0 h-100 position-relative job-card">
-          <!-- Company Logo -->
+                    <!-- Company Logo -->
                     <div class="position-absolute top-0 start-0 m-3">
-            <% if position.company.logo.attached? %>
+                      <% if position.company.logo.attached? %>
                         <%= image_tag position.company.logo, class: "rounded-3", style: "width: 48px; height: 48px; object-fit: cover;" %>
-            <% else %>
+                      <% else %>
                         <div class="bg-primary bg-opacity-10 rounded-3 d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
                           <i class="bi bi-building text-primary"></i>
-              </div>
-            <% end %>
-          </div>
+                        </div>
+                      <% end %>
+                    </div>
 
-            <!-- Job Type Badge -->
-            <div class="position-absolute top-0 end-0 m-3">
-              <span class="badge bg-<%= position.category == 'Full Time' ? 'success' : (position.category == 'Part Time' ? 'info' : 'warning') %>">
-                <%= position.category %>
-              </span>
-            </div>
+                    <!-- Job Type Badge -->
+                    <div class="position-absolute top-0 end-0 m-3">
+                      <span class="badge bg-<%= position.category == 'Full Time' ? 'success' : (position.category == 'Part Time' ? 'info' : 'warning') %>">
+                        <%= position.category %>
+                      </span>
+                    </div>
 
                     <div class="card-body pt-5 mt-3">
                       <h5 class="card-title"><%= position.title %></h5>
                       <p class="company-name"><%= position.company.name %></p>
                       
                       <p class="card-text">
-                <%= truncate(position.description, length: 100) %>
-              </p>
+                        <%= truncate(position.description, length: 100) %>
+                      </p>
 
                       <div class="meta-info">
                         <div class="meta-item">
                           <i class="bi bi-calendar"></i>
                           <%= position.application_deadline&.strftime("%d.%m.%Y") %>
-                  </div>
+                        </div>
                         <div class="meta-item">
                           <i class="bi bi-briefcase"></i>
-                    <%= position.category %>
-              </div>
-            </div>
+                          <%= position.category %>
+                        </div>
+                      </div>
 
-            <!-- Action Buttons -->
+                      <!-- Action Buttons -->
                       <div class="action-buttons">
                         <%= link_to position_path(position), class: "btn btn-outline-light" do %>
                           <i class="bi bi-eye me-1"></i>Detaylar
-              <% end %>
-              <%= link_to new_position_application_path(position_id: position.id), class: "btn btn-primary" do %>
+                        <% end %>
+                        <%= link_to new_position_application_path(position_id: position.id), class: "btn btn-primary" do %>
                           <i class="bi bi-send me-1"></i>Başvur
+                        <% end %>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               <% end %>
             </div>
           </div>
-        </div>
-      </div>
-    <% end %>
-  </div>
-</div>
         </div>
       </div>
     </main>

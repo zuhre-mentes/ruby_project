@@ -5,10 +5,9 @@ class Position < ApplicationRecord
 
   validates :title, presence: true
   validates :description, presence: true
-  validates :category, presence: true
+  validates :category, presence: true, inclusion: { in: ["Full Time", "Part Time", "Internship"] }
   validates :application_deadline, presence: true
-
-  after_create :notify_users
+  validates :location, presence: true
 
   # Görüntülenme sayısı için varsayılan değer
   attribute :views_count, :integer, default: 0
