@@ -10,442 +10,68 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css" rel="stylesheet">
-    <!-- Animate.css -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
-    <!-- AOS -->
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    <!-- Google Fonts - Orbitron -->
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
 
     <style>
       body {
-        margin: 0;
-        padding: 0;
         background: #0D0C18;
         color: #fff;
         font-family: system-ui, -apple-system, sans-serif;
       }
 
-      /* Sidebar Styles */
-      .sidebar {
-        position: fixed;
-        left: 0;
-        top: 0;
-        width: 70px;
-        height: 100vh;
-        background: rgba(13, 12, 24, 0.95);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        padding: 1.5rem 0.5rem;
-        border-right: 1px solid rgba(139, 92, 246, 0.1);
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        z-index: 1000;
-        overflow: hidden;
-        box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
       }
 
-      .sidebar:hover {
-        width: 240px;
-      }
-
-      /* Logo Styles */
-      .logo {
-        padding: 0.75rem;
-        margin-bottom: 2rem;
-        position: relative;
-      }
-
-      .logo-container {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-      }
-
-      .logo i {
-        font-size: 2rem;
-        color: #8B5CF6;
-        filter: drop-shadow(0 0 8px rgba(139, 92, 246, 0.5));
-      }
-
-      .logo span {
-        font-family: 'Orbitron', sans-serif;
-        font-size: 1.4rem;
-        font-weight: 600;
-        color: #8B5CF6;
-        opacity: 0;
-        transform: translateX(-10px);
-        transition: all 0.3s ease;
-      }
-
-      .sidebar:hover .logo span {
-        opacity: 1;
-        transform: translateX(0);
-      }
-
-      /* Menu Styles */
-      .menu-label {
-        padding: 0.5rem 0.75rem;
-        font-size: 0.75rem;
-        color: rgba(255,255,255,0.6);
-        opacity: 0;
-        transition: opacity 0.3s ease;
-      }
-
-      .sidebar:hover .menu-label {
-        opacity: 1;
-      }
-
-      .nav-menu {
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-      }
-
-      .nav-item {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        padding: 0.75rem;
-        color: rgba(255,255,255,0.8);
-        text-decoration: none;
-        border-radius: 8px;
-        transition: all 0.3s ease;
-      }
-
-      .nav-item i {
-        font-size: 1.25rem;
-        min-width: 24px;
-      }
-
-      .nav-item span {
-        font-size: 0.95rem;
-        opacity: 0;
-        transform: translateX(-10px);
-        transition: all 0.3s ease;
-      }
-
-      .sidebar:hover .nav-item span {
-        opacity: 1;
-        transform: translateX(0);
-      }
-
-      .nav-item:hover, .nav-item.active {
-        background: rgba(139, 92, 246, 0.2);
-        color: #8B5CF6;
-      }
-
-      /* Main Content */
-      main {
-        margin-left: 70px;
-        min-height: 100vh;
-        transition: margin-left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        background: #0D0C18;
-      }
-
-      .sidebar:hover + main {
-        margin-left: 240px;
-      }
-
-      /* Job Detail Styles */
-      .job-header {
-        background: rgba(139, 92, 246, 0.05);
-        border-radius: 24px;
-        padding: 2.5rem;
-        margin-bottom: 2rem;
-        border: 1px solid rgba(139, 92, 246, 0.1);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-        transition: all 0.3s ease;
-      }
-
-      .job-header:hover {
-        border-color: rgba(139, 92, 246, 0.2);
-        box-shadow: 0 12px 40px rgba(139, 92, 246, 0.1);
-      }
-
-      .company-logo {
-        width: 100px;
-        height: 100px;
-        border-radius: 16px;
-        overflow: hidden;
-        margin-bottom: 1.5rem;
-        border: 1px solid rgba(139, 92, 246, 0.2);
-        background: rgba(139, 92, 246, 0.05);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-
-      .company-logo img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-      }
-
-      .badge-required {
-        background: rgba(139, 92, 246, 0.1);
-        color: #8B5CF6;
-        border: 1px solid rgba(139, 92, 246, 0.2);
-        padding: 0.75rem 1.25rem;
-        border-radius: 12px;
-        display: inline-flex;
-        align-items: center;
-        gap: 0.75rem;
-        margin: 0.5rem;
-        font-size: 0.95rem;
-        transition: all 0.3s ease;
-      }
-
-      .badge-required:hover {
-        background: rgba(139, 92, 246, 0.15);
-        border-color: rgba(139, 92, 246, 0.3);
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(139, 92, 246, 0.2);
-      }
-
-      .job-content {
-        background: rgba(255, 255, 255, 0.02);
-        border-radius: 24px;
-        padding: 2.5rem;
-        margin-bottom: 2rem;
-        border: 1px solid rgba(139, 92, 246, 0.1);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        transition: all 0.3s ease;
-      }
-
-      .job-content:hover {
-        border-color: rgba(139, 92, 246, 0.2);
-        box-shadow: 0 8px 32px rgba(139, 92, 246, 0.1);
-      }
-
-      .job-section {
-        margin-bottom: 2.5rem;
-      }
-
-      .job-section:last-child {
-        margin-bottom: 0;
-      }
-
-      .job-section h3 {
-        color: #8B5CF6;
-        margin-bottom: 1.25rem;
-        font-size: 1.4rem;
-        font-family: 'Orbitron', sans-serif;
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-      }
-
-      .job-section h3 i {
-        font-size: 1.5rem;
-        filter: drop-shadow(0 0 8px rgba(139, 92, 246, 0.5));
-      }
-
-      .job-meta {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 2rem;
-        margin: 2rem 0;
-      }
-
-      .job-meta-item {
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-        color: rgba(255, 255, 255, 0.9);
-        padding: 0.75rem 1.25rem;
-        background: rgba(139, 92, 246, 0.1);
-        border-radius: 12px;
-        border: 1px solid rgba(139, 92, 246, 0.2);
-        transition: all 0.3s ease;
-      }
-
-      .job-meta-item:hover {
-        background: rgba(139, 92, 246, 0.15);
-        border-color: rgba(139, 92, 246, 0.3);
-        transform: translateY(-2px);
-      }
-
-      .job-meta-item i {
-        color: #8B5CF6;
-        font-size: 1.2rem;
-        filter: drop-shadow(0 0 8px rgba(139, 92, 246, 0.5));
-      }
-
-      /* Back Button */
       .back-button {
         display: inline-flex;
         align-items: center;
-        gap: 0.75rem;
-        padding: 0.75rem 1.5rem;
-        background: rgba(139, 92, 246, 0.1);
-        border: 1px solid rgba(139, 92, 246, 0.2);
-        border-radius: 12px;
-        color: #fff;
+        gap: 0.5rem;
+        color: #8B5CF6;
         text-decoration: none;
+        margin-bottom: 2rem;
         font-weight: 500;
-        transition: all 0.3s ease;
       }
 
       .back-button:hover {
-        background: rgba(139, 92, 246, 0.15);
-        border-color: rgba(139, 92, 246, 0.3);
-        transform: translateY(-2px);
-        color: #8B5CF6;
+        color: #7C3AED;
       }
 
-      .back-button i {
-        font-size: 1.2rem;
-        transition: transform 0.3s ease;
-      }
-
-      .back-button:hover i {
-        transform: translateX(-4px);
-      }
-
-      /* Apply Button */
-      .apply-button {
-        padding: 1rem 2rem;
-        background: linear-gradient(135deg, #8B5CF6, #7C3AED);
-        border: none;
-        border-radius: 12px;
-        color: #fff;
-        font-weight: 500;
-        display: inline-flex;
-        align-items: center;
-        gap: 0.75rem;
-        text-decoration: none;
-        transition: all 0.3s ease;
+      .card-gradient-border {
+        background: #0D0C18;
+        border-radius: 16px;
+        padding: 2rem;
         position: relative;
-        overflow: hidden;
+        border: 1px solid transparent;
+        background-clip: padding-box;
       }
 
-      .apply-button::before {
+      .card-gradient-border::after {
         content: '';
         position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(135deg, #7C3AED, #6D28D9);
-        opacity: 0;
-        transition: opacity 0.3s ease;
+        top: -1px;
+        right: -1px;
+        bottom: -1px;
+        left: -1px;
+        z-index: -1;
+        margin: -1px;
+        border-radius: inherit;
+        background: linear-gradient(
+          45deg,
+          #8B5CF6,
+          #EC4899,
+          #3B82F6,
+          #8B5CF6
+        );
+        background-size: 400% 400%;
+        animation: gradient 3s ease infinite;
       }
 
-      .apply-button:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(139, 92, 246, 0.3);
-        color: #fff;
-      }
-
-      .apply-button:hover::before {
-        opacity: 1;
-      }
-
-      .apply-button i {
-        font-size: 1.2rem;
-        transition: transform 0.3s ease;
-      }
-
-      .apply-button:hover i {
-        animation: flyPlane 1.5s ease-in-out infinite;
-      }
-
-      @keyframes flyPlane {
-        0% {
-          transform: translateX(0) translateY(0);
-          filter: drop-shadow(0 0 0 rgba(139, 92, 246, 0));
-          opacity: 1;
-        }
-        20% {
-          transform: translateX(60px) translateY(0);
-          filter: drop-shadow(4px 0 8px rgba(139, 92, 246, 0.6));
-          opacity: 0;
-        }
-        21% {
-          transform: translateX(-60px) translateY(0);
-          opacity: 0;
-        }
-        22% {
-          opacity: 1;
-        }
-        100% {
-          transform: translateX(0) translateY(0);
-          filter: drop-shadow(0 0 0 rgba(139, 92, 246, 0));
-          opacity: 1;
-        }
-      }
-
-      /* Share Buttons */
-      .share-buttons {
-        display: flex;
-        gap: 0.75rem;
-      }
-
-      .share-button {
-        width: 46px;
-        height: 46px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: rgba(255, 255, 255, 0.03);
-        border: 1px solid rgba(139, 92, 246, 0.2);
-        border-radius: 12px;
-        color: rgba(255, 255, 255, 0.9);
-        text-decoration: none;
-        transition: all 0.3s ease;
-      }
-
-      .share-button:hover {
-        background: rgba(139, 92, 246, 0.1);
-        border-color: rgba(139, 92, 246, 0.4);
-        color: #8B5CF6;
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(139, 92, 246, 0.2);
-      }
-
-      .share-button i {
-        font-size: 1.2rem;
-      }
-
-      /* Responsive */
-      @media (max-width: 768px) {
-        .sidebar {
-          width: 70px;
-        }
-        
-        .sidebar:hover {
-          width: 70px;
-        }
-        
-        .logo span,
-        .menu-label,
-        .nav-item span {
-          display: none;
-        }
-        
-        main {
-          margin-left: 70px !important;
-        }
-
-        .job-meta {
-          flex-direction: column;
-          gap: 1rem;
-        }
-
-        .job-header,
-        .job-content {
-          padding: 1.5rem;
-        }
-      }
-
-      /* Card Border Animation */
-      @keyframes borderRotate {
+      @keyframes gradient {
         0% {
           background-position: 0% 50%;
         }
@@ -457,218 +83,161 @@
         }
       }
 
-      .job-header, .job-content {
-        position: relative;
-        background: rgba(13, 12, 24, 0.95);
-        z-index: 1;
+      .job-header {
+        margin-bottom: 2rem;
       }
 
-      .job-header::before, .job-content::before {
-        content: '';
-        position: absolute;
-        top: -2px;
-        left: -2px;
-        right: -2px;
-        bottom: -2px;
-        background: linear-gradient(
-          45deg,
-          #8B5CF6,
-          #C850C0,
-          #4158D0,
-          #8B5CF6
-        );
-        background-size: 400% 400%;
-        z-index: -1;
-        border-radius: 25px;
-        animation: borderRotate 3s ease infinite;
+      .company-logo {
+        width: 80px;
+        height: 80px;
+        border-radius: 12px;
+        margin-bottom: 1.5rem;
+        background: rgba(255, 255, 255, 0.05);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
       }
 
-      .job-header::after, .job-content::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(13, 12, 24, 0.95);
-        border-radius: 24px;
-        z-index: -1;
+      .company-logo img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .job-title {
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+        color: #fff;
+      }
+
+      .company-name {
+        font-size: 1.25rem;
+        color: #8B5CF6;
+        margin-bottom: 1.5rem;
+      }
+
+      .job-meta {
+        display: flex;
+        gap: 2rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .meta-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: rgba(255, 255, 255, 0.7);
+      }
+
+      .meta-item i {
+        color: #8B5CF6;
+      }
+
+      .apply-button {
+        display: inline-block;
+        background: #8B5CF6;
+        color: #fff;
+        padding: 0.75rem 1.5rem;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.3s ease;
+      }
+
+      .apply-button:hover {
+        background: #7C3AED;
+        color: #fff;
+      }
+
+      .job-content {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 2rem;
+      }
+
+      .section-title {
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+        color: #fff;
+      }
+
+      .description-text {
+        color: rgba(255, 255, 255, 0.8);
+        line-height: 1.6;
+        white-space: pre-wrap;
+      }
+
+      @media (max-width: 768px) {
+        .job-content {
+          grid-template-columns: 1fr;
+        }
+
+        .job-meta {
+          flex-direction: column;
+          gap: 1rem;
+        }
       }
     </style>
   </head>
 
   <body>
-    <%= render 'shared/flash' %>
-    
-    <!-- Sidebar -->
-    <div class="sidebar">
-      <div class="logo">
-        <div class="logo-container">
-          <i class="bi bi-gem-fill"></i>
-          <span>Rubytes</span>
+    <div class="container">
+      <%= link_to positions_path, class: "back-button" do %>
+        <i class="bi bi-arrow-left"></i>
+        <span>İş İlanlarına Dön</span>
+      <% end %>
+
+      <div class="job-header card-gradient-border">
+        <div class="company-logo">
+          <% if @position.company.logo.attached? %>
+            <%= image_tag @position.company.logo %>
+          <% else %>
+            <i class="bi bi-building" style="font-size: 2rem; color: #8B5CF6;"></i>
+          <% end %>
         </div>
+
+        <h1 class="job-title"><%= @position.title %></h1>
+        <div class="company-name"><%= @position.company.name %></div>
+
+        <div class="job-meta">
+          <div class="meta-item">
+            <i class="bi bi-briefcase"></i>
+            <span><%= @position.category %></span>
+          </div>
+
+          <div class="meta-item">
+            <i class="bi bi-calendar"></i>
+            <span>Son Başvuru: <%= @position.application_deadline&.strftime("%d.%m.%Y") %></span>
+          </div>
+
+          <div class="meta-item">
+            <i class="bi bi-geo-alt"></i>
+            <span>Remote</span>
+          </div>
+        </div>
+
+        <%= link_to new_position_application_path(@position), class: "apply-button" do %>
+          <i class="bi bi-send me-2"></i>Başvur
+        <% end %>
       </div>
-      
-      <nav class="nav-menu">
-        <div class="menu-label">MENU</div>
-        
-        <%= link_to root_path, class: "nav-item" do %>
-          <i class="bi bi-columns-gap"></i>
-          <span>Dashboard</span>
-        <% end %>
-        
-        <%= link_to "#", class: "nav-item" do %>
-          <i class="bi bi-person-badge"></i>
-          <span>Profil</span>
-        <% end %>
-        
-        <%= link_to "#", class: "nav-item" do %>
-          <i class="bi bi-stars"></i>
-          <span>Rozetler</span>
-        <% end %>
-        
-        <%= link_to "#", class: "nav-item" do %>
-          <i class="bi bi-chat-square-heart"></i>
-          <span>Forum</span>
-        <% end %>
 
-        <%= link_to "#", class: "nav-item" do %>
-          <i class="bi bi-calendar-event"></i>
-          <span>Etkinlikler</span>
-        <% end %>
+      <div class="job-content">
+        <div class="job-description card-gradient-border">
+          <h2 class="section-title">İş Tanımı</h2>
+          <div class="description-text">
+            <%= @position.description %>
+          </div>
+        </div>
 
-        <%= link_to positions_path, class: "nav-item active" do %>
-          <i class="bi bi-briefcase"></i>
-          <span>İş İlanları</span>
-        <% end %>
-
-        <%= link_to "#", class: "nav-item" do %>
-          <i class="bi bi-file-earmark-person"></i>
-          <span>CV</span>
-        <% end %>
-        
-        <%= link_to "#", class: "nav-item" do %>
-          <i class="bi bi-robot"></i>
-          <span>AI Chat</span>
-        <% end %>
-      </nav>
-    </div>
-
-    <!-- Main Content -->
-    <main>
-      <div class="container py-5">
-        <div class="row">
-          <div class="col-12">
-            <%= link_to positions_path, class: "back-button mb-4" do %>
-              <i class="bi bi-arrow-left"></i>İş İlanlarına Dön
-            <% end %>
-
-            <!-- Job Details -->
-            <div class="job-header" data-aos="fade-up">
-              <div class="row align-items-center">
-                <div class="col-md-8">
-                  <!-- Company Logo -->
-                  <div class="company-logo">
-                    <% if @position.company.logo.attached? %>
-                      <%= image_tag @position.company.logo %>
-                    <% else %>
-                      <i class="bi bi-building text-primary fs-1"></i>
-                    <% end %>
-                  </div>
-
-                  <h1 class="text-white mb-2 display-5 fw-bold"><%= @position.title %></h1>
-                  <p class="text-primary fs-4 mb-4"><%= @position.company.name %></p>
-
-                  <!-- Job Meta -->
-                  <div class="job-meta">
-                    <div class="job-meta-item">
-                      <i class="bi bi-briefcase"></i>
-                      <span><%= @position.category %></span>
-                    </div>
-                    <div class="job-meta-item">
-                      <i class="bi bi-calendar"></i>
-                      <span>Son Başvuru: <%= @position.application_deadline&.strftime("%d.%m.%Y") %></span>
-                    </div>
-                    <div class="job-meta-item">
-                      <i class="bi bi-geo-alt"></i>
-                      <span>Remote</span>
-                    </div>
-                  </div>
-
-                  <div class="mt-4">
-                    <%= link_to new_position_application_path(position_id: @position.id), class: "apply-button" do %>
-                      <i class="bi bi-send"></i>Başvur
-                    <% end %>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Job Content -->
-            <div class="row">
-              <div class="col-lg-8">
-                <!-- Job Description -->
-                <div class="job-content" data-aos="fade-up" data-aos-delay="100">
-                  <div class="job-section">
-                    <h3><i class="bi bi-file-text"></i>İş Tanımı</h3>
-                    <div class="text-white-50">
-                      <%= simple_format(@position.description) %>
-                    </div>
-                  </div>
-
-                  <div class="job-section">
-                    <h3><i class="bi bi-list-check"></i>Gereksinimler</h3>
-                    <div class="text-white-50">
-                      <div class="d-flex flex-wrap gap-2">
-                        <span class="badge-required">
-                          <i class="bi bi-check-circle"></i>
-                          Frontend Development
-                        </span>
-                        <span class="badge-required">
-                          <i class="bi bi-check-circle"></i>
-                          UI/UX Design
-                        </span>
-                        <span class="badge-required">
-                          <i class="bi bi-check-circle"></i>
-                          Team Leadership
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-lg-4">
-                <!-- Company Info -->
-                <div class="job-content" data-aos="fade-up" data-aos-delay="200">
-                  <div class="job-section">
-                    <h3><i class="bi bi-building"></i>Şirket Hakkında</h3>
-                    <p class="text-white-50">
-                      <%= @position.company.description %>
-                    </p>
-                  </div>
-
-                  <div class="job-section">
-                    <h3><i class="bi bi-share"></i>Paylaş</h3>
-                    <div class="share-buttons">
-                      <a href="#" class="share-button">
-                        <i class="bi bi-linkedin"></i>
-                      </a>
-                      <a href="#" class="share-button">
-                        <i class="bi bi-twitter"></i>
-                      </a>
-                      <a href="#" class="share-button">
-                        <i class="bi bi-facebook"></i>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+        <div class="company-info card-gradient-border">
+          <h2 class="section-title">Şirket Hakkında</h2>
+          <div class="description-text">
+            <%= @position.company.description %>
           </div>
         </div>
       </div>
-    </main>
+    </div>
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>

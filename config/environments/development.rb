@@ -82,6 +82,7 @@ Rails.application.configure do
   # Mail ayarları
   config.action_mailer.perform_deliveries = true
   config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.perform_caching = false
   config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
@@ -89,8 +90,13 @@ Rails.application.configure do
     port: 587,
     domain: 'gmail.com',
     user_name: ENV['GMAIL_USERNAME'],
-    password: ENV['GMAIL_APP_PASSWORD'],
+    password: ENV['GMAIL_PASSWORD'],
     authentication: 'plain',
-    enable_starttls_auto: true
+    enable_starttls_auto: true,
+    openssl_verify_mode: 'none'
   }
+
+  # Debug modu açık
+  config.action_mailer.logger = Logger.new(STDOUT)
+  config.action_mailer.logger.level = Logger::DEBUG
 end

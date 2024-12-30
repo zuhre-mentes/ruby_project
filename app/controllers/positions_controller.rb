@@ -1,27 +1,9 @@
 class PositionsController < ApplicationController
-  before_action :authenticate_company!, only: [:new, :create, :edit, :update, :destroy, :dashboard, :remove_image]
-  before_action :set_position, only: [:edit, :update, :destroy, :remove_image]
-  layout false, only: [:index, :dashboard]
+  before_action :authenticate_company!, only: [:new, :create, :edit, :update, :destroy, :dashboard]
+  before_action :set_position, only: [:show, :edit, :update, :destroy]
 
   def index
-    # Base query with company includes
-    @positions = Position.includes(:company).order(created_at: :desc)
-    
-    # Filter by search query if present
-    if params[:q].present?
-      query = "%#{params[:q].downcase}%"
-      @positions = @positions.joins(:company)
-                           .where('LOWER(positions.title) LIKE ? OR LOWER(companies.name) LIKE ?', query, query)
-    end
-    
-    # Filter by job type if present
-    @positions = @positions.where(category: params[:type]) if params[:type].present?
-  end
-
-  def dashboard
-    @positions = current_company.positions
-    @total_views = @positions.sum(:views_count)
-    @total_applications = @positions.joins(:applications).count
+    @positions = Position.all.order(created_at: :desc)
   end
 
   def show
@@ -36,7 +18,7 @@ class PositionsController < ApplicationController
   def create
     @position = current_company.positions.build(position_params)
     if @position.save
-      redirect_to positions_path, notice: "Job posting created successfully!"
+      redirect_to @position, notice: 'İlan başarıyla oluşturuldu.'
     else
       render :new
     end
@@ -47,7 +29,7 @@ class PositionsController < ApplicationController
 
   def update
     if @position.update(position_params)
-      redirect_to dashboard_positions_path, notice: "Job posting updated successfully!"
+      redirect_to @position, notice: 'İlan başarıyla güncellendi.'
     else
       render :edit
     end
@@ -55,22 +37,23 @@ class PositionsController < ApplicationController
 
   def destroy
     @position.destroy
-    redirect_to dashboard_positions_path, notice: "Job posting deleted successfully!"
+    redirect_to positions_url, notice: 'İlan başarıyla silindi.'
   end
 
-  def remove_image
-    @position.image.purge
-    redirect_to edit_position_path(@position), notice: "Image removed successfully!"
+  def dashboard
+    @total_views = current_company.positions.sum(:views_count)
+    @total_applications = current_company.positions.joins(:applications).count
+    @positions = current_company.positions
   end
 
   private
 
   def set_position
-    @position = current_company.positions.find(params[:id])
+    @position = Position.find(params[:id])
   end
 
   def position_params
-    params.require(:position).permit(:title, :description, :category, :application_deadline)
+    params.require(:position).permit(:title, :description, :category, :application_deadline, :image)
   end
 end
 

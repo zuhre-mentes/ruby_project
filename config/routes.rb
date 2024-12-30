@@ -9,7 +9,7 @@ Rails.application.routes.draw do
   end
 
   authenticated :user do
-    root 'home#index', as: :authenticated_root
+    root 'home#index', as: :user_root
   end
 
   get 'profile', to: 'users#profile', as: :profile
@@ -28,9 +28,8 @@ Rails.application.routes.draw do
     member do
       delete 'remove_image'
     end
-    resources :applications, only: [:new, :create]  # Başvuru formu ve oluşturma işlemi
+    resources :applications, only: [:new, :create]
   end
-
 
   devise_for :companies, controllers: {
     sessions: 'companies/sessions',
@@ -48,23 +47,12 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :positions do
-    collection do
-      get 'dashboard'
-    end
-    member do
-      delete 'remove_image'
-    end
-    resources :applications, only: [:new, :create]  # Başvuru formu ve oluşturma işlemi
-  end
-
   devise_scope :company do
     delete 'companies/remove_logo', to: 'companies/registrations#remove_logo', as: :remove_logo_company
   end
 
   authenticated :company do
-    root 'jobs#index', as: :authenticated_root
-
+    root 'jobs#index', as: :company_root
   end
 
   unauthenticated do
@@ -76,7 +64,6 @@ Rails.application.routes.draw do
       delete :remove_logo
     end
   end
-  
 
   get "/verification_success", to: "verifications#success"
   get "/verification_failure", to: "verifications#failure"
