@@ -44,8 +44,6 @@ gem "webpacker", "~> 5.4.4" # Webpacker for JavaScript bundling
 gem "will_paginate", "~> 3.1.2" # Pagination
 gem "kaminari" # Alternative pagination gem
 
-# Environment Management
-gem "dotenv-rails" # Manage environment variables
 
 # OpenAI Integration
 gem "ruby-openai", "~> 4.0.0" # OpenAI API integration
@@ -84,3 +82,4 @@ group :test do
   gem "capybara" # Use system testing
   gem "selenium-webdriver" # Browser automation
 end
+
