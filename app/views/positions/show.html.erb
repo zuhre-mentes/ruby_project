@@ -25,6 +25,20 @@
         max-width: 1200px;
         margin: 0 auto;
         padding: 2rem;
+        opacity: 0;
+        transform: translateY(20px);
+        animation: fadeInUp 0.8s ease forwards;
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
       }
 
       .back-button {
@@ -35,10 +49,18 @@
         text-decoration: none;
         margin-bottom: 2rem;
         font-weight: 500;
+        transition: all 0.3s ease;
+        opacity: 0;
+        animation: fadeIn 0.5s ease forwards 0.3s;
       }
 
-      .back-button:hover {
-        color: #7C3AED;
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
       }
 
       .card-gradient-border {
@@ -48,18 +70,19 @@
         position: relative;
         border: 1px solid transparent;
         background-clip: padding-box;
+        margin-bottom: 2rem;
+        z-index: 1;
       }
 
-      .card-gradient-border::after {
+      .card-gradient-border::before {
         content: '';
         position: absolute;
-        top: -1px;
-        right: -1px;
-        bottom: -1px;
-        left: -1px;
-        z-index: -1;
-        margin: -1px;
-        border-radius: inherit;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        border-radius: 16px;
+        padding: 1px;
         background: linear-gradient(
           45deg,
           #8B5CF6,
@@ -69,6 +92,12 @@
         );
         background-size: 400% 400%;
         animation: gradient 3s ease infinite;
+        -webkit-mask: 
+          linear-gradient(#fff 0 0) content-box, 
+          linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        z-index: -1;
       }
 
       @keyframes gradient {
@@ -85,6 +114,9 @@
 
       .job-header {
         margin-bottom: 2rem;
+        opacity: 0;
+        transform: translateY(20px);
+        animation: fadeInUp 0.8s ease forwards 0.4s;
       }
 
       .company-logo {
@@ -97,6 +129,25 @@
         align-items: center;
         justify-content: center;
         overflow: hidden;
+        transition: transform 0.3s ease;
+        opacity: 0;
+        transform: scale(0.9);
+        animation: fadeInScale 0.6s ease forwards 0.5s;
+      }
+
+      @keyframes fadeInScale {
+        from {
+          opacity: 0;
+          transform: scale(0.9);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      .company-logo:hover {
+        transform: scale(1.05);
       }
 
       .company-logo img {
@@ -109,18 +160,47 @@
         font-size: 2rem;
         margin-bottom: 0.5rem;
         color: #fff;
+        background: linear-gradient(135deg, #fff 0%, #8B5CF6 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: titleGradient 3s ease infinite;
+      }
+
+      @keyframes titleGradient {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
       }
 
       .company-name {
         font-size: 1.25rem;
         color: #8B5CF6;
         margin-bottom: 1.5rem;
+        position: relative;
+        display: inline-block;
+      }
+
+      .company-name::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: -4px;
+        width: 100%;
+        height: 2px;
+        background: linear-gradient(90deg, #8B5CF6, transparent);
       }
 
       .job-meta {
         display: flex;
         gap: 2rem;
         margin-bottom: 1.5rem;
+        flex-wrap: wrap;
       }
 
       .meta-item {
@@ -128,44 +208,135 @@
         align-items: center;
         gap: 0.5rem;
         color: rgba(255, 255, 255, 0.7);
+        background: rgba(139, 92, 246, 0.1);
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        border: 1px solid rgba(139, 92, 246, 0.2);
+        transition: all 0.3s ease;
+        opacity: 0;
+        transform: translateX(-10px);
+        animation: fadeInLeft 0.5s ease forwards;
+      }
+
+      .meta-item:nth-child(1) { animation-delay: 0.6s; }
+      .meta-item:nth-child(2) { animation-delay: 0.7s; }
+      .meta-item:nth-child(3) { animation-delay: 0.8s; }
+      .meta-item:nth-child(4) { animation-delay: 0.9s; }
+
+      @keyframes fadeInLeft {
+        from {
+          opacity: 0;
+          transform: translateX(-10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      .meta-item:hover {
+        background: rgba(139, 92, 246, 0.2);
+        transform: translateY(-2px);
       }
 
       .meta-item i {
         color: #8B5CF6;
       }
 
+      .action-buttons {
+        display: flex;
+        gap: 1rem;
+        margin-top: 2rem;
+        opacity: 0;
+        transform: translateY(10px);
+        animation: fadeInUp 0.5s ease forwards 1s;
+      }
+
       .apply-button {
-        display: inline-block;
-        background: #8B5CF6;
+        display: inline-flex;
+        align-items: center;
+        background: linear-gradient(135deg, #8B5CF6, #7C3AED);
         color: #fff;
         padding: 0.75rem 1.5rem;
         border-radius: 8px;
         text-decoration: none;
         font-weight: 500;
         transition: all 0.3s ease;
+        flex: 1;
+        justify-content: center;
+        border: none;
+        cursor: pointer;
       }
 
       .apply-button:hover {
-        background: #7C3AED;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
         color: #fff;
+      }
+
+      .share-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: rgba(255, 255, 255, 0.05);
+        color: #fff;
+        padding: 0.75rem 1.5rem;
+        border-radius: 8px;
+        border: 1px solid rgba(139, 92, 246, 0.2);
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .share-button:hover {
+        background: rgba(139, 92, 246, 0.1);
+        border-color: rgba(139, 92, 246, 0.4);
       }
 
       .job-content {
         display: grid;
         grid-template-columns: 2fr 1fr;
         gap: 2rem;
+        opacity: 0;
+        transform: translateY(20px);
+        animation: fadeInUp 0.8s ease forwards 0.6s;
       }
 
       .section-title {
         font-size: 1.5rem;
         margin-bottom: 1.5rem;
         color: #fff;
+        position: relative;
+        display: inline-block;
+      }
+
+      .section-title::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: -4px;
+        width: 100%;
+        height: 2px;
+        background: linear-gradient(90deg, #8B5CF6, transparent);
       }
 
       .description-text {
         color: rgba(255, 255, 255, 0.8);
         line-height: 1.6;
         white-space: pre-wrap;
+      }
+
+      .job-description, .company-info {
+        opacity: 0;
+        transform: translateY(20px);
+        animation: fadeInUp 0.8s ease forwards;
+      }
+
+      .job-description {
+        animation-delay: 0.8s;
+      }
+
+      .company-info {
+        animation-delay: 1s;
       }
 
       @media (max-width: 768px) {
@@ -177,11 +348,111 @@
           flex-direction: column;
           gap: 1rem;
         }
+
+        .action-buttons {
+          flex-direction: column;
+        }
+      }
+
+      .job-badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.4rem 0.8rem;
+        background: rgba(139, 92, 246, 0.15);
+        border-radius: 20px;
+        font-size: 0.9rem;
+        color: #8B5CF6;
+        margin-left: 1rem;
+        border: 1px solid rgba(139, 92, 246, 0.3);
+      }
+
+      .job-badge i {
+        margin-right: 0.4rem;
+        font-size: 0.9rem;
+      }
+
+      .skill-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin: 1.5rem 0;
+      }
+
+      .skill-tag {
+        padding: 0.4rem 0.8rem;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(139, 92, 246, 0.2);
+        border-radius: 20px;
+        font-size: 0.9rem;
+        color: rgba(255, 255, 255, 0.8);
+        transition: all 0.3s ease;
+      }
+
+      .skill-tag:hover {
+        background: rgba(139, 92, 246, 0.1);
+        transform: translateY(-2px);
+      }
+
+      .quick-info {
+        background: rgba(139, 92, 246, 0.05);
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+      }
+
+      .quick-info-item {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 0.8rem 0;
+        border-bottom: 1px solid rgba(139, 92, 246, 0.1);
+      }
+
+      .quick-info-item:last-child {
+        border-bottom: none;
+      }
+
+      .quick-info-label {
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 0.9rem;
+        min-width: 120px;
+      }
+
+      .quick-info-value {
+        color: rgba(255, 255, 255, 0.9);
+        font-weight: 500;
+      }
+
+      .save-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: transparent;
+        color: #fff;
+        padding: 0.75rem 1.5rem;
+        border-radius: 8px;
+        border: 1px solid rgba(139, 92, 246, 0.2);
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .save-button:hover {
+        background: rgba(139, 92, 246, 0.1);
+        border-color: rgba(139, 92, 246, 0.4);
+      }
+
+      .save-button i {
+        transition: all 0.3s ease;
+      }
+
+      .save-button:hover i {
+        transform: scale(1.2);
       }
     </style>
   </head>
 
   <body>
+    <!-- Back Link -->
     <div class="container">
       <%= link_to positions_path, class: "back-button" do %>
         <i class="bi bi-arrow-left"></i>
@@ -196,9 +467,30 @@
             <i class="bi bi-building" style="font-size: 2rem; color: #8B5CF6;"></i>
           <% end %>
         </div>
-
-        <h1 class="job-title"><%= @position.title %></h1>
+        
+        <h1 class="job-title">
+          <%= @position.title %>
+          <span class="job-badge">
+            <i class="bi bi-clock-history"></i>
+            <%= time_ago_in_words(@position.created_at) %> önce
+          </span>
+        </h1>
         <div class="company-name"><%= @position.company.name %></div>
+
+        <div class="quick-info">
+          <div class="quick-info-item">
+            <span class="quick-info-label">Deneyim</span>
+            <span class="quick-info-value">2-5 yıl</span>
+          </div>
+          <div class="quick-info-item">
+            <span class="quick-info-label">Çalışma Şekli</span>
+            <span class="quick-info-value">Tam Zamanlı</span>
+          </div>
+          <div class="quick-info-item">
+            <span class="quick-info-label">Lokasyon</span>
+            <span class="quick-info-value">Remote</span>
+          </div>
+        </div>
 
         <div class="job-meta">
           <div class="meta-item">
@@ -215,11 +507,36 @@
             <i class="bi bi-geo-alt"></i>
             <span>Remote</span>
           </div>
+
+          <div class="meta-item">
+            <i class="bi bi-eye"></i>
+            <span><%= @position.views_count || 0 %> görüntülenme</span>
+          </div>
         </div>
 
-        <%= link_to new_position_application_path(@position), class: "apply-button" do %>
-          <i class="bi bi-send me-2"></i>Başvur
-        <% end %>
+        <div class="skill-tags">
+          <div class="skill-tag">Ruby on Rails</div>
+          <div class="skill-tag">PostgreSQL</div>
+          <div class="skill-tag">React.js</div>
+          <div class="skill-tag">AWS</div>
+          <div class="skill-tag">Docker</div>
+        </div>
+
+        <div class="action-buttons">
+          <%= link_to new_position_application_path(@position), class: "apply-button" do %>
+            <i class="bi bi-send me-2"></i>Başvur
+          <% end %>
+
+          <button class="share-button" onclick="sharePosition()">
+            <i class="bi bi-share"></i>
+            Paylaş
+          </button>
+
+          <button class="save-button" onclick="toggleSave(this)">
+            <i class="bi bi-bookmark"></i>
+            Kaydet
+          </button>
+        </div>
       </div>
 
       <div class="job-content">
@@ -241,6 +558,40 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+      function sharePosition() {
+        if (navigator.share) {
+          navigator.share({
+            title: '<%= @position.title %>',
+            text: 'Bu iş ilanını inceleyin: <%= @position.company.name %>',
+            url: window.location.href
+          })
+          .catch(console.error);
+        } else {
+          const dummy = document.createElement('textarea');
+          document.body.appendChild(dummy);
+          dummy.value = window.location.href;
+          dummy.select();
+          document.execCommand('copy');
+          document.body.removeChild(dummy);
+          alert('Bağlantı panoya kopyalandı!');
+        }
+      }
+
+      function toggleSave(button) {
+        const icon = button.querySelector('i');
+        if (icon.classList.contains('bi-bookmark')) {
+          icon.classList.remove('bi-bookmark');
+          icon.classList.add('bi-bookmark-fill');
+          button.style.color = '#8B5CF6';
+        } else {
+          icon.classList.remove('bi-bookmark-fill');
+          icon.classList.add('bi-bookmark');
+          button.style.color = '#fff';
+        }
+      }
+    </script>
   </body>
 </html>
 

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Şirket Girişi</title>
+    <title>Company Login</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -21,11 +21,19 @@
         margin: 0;
         padding: 0;
         min-height: 100vh;
-        background: #0D0C18;
+        background: linear-gradient(45deg, #0a0a1f, #13111C, #0d1a2d);
+        background-size: 400% 400%;
+        animation: gradientBG 15s ease infinite;
         color: #fff;
         font-family: system-ui, -apple-system, sans-serif;
         display: flex;
         flex-direction: column;
+      }
+
+      @keyframes gradientBG {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
       }
 
       /* Header Styles */
@@ -67,13 +75,21 @@
 
       /* Login Form Styles */
       .login-card {
-        background: rgba(255, 255, 255, 0.02);
-        border: 1px solid rgba(139, 92, 246, 0.2);
+        background: rgba(13, 12, 24, 0.95);
+        border: 1px solid rgba(139, 92, 246, 0.1);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
         border-radius: 16px;
         padding: 2rem;
         width: 100%;
-        max-width: 400px;
+        max-width: 420px;
         box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+      }
+
+      .login-card:hover {
+        border-color: rgba(139, 92, 246, 0.2);
+        box-shadow: 0 12px 40px rgba(139, 92, 246, 0.1);
       }
 
       .login-header {
@@ -98,72 +114,96 @@
       }
 
       .form-control {
-        background: rgba(255, 255, 255, 0.05);
-        border: 1px solid rgba(139, 92, 246, 0.2);
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(139, 92, 246, 0.1);
+        border-radius: 12px;
         color: #fff;
         padding: 0.75rem 1rem;
+        margin-bottom: 1rem;
+        transition: all 0.3s ease;
       }
 
       .form-control:focus {
-        background: rgba(255, 255, 255, 0.08);
-        border-color: rgba(139, 92, 246, 0.4);
+        background: rgba(255, 255, 255, 0.05);
+        border-color: rgba(139, 92, 246, 0.3);
+        box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.1);
         color: #fff;
-        box-shadow: 0 0 0 0.25rem rgba(139, 92, 246, 0.25);
       }
 
       .form-control::placeholder {
         color: rgba(255, 255, 255, 0.5);
       }
 
-      .form-check-input {
-        background: rgba(255, 255, 255, 0.05);
-        border: 1px solid rgba(139, 92, 246, 0.2);
+      .remember-me {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+        color: rgba(255, 255, 255, 0.7);
       }
 
-      .form-check-input:checked {
+      .remember-me input[type="checkbox"] {
+        width: 1rem;
+        height: 1rem;
+        border-radius: 4px;
+        border: 1px solid rgba(139, 92, 246, 0.3);
+        background-color: transparent;
+        cursor: pointer;
+      }
+
+      .remember-me input[type="checkbox"]:checked {
         background-color: #8B5CF6;
         border-color: #8B5CF6;
       }
 
-      .form-check-label {
-        color: rgba(255, 255, 255, 0.8);
-      }
-
       .btn-primary {
-        background: #8B5CF6;
+        background: linear-gradient(135deg, #8B5CF6, #7C3AED);
         border: none;
+        border-radius: 12px;
         padding: 0.75rem 1.5rem;
         font-weight: 500;
+        width: 100%;
+        margin-bottom: 1rem;
+        transition: all 0.3s ease;
       }
 
       .btn-primary:hover {
-        background: #7C3AED;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(139, 92, 246, 0.3);
       }
 
       .login-links {
-        margin-top: 1.5rem;
         text-align: center;
+        margin-top: 1.5rem;
       }
 
       .login-links a {
         color: #8B5CF6;
         text-decoration: none;
-        transition: color 0.3s ease;
-        font-size: 0.9rem;
+        transition: all 0.3s ease;
+        display: inline-block;
+        margin: 0.5rem;
       }
 
       .login-links a:hover {
         color: #7C3AED;
+        text-shadow: 0 0 10px rgba(139, 92, 246, 0.5);
       }
 
-      .login-links a + a {
-        margin-left: 1rem;
+      .error-message {
+        color: #EF4444;
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
+        padding: 0.75rem;
+        background: rgba(239, 68, 68, 0.1);
+        border: 1px solid rgba(239, 68, 68, 0.2);
+        border-radius: 8px;
       }
     </style>
   </head>
 
   <body>
-    <%= render 'shared/flash' %>
+    <%= render 'shared/flash' if defined?(render_flash) %>
     
     <!-- Header -->
     <header class="header">
@@ -179,36 +219,40 @@
     <main>
       <div class="login-card">
         <div class="login-header">
-          <h2>Şirket Girişi</h2>
-          <p>Hesabınıza giriş yaparak ilanlarınızı yönetin</p>
+          <h2>Company Login</h2>
+          <p>Sign in to manage your job listings</p>
         </div>
 
         <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+          <% if flash[:alert] %>
+            <div class="error-message">
+              <%= flash[:alert] %>
+            </div>
+          <% end %>
+
           <div class="mb-3">
-            <%= f.label :email, "E-posta", class: "form-label" %>
-            <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control", placeholder: "ornek@sirket.com" %>
+            <%= f.label :email, "Email", class: "form-label" %>
+            <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control", placeholder: "company@example.com" %>
           </div>
 
           <div class="mb-3">
-            <%= f.label :password, "Şifre", class: "form-label" %>
+            <%= f.label :password, "Password", class: "form-label" %>
             <%= f.password_field :password, autocomplete: "current-password", class: "form-control", placeholder: "••••••••" %>
           </div>
 
           <% if devise_mapping.rememberable? %>
-            <div class="mb-3">
-              <div class="form-check">
-                <%= f.check_box :remember_me, class: "form-check-input" %>
-                <%= f.label :remember_me, "Beni hatırla", class: "form-check-label" %>
-              </div>
+            <div class="remember-me">
+              <%= f.check_box :remember_me %>
+              <%= f.label :remember_me, "Remember me" %>
             </div>
           <% end %>
 
-          <div class="d-grid mb-3">
-            <%= f.submit "Giriş Yap", class: "btn btn-primary" %>
-          </div>
+          <%= f.submit "Sign In", class: "btn btn-primary" %>
 
           <div class="login-links">
-            <%= render "companies/shared/links" %>
+            <%= link_to "Forgot Password?", new_password_path(resource_name) %>
+            <%= link_to "Create Company Account", new_registration_path(resource_name) %>
+            <%= link_to "Back to User Login", new_user_session_path %>
           </div>
         <% end %>
       </div>

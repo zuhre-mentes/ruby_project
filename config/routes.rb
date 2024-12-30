@@ -1,4 +1,15 @@
 Rails.application.routes.draw do
+  # Company routes should be defined before user routes to take precedence
+  devise_for :companies, controllers: {
+    sessions: 'companies/sessions',
+    registrations: 'companies/registrations'
+  }
+
+  devise_scope :company do
+    get '/companies/sign_in', to: 'companies/sessions#new'
+    delete '/companies/sign_out', to: 'companies/sessions#destroy'
+  end
+
   devise_for :users, controllers: {
     sessions: 'users/sessions',
     registrations: 'users/registrations'
@@ -10,6 +21,10 @@ Rails.application.routes.draw do
 
   authenticated :user do
     root 'home#index', as: :user_root
+  end
+
+  authenticated :company do
+    root 'positions#dashboard', as: :company_root
   end
 
   get 'profile', to: 'users#profile', as: :profile
@@ -31,11 +46,6 @@ Rails.application.routes.draw do
     resources :applications, only: [:new, :create]
   end
 
-  devise_for :companies, controllers: {
-    sessions: 'companies/sessions',
-    registrations: 'companies/registrations'
-  }
-
   resources :verifications, only: [:new, :create, :show, :index]
   resources :forum_posts
   resources :posts, only: [:index, :new, :create, :destroy]
@@ -49,10 +59,6 @@ Rails.application.routes.draw do
 
   devise_scope :company do
     delete 'companies/remove_logo', to: 'companies/registrations#remove_logo', as: :remove_logo_company
-  end
-
-  authenticated :company do
-    root 'jobs#index', as: :company_root
   end
 
   unauthenticated do
