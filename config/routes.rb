@@ -21,6 +21,22 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :positions do
+    collection do
+      get 'dashboard'
+    end
+    member do
+      delete 'remove_image'
+    end
+    resources :applications, only: [:new, :create]  # Başvuru formu ve oluşturma işlemi
+  end
+
+
+  devise_for :companies, controllers: {
+    sessions: 'companies/sessions',
+    registrations: 'companies/registrations'
+  }
+
   resources :verifications, only: [:new, :create, :show, :index]
   resources :forum_posts
   resources :posts, only: [:index, :new, :create, :destroy]
@@ -29,6 +45,35 @@ Rails.application.routes.draw do
     member do
       post :join
       delete :leave
+    end
+  end
+
+  resources :positions do
+    collection do
+      get 'dashboard'
+    end
+    member do
+      delete 'remove_image'
+    end
+    resources :applications, only: [:new, :create]  # Başvuru formu ve oluşturma işlemi
+  end
+
+  devise_scope :company do
+    delete 'companies/remove_logo', to: 'companies/registrations#remove_logo', as: :remove_logo_company
+  end
+
+  authenticated :company do
+    root 'jobs#index', as: :authenticated_root
+
+  end
+
+  unauthenticated do
+    root 'home#index', as: :unauthenticated_root
+  end
+
+  resources :companies do
+    member do
+      delete :remove_logo
     end
   end
   
