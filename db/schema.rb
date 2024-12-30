@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_12_29_121314) do
+ActiveRecord::Schema[7.2].define(version: 2024_12_30_191213) do
   create_table "active_admin_comments", force: :cascade do |t|
     t.string "namespace"
     t.text "body"
@@ -196,6 +196,15 @@ ActiveRecord::Schema[7.2].define(version: 2024_12_29_121314) do
     t.index ["user_id"], name: "index_posts_on_user_id"
   end
 
+  create_table "resumes", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.string "title"
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_resumes_on_user_id"
+  end
+
   create_table "roles", force: :cascade do |t|
     t.string "name"
     t.string "description"
@@ -280,6 +289,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_12_29_121314) do
   add_foreign_key "messages", "users"
   add_foreign_key "positions", "companies"
   add_foreign_key "posts", "users"
+  add_foreign_key "resumes", "users"
   add_foreign_key "user_badges", "badges"
   add_foreign_key "user_badges", "users"
   add_foreign_key "user_events", "posts"

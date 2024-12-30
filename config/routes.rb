@@ -90,4 +90,7 @@ Rails.application.routes.draw do
   end
 
   resources :ai_chat, only: [:show]
+
+  resources :resumes
+  get '/cv', to: 'resumes#index'
 end
