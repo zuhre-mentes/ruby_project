@@ -40,11 +40,19 @@ class EventsController < ApplicationController
     end
   end
   
+  def leave
+    event = Post.find(params[:id]) # Etkinliği bul
+    if current_user.attended_events.delete(event) # Kullanıcıyı etkinlikten çıkar
+      redirect_to profile_path, notice: "Etkinlikten başarıyla ayrıldınız."
+    else
+      redirect_to profile_path, alert: "Etkinlikten ayrılırken bir sorun oluştu."
+    end
+  end
+
 
   private
 
   def post_params
     params.require(:post).permit(:content, :description, :date)
   end
-  
 end

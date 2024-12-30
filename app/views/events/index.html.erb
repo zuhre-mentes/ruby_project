@@ -1,4 +1,3 @@
-
 <!-- Sidebar -->
 <div class="sidebar">
   <div class="logo">
@@ -95,7 +94,7 @@
 
     <%= link_to positions_path, class: "nav-item" do %>
       <i class="bi bi-briefcase"></i>
-      <span>Job Listings</span>
+      <span>Job Posts</span>
     <% end %>
 
     <%= link_to "#", class: "nav-item" do %>
@@ -555,6 +554,7 @@
 
 <!-- New Event Form -->
 <div class="event-form">
+  <h3 class="form-title">Add New Event</h3>
   <%= form_with model: @event, url: events_path, local: true do |form| %>
     <% if @event.errors.any? %>
       <div class="error-messages">
@@ -577,10 +577,15 @@
       <%= form.text_field :description, required: true, class: "form-input" %>
     </div>
 
-    <div>
-      <%= form.label :date, "Date" %>
-      <%= form.datetime_select :date, required: true, class: "form-input" %>
+    <div class="datetime-select-container">
+      <%= form.label :date, "Date and Time" %>
+      <%= form.datetime_select :date, 
+            order: [:day, :month, :year, :hour, :minute], # İstediğiniz sıralama
+            required: true,
+            prompt: { day: 'Day', month: 'Month', year: 'Year', hour: 'Hour', minute: 'Minute', },
+            class: "datetime-input" %>
     </div>
+
 
     <div>
       <%= form.submit "Add", class: "btn btn-primary" %>
@@ -632,12 +637,15 @@ body {
 
 /* Page Title */
 h1 {
-  text-align: center;
+  margin: 3rem 0;
   font-size: 2.5rem;
-  color: #6D28D9; /* Purple tone */
-  margin: 2rem 0;
-  text-shadow: 0 0 15px rgba(109, 40, 217, 0.4);
+  font-family: 'Orbitron', sans-serif;
+  color: #ffffff;
+  text-shadow: 0 4px 12px rgba(139, 92, 246, 0.8);
+  text-transform: uppercase;
+  text-align: center;
 }
+
 
 /* New Event Form */
 .event-form {
@@ -650,7 +658,15 @@ h1 {
   border: 1px solid rgba(109, 40, 217, 0.2); /* Purple border */
 }
 
-.event-form h2 {
+.event-form .form-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #fff; /* Mor vurgulu renk */
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.event-form h3 {
   font-size: 1.5rem;
   color: #EF4444; /* Red error message */
   margin-bottom: 1rem;
@@ -658,7 +674,7 @@ h1 {
 
 .event-form .form-input {
   width: 100%;
-  padding: 0.75rem;
+  padding: 1.5rem;
   margin: 0.5rem 0 1rem;
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.2);
@@ -671,6 +687,44 @@ h1 {
 .event-form .form-input:focus {
   border-color: #6D28D9; /* Purple accent */
   box-shadow: 0 0 10px rgba(109, 40, 217, 0.4);
+}
+
+.datetime-select-container {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: left;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  padding: 0.5rem;
+  color: #fff;
+}
+
+.datetime-select-container select {
+  background: rgba(13, 12, 24, 0.7);
+  color: #fff;
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  border-radius: 8px;
+  padding: 0.5rem;
+  font-size: 1rem;
+  appearance: none; /* Modern tarayıcılarda ok stilini özelleştirmek için */
+}
+
+.datetime-select-container select:focus {
+  outline: none;
+  border-color: #8B5CF6;
+  box-shadow: 0 0 8px rgba(139, 92, 246, 0.6);
+}
+
+.datetime-select-container label {
+  font-size: 1rem;
+  font-weight: bold;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.datetime-select-container select:hover {
+  background: rgba(139, 92, 246, 0.1);
 }
 
 .event-form .btn {
