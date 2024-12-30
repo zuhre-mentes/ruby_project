@@ -4,3 +4,8 @@ import "@hotwired/turbo-rails"
 import "controllers"
 import "bootstrap";
 import '../navbar';
+import "../stylesheets/application"
+import "@popperjs/core"
+import "@rails/ujs"
+import Rails from "@rails/ujs"
+Rails.start()
