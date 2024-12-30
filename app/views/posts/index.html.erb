@@ -1,18 +1,18 @@
-<h1>Gönderiler</h1>
+<h1>Posts</h1>
 
-<%= link_to "Yeni Gönderi Ekle", new_post_path, class: "btn btn-success" %>
+<%= link_to "Add New Post", new_post_path, class: "btn btn-success" %>
 
 <div class="posts-container">
   <% @posts.each do |post| %>
     <div class="post-card">
       <h3><%= post.content %></h3>
       <% if post.is_event %>
-        <p><strong>Etkinlik Tarihi:</strong> <%= l(post.date, format: :long) %></p>
+        <p><strong>Event Date:</strong> <%= l(post.date, format: :long) %></p>
       <% end %>
-      <p><strong>Gönderen:</strong> <%= post.user.name %></p>
+      <p><strong>Posted by:</strong> <%= post.user.name %></p>
 
       <% if post.user == current_user %>
-        <%= button_to "Sil", post_path(post), method: :delete, data: { confirm: "Bu gönderiyi silmek istediğinizden emin misiniz?" }, class: "btn btn-danger" %>
+        <%= button_to "Delete", post_path(post), method: :delete, data: { confirm: "Are you sure you want to delete this post?" }, class: "btn btn-danger" %>
       <% end %>
     </div>
   <% end %>

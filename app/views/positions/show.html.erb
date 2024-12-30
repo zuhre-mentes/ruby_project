@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= @position.title %> - İş İlanı Detayı</title>
+    <title><%= @position.title %> - Job Listing Details</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -456,7 +456,7 @@
     <div class="container">
       <%= link_to positions_path, class: "back-button" do %>
         <i class="bi bi-arrow-left"></i>
-        <span>İş İlanlarına Dön</span>
+        <span>Back to Job Listings</span>
       <% end %>
 
       <div class="job-header card-gradient-border">
@@ -472,22 +472,22 @@
           <%= @position.title %>
           <span class="job-badge">
             <i class="bi bi-clock-history"></i>
-            <%= time_ago_in_words(@position.created_at) %> önce
+            <%= time_ago_in_words(@position.created_at) %> ago
           </span>
         </h1>
         <div class="company-name"><%= @position.company.name %></div>
 
         <div class="quick-info">
           <div class="quick-info-item">
-            <span class="quick-info-label">Deneyim</span>
-            <span class="quick-info-value">2-5 yıl</span>
+            <span class="quick-info-label">Experience</span>
+            <span class="quick-info-value">2-5 years</span>
           </div>
           <div class="quick-info-item">
-            <span class="quick-info-label">Çalışma Şekli</span>
-            <span class="quick-info-value">Tam Zamanlı</span>
+            <span class="quick-info-label">Employment Type</span>
+            <span class="quick-info-value">Full Time</span>
           </div>
           <div class="quick-info-item">
-            <span class="quick-info-label">Lokasyon</span>
+            <span class="quick-info-label">Location</span>
             <span class="quick-info-value">Remote</span>
           </div>
         </div>
@@ -500,7 +500,7 @@
 
           <div class="meta-item">
             <i class="bi bi-calendar"></i>
-            <span>Son Başvuru: <%= @position.application_deadline&.strftime("%d.%m.%Y") %></span>
+            <span>Application Deadline: <%= @position.application_deadline&.strftime("%d.%m.%Y") %></span>
           </div>
 
           <div class="meta-item">
@@ -510,7 +510,7 @@
 
           <div class="meta-item">
             <i class="bi bi-eye"></i>
-            <span><%= @position.views_count || 0 %> görüntülenme</span>
+            <span><%= @position.views_count || 0 %> views</span>
           </div>
         </div>
 
@@ -524,31 +524,31 @@
 
         <div class="action-buttons">
           <%= link_to new_position_application_path(@position), class: "apply-button" do %>
-            <i class="bi bi-send me-2"></i>Başvur
+            <i class="bi bi-send me-2"></i>Apply
           <% end %>
 
           <button class="share-button" onclick="sharePosition()">
             <i class="bi bi-share"></i>
-            Paylaş
+            Share
           </button>
 
           <button class="save-button" onclick="toggleSave(this)">
             <i class="bi bi-bookmark"></i>
-            Kaydet
+            Save
           </button>
         </div>
       </div>
 
       <div class="job-content">
         <div class="job-description card-gradient-border">
-          <h2 class="section-title">İş Tanımı</h2>
+          <h2 class="section-title">Job Description</h2>
           <div class="description-text">
             <%= @position.description %>
           </div>
         </div>
 
         <div class="company-info card-gradient-border">
-          <h2 class="section-title">Şirket Hakkında</h2>
+          <h2 class="section-title">About Company</h2>
           <div class="description-text">
             <%= @position.company.description %>
           </div>
@@ -564,7 +564,7 @@
         if (navigator.share) {
           navigator.share({
             title: '<%= @position.title %>',
-            text: 'Bu iş ilanını inceleyin: <%= @position.company.name %>',
+            text: 'Check out this job listing: <%= @position.company.name %>',
             url: window.location.href
           })
           .catch(console.error);
@@ -575,7 +575,7 @@
           dummy.select();
           document.execCommand('copy');
           document.body.removeChild(dummy);
-          alert('Bağlantı panoya kopyalandı!');
+          alert('Link copied to clipboard!');
         }
       }
 
@@ -594,4 +594,3 @@
     </script>
   </body>
 </html>
-

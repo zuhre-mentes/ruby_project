@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>İlan Düzenle</title>
+    <title>Edit Listing</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -267,12 +267,12 @@
         
         <%= link_to "#", class: "nav-item" do %>
           <i class="bi bi-person-badge"></i>
-          <span>Profil</span>
+          <span>Profile</span>
         <% end %>
         
         <%= link_to "#", class: "nav-item" do %>
           <i class="bi bi-stars"></i>
-          <span>Rozetler</span>
+          <span>Badges</span>
         <% end %>
         
         <%= link_to "#", class: "nav-item" do %>
@@ -282,12 +282,12 @@
 
         <%= link_to "#", class: "nav-item" do %>
           <i class="bi bi-calendar-event"></i>
-          <span>Etkinlikler</span>
+          <span>Events</span>
         <% end %>
 
         <%= link_to positions_path, class: "nav-item active" do %>
           <i class="bi bi-briefcase"></i>
-          <span>İş İlanları</span>
+          <span>Job Listings</span>
         <% end %>
 
         <%= link_to cv_path, class: "nav-item" do %>
@@ -303,7 +303,7 @@
         <div class="nav-footer">
           <%= link_to "#", class: "nav-item logout-btn" do %>
             <i class="bi bi-box-arrow-right"></i>
-            <span>Çıkış Yap</span>
+            <span>Logout</span>
           <% end %>
         </div>
       </nav>
@@ -315,9 +315,9 @@
       <div class="page-header">
         <div class="container">
           <div class="d-flex justify-content-between align-items-center">
-            <h1 class="page-title">İlan Düzenle</h1>
+            <h1 class="page-title">Edit Listing</h1>
             <%= link_to dashboard_positions_path, class: "btn btn-outline-light" do %>
-              <i class="bi bi-arrow-left me-2"></i>İlanlarıma Dön
+              <i class="bi bi-arrow-left me-2"></i>Back to My Listings
             <% end %>
           </div>
         </div>
@@ -329,28 +329,28 @@
             <div class="edit-card">
               <%= form_with(model: @position, local: true) do |f| %>
                 <div class="mb-3">
-                  <%= f.label :title, "İlan Başlığı", class: "form-label" %>
-                  <%= f.text_field :title, class: "form-control", placeholder: "Örn: Senior Ruby on Rails Developer" %>
+                  <%= f.label :title, "Listing Title", class: "form-label" %>
+                  <%= f.text_field :title, class: "form-control", placeholder: "E.g.: Senior Ruby on Rails Developer" %>
                 </div>
 
                 <div class="mb-3">
-                  <%= f.label :description, "İlan Detayı", class: "form-label" %>
-                  <%= f.text_area :description, class: "form-control", rows: 6, placeholder: "İlan detaylarını buraya yazın..." %>
+                  <%= f.label :description, "Listing Details", class: "form-label" %>
+                  <%= f.text_area :description, class: "form-control", rows: 6, placeholder: "Write listing details here..." %>
                 </div>
 
                 <div class="mb-3">
-                  <%= f.label :category, "İlan Kategorisi", class: "form-label" %>
+                  <%= f.label :category, "Listing Category", class: "form-label" %>
                   <%= f.select :category, ["Full Time", "Part Time", "Internship"], {}, class: "form-select" %>
                 </div>
 
                 <div class="mb-3">
-                  <%= f.label :application_deadline, "Son Başvuru Tarihi", class: "form-label" %>
+                  <%= f.label :application_deadline, "Application Deadline", class: "form-label" %>
                   <%= f.date_field :application_deadline, class: "form-control" %>
                 </div>
 
                 <div class="d-flex gap-2">
-                  <%= f.submit "Güncelle", class: "btn btn-primary" %>
-                  <%= link_to "İptal", dashboard_positions_path, class: "btn btn-outline-light" %>
+                  <%= f.submit "Update", class: "btn btn-primary" %>
+                  <%= link_to "Cancel", dashboard_positions_path, class: "btn btn-outline-light" %>
                 </div>
               <% end %>
             </div>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Şirket Kaydı</title>
+    <title>Company Registration</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -262,7 +262,7 @@
       <div class="form-card">
         <div class="text-center mb-4">
           <i class="bi bi-gem-fill logo-icon"></i>
-          <h1 class="form-title mt-3">Şirket Kaydı</h1>
+          <h1 class="form-title mt-3">Company Registration</h1>
         </div>
 
         <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { multipart: true }) do |f| %>
@@ -275,47 +275,47 @@
           <% end %>
 
           <div class="mb-3">
-            <%= f.label :name, "Şirket Adı", class: "form-label" %>
-            <%= f.text_field :name, class: "form-control", placeholder: "Şirketinizin adını girin", required: true %>
+            <%= f.label :name, "Company Name", class: "form-label" %>
+            <%= f.text_field :name, class: "form-control", placeholder: "Enter your company name", required: true %>
           </div>
 
           <div class="mb-3">
-            <%= f.label :email, "E-posta", class: "form-label" %>
-            <%= f.email_field :email, class: "form-control", placeholder: "ornek@sirket.com", required: true %>
+            <%= f.label :email, "Email", class: "form-label" %>
+            <%= f.email_field :email, class: "form-control", placeholder: "example@company.com", required: true %>
           </div>
 
           <div class="mb-3">
-            <%= f.label :description, "Şirket Açıklaması", class: "form-label" %>
-            <%= f.text_area :description, class: "form-control", rows: 4, placeholder: "Şirketiniz hakkında kısa bir açıklama yazın", required: true %>
+            <%= f.label :description, "Company Description", class: "form-label" %>
+            <%= f.text_area :description, class: "form-control", rows: 4, placeholder: "Write a brief description about your company", required: true %>
           </div>
 
           <div class="mb-3">
-            <%= f.label :password, "Şifre", class: "form-label" %>
-            <%= f.password_field :password, class: "form-control", placeholder: "En az 6 karakter", required: true, minlength: 6 %>
-            <div class="form-text">En az 6 karakter olmalıdır</div>
+            <%= f.label :password, "Password", class: "form-label" %>
+            <%= f.password_field :password, class: "form-control", placeholder: "Minimum 6 characters", required: true, minlength: 6 %>
+            <div class="form-text">Must be at least 6 characters</div>
           </div>
 
           <div class="mb-3">
-            <%= f.label :password_confirmation, "Şifre Tekrar", class: "form-label" %>
-            <%= f.password_field :password_confirmation, class: "form-control", placeholder: "Şifrenizi tekrar girin", required: true %>
+            <%= f.label :password_confirmation, "Confirm Password", class: "form-label" %>
+            <%= f.password_field :password_confirmation, class: "form-control", placeholder: "Re-enter your password", required: true %>
           </div>
 
           <div class="mb-4">
-            <%= f.label :logo, "Şirket Logosu", class: "form-label" %>
+            <%= f.label :logo, "Company Logo", class: "form-label" %>
             <div class="file-input-wrapper">
               <label class="file-input-button">
                 <i class="bi bi-cloud-upload"></i>
-                <span>Dosya Seç</span>
+                <span>Choose File</span>
                 <%= f.file_field :logo, class: "d-none", accept: "image/png,image/jpeg,image/jpg" %>
               </label>
             </div>
-            <div class="form-text">PNG, JPEG veya JPG formatında, maksimum 5MB</div>
+            <div class="form-text">PNG, JPEG or JPG format, maximum 5MB</div>
           </div>
 
-          <%= f.submit "Kayıt Ol", class: "btn btn-primary w-100 mb-3" %>
+          <%= f.submit "Register", class: "btn btn-primary w-100 mb-3" %>
           
           <div class="text-center">
-            <%= link_to "Zaten hesabınız var mı? Giriş yapın", new_session_path(resource_name), class: "form-link" %>
+            <%= link_to "Already have an account? Sign in", new_session_path(resource_name), class: "form-link" %>
           </div>
         <% end %>
       </div>
@@ -335,7 +335,7 @@
         if (file) {
           fileLabel.textContent = file.name;
         } else {
-          fileLabel.textContent = 'Dosya Seç';
+          fileLabel.textContent = 'Choose File';
         }
       });
     });

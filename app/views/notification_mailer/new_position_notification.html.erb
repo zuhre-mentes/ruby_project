@@ -44,27 +44,27 @@
   </head>
   <body>
     <div class="header">
-      <h1>Yeni İş İlanı</h1>
+      <h1>New Job Listing</h1>
     </div>
     
     <div class="content">
-      <p>Merhaba <%= @user.email %>,</p>
+      <p>Hello <%= @user.email %>,</p>
       
-      <p><strong><%= @company.name %></strong> yeni bir iş ilanı yayınladı!</p>
+      <p><strong><%= @company.name %></strong> has posted a new job listing!</p>
       
       <div class="company-info">
         <h2><%= @position.title %></h2>
-        <p><strong>Şirket:</strong> <%= @company.name %></p>
-        <p><strong>Pozisyon Türü:</strong> <%= @position.category %></p>
-        <p><strong>Son Başvuru Tarihi:</strong> <%= @position.application_deadline&.strftime("%d.%m.%Y") %></p>
+        <p><strong>Company:</strong> <%= @company.name %></p>
+        <p><strong>Position Type:</strong> <%= @position.category %></p>
+        <p><strong>Application Deadline:</strong> <%= @position.application_deadline&.strftime("%d.%m.%Y") %></p>
         
         <p><%= truncate(@position.description, length: 200) %></p>
       </div>
       
-      <%= link_to "İlanı Görüntüle", position_url(@position), class: "button" %>
+      <%= link_to "View Listing", position_url(@position), class: "button" %>
       
       <p style="margin-top: 30px; font-size: 14px; color: #666;">
-        Bu e-postayı TechHunt üzerinden almaktasınız.
+        You are receiving this email from TechHunt.
       </p>
     </div>
   </body>

@@ -1,9 +1,9 @@
-<h1>Yeni Gönderi Oluştur</h1>
+<h1>Create New Post</h1>
 
 <%= form_with model: @post, url: posts_path, local: true do |form| %>
   <% if @post.errors.any? %>
     <div class="error-messages">
-      <h2>Hatalar:</h2>
+      <h2>Errors:</h2>
       <ul>
         <% @post.errors.full_messages.each do |message| %>
           <li><%= message %></li>
@@ -13,21 +13,21 @@
   <% end %>
 
   <div>
-    <%= form.label :content, "Gönderi İçeriği" %>
+    <%= form.label :content, "Post Content" %>
     <%= form.text_area :content, rows: 5, required: true %>
   </div>
 
   <div>
-    <%= form.label :is_event, "Bu bir etkinlik mi?" %>
+    <%= form.label :is_event, "Is this an event?" %>
     <%= form.check_box :is_event %>
   </div>
 
   <div>
-    <%= form.label :date, "Tarih" %>
+    <%= form.label :date, "Date" %>
     <%= form.datetime_select :date %>
   </div>
 
   <div>
-    <%= form.submit "Gönder", class: "btn btn-primary" %>
+    <%= form.submit "Submit", class: "btn btn-primary" %>
   </div>
 <% end %>

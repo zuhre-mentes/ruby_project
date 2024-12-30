@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Yeni İlan Oluştur</title>
+    <title>Create New Listing</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -91,7 +91,7 @@
       <div class="row justify-content-center">
         <div class="col-lg-8">
           <div class="form-card">
-            <h1 class="form-title">Yeni İlan Oluştur</h1>
+            <h1 class="form-title">Create New Listing</h1>
 
             <%= form_with(model: @position, local: true, class: "position-form") do |f| %>
               <% if @position.errors.any? %>
@@ -108,41 +108,41 @@
               <% end %>
 
               <div class="mb-4">
-                <%= f.label :title, "Başlık", class: "form-label" %>
-                <%= f.text_field :title, class: "form-control", placeholder: "Örn: Senior Frontend Developer" %>
+                <%= f.label :title, "Title", class: "form-label" %>
+                <%= f.text_field :title, class: "form-control", placeholder: "E.g.: Senior Frontend Developer" %>
               </div>
 
               <div class="mb-4">
-                <%= f.label :description, "Açıklama", class: "form-label" %>
-                <%= f.text_area :description, class: "form-control", rows: 6, placeholder: "İş tanımı ve gereksinimleri..." %>
+                <%= f.label :description, "Description", class: "form-label" %>
+                <%= f.text_area :description, class: "form-control", rows: 6, placeholder: "Job description and requirements..." %>
               </div>
 
               <div class="mb-4">
-                <%= f.label :category, "İş Türü", class: "form-label" %>
+                <%= f.label :category, "Job Type", class: "form-label" %>
                 <%= f.select :category, 
                     options_for_select([
-                      ["Tam Zamanlı", "Full Time"],
-                      ["Yarı Zamanlı", "Part Time"],
-                      ["Staj", "Internship"]
+                      ["Full Time", "Full Time"],
+                      ["Part Time", "Part Time"],
+                      ["Internship", "Internship"]
                     ]), 
-                    { prompt: "İş türü seçin" },
+                    { prompt: "Select job type" },
                     { class: "form-select" } 
                 %>
               </div>
 
               <div class="mb-4">
-                <%= f.label :location, "Lokasyon", class: "form-label" %>
-                <%= f.text_field :location, class: "form-control", placeholder: "Örn: İstanbul, Türkiye" %>
+                <%= f.label :location, "Location", class: "form-label" %>
+                <%= f.text_field :location, class: "form-control", placeholder: "E.g.: Istanbul, Turkey" %>
               </div>
 
               <div class="mb-4">
-                <%= f.label :application_deadline, "Son Başvuru Tarihi", class: "form-label" %>
+                <%= f.label :application_deadline, "Application Deadline", class: "form-label" %>
                 <%= f.date_field :application_deadline, class: "form-control" %>
               </div>
 
               <div class="d-grid gap-2">
-                <%= f.submit "İlan Oluştur", class: "btn btn-primary btn-lg" %>
-                <%= link_to "Vazgeç", positions_path, class: "btn btn-outline-light" %>
+                <%= f.submit "Create Listing", class: "btn btn-primary btn-lg" %>
+                <%= link_to "Cancel", positions_path, class: "btn btn-outline-light" %>
               </div>
             <% end %>
           </div>
@@ -151,4 +151,3 @@
     </div>
   </body>
 </html>
-  

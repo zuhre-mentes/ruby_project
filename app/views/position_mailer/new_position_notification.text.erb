@@ -1,19 +1,19 @@
-Merhaba <%= @user.name %>,
+Hello <%= @user.name %>,
 
-<%= @company.name %> şirketi yeni bir iş ilanı yayınladı:
+<%= @company.name %> company has posted a new job listing:
 
-İlan Detayları:
+Listing Details:
 ---------------
-Başlık: <%= @position.title %>
-Şirket: <%= @company.name %>
-İş Türü: <%= @position.category %>
-Son Başvuru: <%= @position.application_deadline&.strftime("%d.%m.%Y") %>
+Title: <%= @position.title %>
+Company: <%= @company.name %>
+Job Type: <%= @position.category %>
+Application Deadline: <%= @position.application_deadline&.strftime("%d.%m.%Y") %>
 
-Açıklama:
+Description:
 <%= @position.description %>
 
-İlanın detaylarını görmek ve başvurmak için aşağıdaki linki ziyaret edebilirsiniz:
+You can visit the link below to view the details and apply:
 <%= position_url(@position) %>
 
-İyi günler,
-Rubytes Ekibi 
+Best regards,
+Rubytes Team

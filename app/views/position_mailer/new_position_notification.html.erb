@@ -4,34 +4,34 @@
     <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
   </head>
   <body>
-    <h1>Merhaba <%= @user.name %>,</h1>
+    <h1>Hello <%= @user.name %>,</h1>
     
     <p>
-      <%= @company.name %> şirketi yeni bir iş ilanı yayınladı:
+      <%= @company.name %> company has posted a new job listing:
     </p>
 
     <div style="margin: 20px 0; padding: 20px; border: 1px solid #ddd; border-radius: 8px;">
       <h2><%= @position.title %></h2>
       
-      <p><strong>Şirket:</strong> <%= @company.name %></p>
-      <p><strong>İş Türü:</strong> <%= @position.category %></p>
-      <p><strong>Son Başvuru:</strong> <%= @position.application_deadline&.strftime("%d.%m.%Y") %></p>
+      <p><strong>Company:</strong> <%= @company.name %></p>
+      <p><strong>Job Type:</strong> <%= @position.category %></p>
+      <p><strong>Application Deadline:</strong> <%= @position.application_deadline&.strftime("%d.%m.%Y") %></p>
       
-      <p><strong>Açıklama:</strong></p>
+      <p><strong>Description:</strong></p>
       <p><%= @position.description %></p>
     </div>
 
     <p>
-      İlanın detaylarını görmek ve başvurmak için aşağıdaki linke tıklayabilirsiniz:
+      You can click the link below to view the details and apply:
     </p>
 
     <p>
-      <%= link_to 'İlanı Görüntüle', position_url(@position), style: 'display: inline-block; padding: 10px 20px; background-color: #8B5CF6; color: white; text-decoration: none; border-radius: 5px;' %>
+      <%= link_to 'View Listing', position_url(@position), style: 'display: inline-block; padding: 10px 20px; background-color: #8B5CF6; color: white; text-decoration: none; border-radius: 5px;' %>
     </p>
 
     <p>
-      İyi günler,<br>
-      Rubytes Ekibi
+      Best regards,<br>
+      Rubytes Team
     </p>
   </body>
-</html> 
+</html>
