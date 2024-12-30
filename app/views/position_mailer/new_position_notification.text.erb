@@ -1,0 +1,19 @@
+Merhaba <%= @user.name %>,
+
+<%= @company.name %> şirketi yeni bir iş ilanı yayınladı:
+
+İlan Detayları:
+---------------
+Başlık: <%= @position.title %>
+Şirket: <%= @company.name %>
+İş Türü: <%= @position.category %>
+Son Başvuru: <%= @position.application_deadline&.strftime("%d.%m.%Y") %>
+
+Açıklama:
+<%= @position.description %>
+
+İlanın detaylarını görmek ve başvurmak için aşağıdaki linki ziyaret edebilirsiniz:
+<%= position_url(@position) %>
+
+İyi günler,
+Rubytes Ekibi 

@@ -4,6 +4,16 @@ class PositionsController < ApplicationController
 
   def index
     @positions = Position.all.includes(:company)
+    
+    if params[:category].present? && params[:category] != "All Job Types"
+      @positions = @positions.where(category: params[:category])
+    end
+    
+    if params[:query].present?
+      query = "%#{params[:query]}%"
+      @positions = @positions.where("title ILIKE ? OR description ILIKE ? OR companies.name ILIKE ?", query, query, query)
+                           .joins(:company)
+    end
   end
 
   def show
@@ -21,7 +31,12 @@ class PositionsController < ApplicationController
     @position = current_company.positions.build(position_params)
 
     if @position.save
-      redirect_to @position, notice: 'Position was successfully created.'
+      # Send email to all users
+      User.all.each do |user|
+        PositionMailer.new_position_notification(user, @position).deliver_later
+      end
+      
+      redirect_to positions_path, notice: 'İlan başarıyla oluşturuldu.'
     else
       render :new, status: :unprocessable_entity
     end
@@ -29,7 +44,7 @@ class PositionsController < ApplicationController
 
   def update
     if @position.update(position_params)
-      redirect_to @position, notice: 'Position was successfully updated.'
+      redirect_to @position, notice: 'İlan başarıyla güncellendi.'
     else
       render :edit, status: :unprocessable_entity
     end
@@ -37,7 +52,7 @@ class PositionsController < ApplicationController
 
   def destroy
     @position.destroy
-    redirect_to positions_url, notice: 'Position was successfully deleted.'
+    redirect_to positions_url, notice: 'İlan başarıyla silindi.'
   end
 
   def dashboard
@@ -58,7 +73,7 @@ class PositionsController < ApplicationController
   end
 
   def position_params
-    params.require(:position).permit(:title, :description, :requirements, :location, :position_type, :application_deadline)
+    params.require(:position).permit(:title, :description, :category, :location, :application_deadline)
   end
 end
 
