@@ -33,3 +33,13 @@ production:
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   url: <%= ENV['DATABASE_URL'] %>
   database: ruby_project_production
+
+  production:
+  adapter: postgresql
+  encoding: unicode
+  pool: 5
+  database: mysite_z7fk_o888
+  username: mysite-0ftj
+  password: NredSZ6X0v2A9D5rhAvcSc6L0akiKZgK
+  host: dpg-ctpjdnaj1k6c739kd690-a
+  port: 5432

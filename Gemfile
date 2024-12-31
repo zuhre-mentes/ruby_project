@@ -5,7 +5,7 @@ gem "rails", "~> 7.1.2"
 gem "sprockets-rails" # The original asset pipeline for Rails
 
 # Database
-gem "pg" # Use sqlite3 as the database for Active Record
+gem "pg" # PostgreSQL for production
 
 # Web Server
 gem "puma", ">= 5.0" # Use the Puma web server
@@ -69,6 +69,8 @@ group :development, :test do
 
   # Environment Variables
   gem "dotenv-rails" # Environment management
+
+  gem "sqlite3" # SQLite for development and test
 end
 
 group :development do
