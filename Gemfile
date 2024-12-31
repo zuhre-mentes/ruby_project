@@ -1,11 +1,11 @@
 source "https://rubygems.org"
 
 # Rails Framework
-gem "rails", "~> 7.2.2"
+gem "rails", "~> 7.1.2"
 gem "sprockets-rails" # The original asset pipeline for Rails
 
 # Database
-gem "sqlite3", ">= 1.4" # Use sqlite3 as the database for Active Record
+gem "pg" # Use sqlite3 as the database for Active Record
 
 # Web Server
 gem "puma", ">= 5.0" # Use the Puma web server
@@ -46,7 +46,7 @@ gem "kaminari" # Alternative pagination gem
 
 
 # OpenAI Integration
-gem "ruby-openai", "~> 4.0.0" # OpenAI API integration
+gem "ruby-openai", "~> 7.3.1" # OpenAI API integration
 
 # Additional Tools
 gem "solid_cache" # Database-backed cache for Rails
