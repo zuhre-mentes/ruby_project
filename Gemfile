@@ -1,7 +1,7 @@
 source "https://rubygems.org"
 
 # Rails Framework
-gem "rails", "~> 7.2.2"
+gem "rails", "~> 7.1.2"
 gem "sprockets-rails" # The original asset pipeline for Rails
 
 # Database
