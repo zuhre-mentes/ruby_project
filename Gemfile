@@ -41,7 +41,7 @@ gem "propshaft" # Modern asset pipeline
 gem "webpacker", "~> 5.4.4" # Webpacker for JavaScript bundling
 
 # Pagination
-gem "will_paginate", "~> 3.1.2" # Pagination
+gem "will_paginate", "~> 4.0.1" # Pagination
 gem "kaminari" # Alternative pagination gem
 
 
