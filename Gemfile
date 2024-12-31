@@ -46,7 +46,7 @@ gem "kaminari" # Alternative pagination gem
 
 
 # OpenAI Integration
-gem "ruby-openai", "~> 4.0.0" # OpenAI API integration
+gem "ruby-openai", "~> 7.3.1" # OpenAI API integration
 
 # Additional Tools
 gem "solid_cache" # Database-backed cache for Rails
