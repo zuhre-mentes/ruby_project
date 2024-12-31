@@ -1,11 +1,11 @@
 source "https://rubygems.org"
 
 # Rails Framework
-gem "rails", "~> 7.2.2"
+gem "rails", "~> 7.1.2"
 gem "sprockets-rails" # The original asset pipeline for Rails
 
 # Database
-gem "sqlite3", ">= 1.4" # Use sqlite3 as the database for Active Record
+gem "pg" # Use sqlite3 as the database for Active Record
 
 # Web Server
 gem "puma", ">= 5.0" # Use the Puma web server
@@ -41,7 +41,7 @@ gem "propshaft" # Modern asset pipeline
 gem "webpacker", "~> 5.4.4" # Webpacker for JavaScript bundling
 
 # Pagination
-gem "will_paginate", "~> 3.1.2" # Pagination
+gem "will_paginate", "~> 4.0.1" # Pagination
 gem "kaminari" # Alternative pagination gem
 
 
